@@ -2,11 +2,14 @@ package com.klutzybubbles.assignment1.logic;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.klutzybubbles.assignment1.activities.GameView;
 import com.klutzybubbles.assignment1.activities.R;
@@ -19,8 +22,8 @@ import java.util.Random;
 
 public class GameItemHandler extends BaseAdapter implements GridView.OnItemClickListener {
 
-    public static final int MAX_WIDTH = 5;
-    public static final int MAX_HEIGHT = 5;
+    public static final int MAX_WIDTH = 5, MAX_HEIGHT = 5;
+    public static final int MIN_HEIGHT = 3, MIN_WIDTH = 3;
 
     private final GameItem[] items;
 
@@ -28,15 +31,21 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     private int count = 0;
     private final int[] blocks;
 
-    private final Context gridContext;
+    private boolean gameState = false;
 
-    public GameItemHandler(Context context, int width, int height) {
+    private final Context gridContext;
+    private final GridView parent;
+
+    public GameItemHandler(GridView parent, Context context, int width, int height) {
         super();
         if (width > GameItemHandler.MAX_WIDTH || height > GameItemHandler.MAX_HEIGHT || context == null)
             throw new IllegalArgumentException("Grid size can not be bigger than the MAX");
+        if (width < GameItemHandler.MIN_WIDTH || height < GameItemHandler.MIN_HEIGHT || parent == null)
+            throw new IllegalArgumentException("Grid size can not be smaller than the MIN");
         this.width = width;
         this.height = height;
         this.gridContext = context;
+        this.parent = parent;
         int temp = this.width * this.height;
         this.items = new GameItem[temp];
         int[] normal = new int[temp];
@@ -60,6 +69,8 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (!this.gameState)
+            return;
         GameItem g = null;
         if (position > this.items.length) {
             for (GameItem t : this.items) {
@@ -70,19 +81,85 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                     break;
                 }
             }
-            if (g == null)
-                return;
         } else
             g = this.items[position];
-        if (g.clicked())
-            return;
-        try {
-            g.setState(this.blocks[count]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Ouch");
-            return;
+        if (g != null && !g.isClicked()) {
+            try {
+                int state = this.blocks[count];
+                g.setState(state);
+                count++;
+                // top
+                if (position >= this.width * 2) {
+                    System.out.println("top");
+                    System.out.println(this.items[position - this.width].getState());
+                    System.out.println(this.items[position - (this.width * 2)].getState());
+                    if (this.items[position - this.width].getState() == state && this.items[position - (this.width * 2)].getState() == state) {
+                        System.err.println("Top End");
+                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                    }
+                }
+
+                // bottom
+                if (position <= (this.width * this.height) - (this.width * 2)) {
+                    System.out.println("bottom");
+                    System.out.println(this.items[position + this.width].getState());
+                    System.out.println(this.items[position + (this.width * 2)].getState());
+                    if (this.items[position + this.width].getState() == state && this.items[position + (this.width * 2)].getState() == state) {
+                        System.err.println("Bottom End");
+                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                    }
+                }
+
+                // left
+                if (position % this.width >= 2) {
+                    System.out.println("left");
+                    System.out.println(this.items[position - 1].getState());
+                    System.out.println(this.items[position - 2].getState());
+                    if (this.items[position - 1].getState() == state && this.items[position - 2].getState() == state) {
+                        System.err.println("Left End");
+                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                    }
+                }
+
+                // right
+                if (position % this.width <= this.width - 3) {
+                    System.out.println("right");
+                    System.out.println("");
+                    System.out.println("");
+                    if (this.items[position + 1].getState() == state && this.items[position + 2].getState() == state) {
+                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                    }
+                }
+
+                // middle vert
+                if (position >= this.width && position <= (this.width * this.height) - this.width) {
+                    System.out.println("middle vert");
+                    System.out.println("");
+                    System.out.println("");
+                    if (this.items[position + this.width].getState() == state && this.items[position - this.width].getState() == state) {
+                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                    }
+                }
+
+                // middle hori
+                if (position % this.width >= 1 && position % this.width <= this.width - 2) {
+                    System.out.println("middle hori");
+                    System.out.println("");
+                    System.out.println("");
+                    if (this.items[position + 1].getState() == state && this.items[position - 1].getState() == state) {
+                        //Toast.makeText(this.gridContext, "End", Toast.LENGTH_SHORT);
+                    }
+                }
+                //TextView v = ((ConstraintLayout) this.parent.getParent()).findViewById(R.id.textView2);
+                //TextView v = this.parent.findViewById(R.id.textView2);
+                //v.setText(this.blocks[count]);
+                //Toast.makeText(null, this.blocks[count], Toast.LENGTH_SHORT);
+                GameView.getInstance().setText("" + this.blocks[count]);
+                System.err.println("Next: " + this.blocks[count]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("Ouch");
+            }
         }
-        count++;
     }
 
     public void refreshSettings(GridView parent) {

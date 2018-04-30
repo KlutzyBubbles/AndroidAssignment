@@ -43,23 +43,18 @@ public class GameItem extends View {
         this.update();
     }
 
-    public boolean clicked() {
+    public int getState() {
+        return this.state;
+    }
+
+    public boolean isClicked() {
         return this.state > 0;
     }
 
     public void update() {
         this.background.setColor(GameItem.COLORS[this.state]);
         this.background.setStroke(1, Color.DKGRAY);
-        //super.setBackgroundColor(GameItem.COLORS[this.state]);
     }
-
-    /*
-    @Override
-    public void draw(Canvas c) {
-        super.setBackgroundColor(GameItem.COLORS[this.state]);
-        super.draw(c);
-    }
-    */
 
     public void setRelativeTo(GridView parent) {
         int width = parent.getColumnWidth();
