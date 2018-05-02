@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_stop"
+        android:icon="?attr/homeAsUpIndicator"
+        android:title="@string/menu_home"
+        android:onClick="onMenuClick"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/item_restart"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="@string/menu_restart"
+        android:onClick="onRestartClick"
+        app:showAsAction="never" />
+</menu>

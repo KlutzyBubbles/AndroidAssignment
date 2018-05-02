@@ -3,4 +3,7 @@
     <string name="shared_preferences">com.klutzybubbles.assignment1.preferences</string>
     <string name="timer_text">Click new game to start</string>
     <string name="new_game_button">New Game</string>
+    <string name="text_next_item">Next Color</string>
+    <string name="menu_restart">Restart</string>
+    <string name="menu_home">Main Menu</string>
 </resources>

@@ -32,11 +32,14 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     private final int[] blocks;
 
     private boolean gameState = false;
+    private boolean paused = false;
 
     private final Context gridContext;
-    private final GridView parent;
+    private final GameView parent;
 
-    public GameItemHandler(GridView parent, Context context, int width, int height) {
+    private final GameTimer timer;
+
+    public GameItemHandler(GameView parent, Context context, int width, int height) {
         super();
         if (width > GameItemHandler.MAX_WIDTH || height > GameItemHandler.MAX_HEIGHT || context == null)
             throw new IllegalArgumentException("Grid size can not be bigger than the MAX");
@@ -65,6 +68,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
             normal[i] = temp;
         }
         this.blocks = normal;
+        this.timer = new GameTimer();
     }
 
     @Override
@@ -88,6 +92,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 int state = this.blocks[count];
                 g.setState(state);
                 count++;
+                System.out.println("POSITION: " + position);
                 // top
                 if (position >= this.width * 2) {
                     System.out.println("top");
@@ -154,9 +159,12 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 //TextView v = this.parent.findViewById(R.id.textView2);
                 //v.setText(this.blocks[count]);
                 //Toast.makeText(null, this.blocks[count], Toast.LENGTH_SHORT);
-                GameView.getInstance().setText("" + this.blocks[count]);
-                System.err.println("Next: " + this.blocks[count]);
+                this.parent.setNext(this.getNext());
+                System.err.println("Next: " + this.getNext());
+                if (this.getNext() == 0)
+                    this.stop(1);
             } catch (ArrayIndexOutOfBoundsException e) {
+                e.printStackTrace();
                 System.err.println("Ouch");
             }
         }
@@ -193,4 +201,46 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         this.items[position].setRelativeTo((GridView) parent);
         return this.items[position];
     }
+
+    public void start() {
+        this.gameState = true;
+        this.paused = false;
+        this.parent.setNext(this.blocks[count]);
+        System.err.println("Next: " + this.blocks[count]);
+        this.timer.start();
+    }
+
+    public void pause() {
+        if (this.gameState && !this.paused) {
+            this.paused = true;
+            this.timer.pause();
+        }
+    }
+
+    public void stop(int cause) {
+        this.gameState = false;
+        this.paused = false;
+        this.timer.stop();
+        switch (cause) {
+            case 1:
+                this.parent.onSuccess();
+                break;
+            case 2:
+                this.parent.onFail();
+                break;
+            default:
+                this.parent.onEnd();
+        }
+    }
+
+    public void updateTime(TextView t) {
+        t.setText(this.timer.getFormatted());
+    }
+
+    public int getNext() {
+        if (this.blocks.length <= this.count)
+            return 0;
+        return this.blocks[count];
+    }
+
 }

@@ -28,16 +28,19 @@ public class GameItem extends View {
     public GameItem(Context context) {
         super(context);
         //super.setText("Test");
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN)
-            //noinspection deprecation
-            super.setBackgroundDrawable(this.background);
-        else
-            super.setBackground(this.background);
+        super.setBackground(this.background);
         this.update();
     }
 
     public void setState(int state) {
         if (state < 0 || state > 2 || this.state > 0)
+            return;
+        this.state = state;
+        this.update();
+    }
+
+    public void setStateOverride(int state) {
+        if (state < 0 || state > 2)
             return;
         this.state = state;
         this.update();

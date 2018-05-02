@@ -1,5 +1,7 @@
 package com.klutzybubbles.assignment1.logic;
 
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -12,6 +14,10 @@ public class GameTimer {
     private String format;
     private boolean state;
     private boolean stopped = true;
+
+    public GameTimer() {
+        this(null);
+    }
 
     public GameTimer(String format) {
         if (format == null || format.equals(""))
@@ -99,15 +105,21 @@ public class GameTimer {
     }
 
     public String getFormatted() {
+        Log.v("GameTimer:getFormatted", "call");
         long time = 0L;
         for (int i = 0; i < this.times.length; i++) {
+            Log.v("GameTimer:getFormatted", "Loop in times No. " + i);
             if (this.times[i][0] != -1L) {
+                Log.v("GameTimer:getFormatted", "this.times[i][0] != -1L");
                 if (this.times[i][1] == -1L) {
+                    Log.v("GameTimer:getFormatted", "this.times[i][1] == -1");
                     time += System.currentTimeMillis() - this.times[i][0];
                 } else {
+                    Log.v("GameTimer:getFormatted", "this.times[i][1] != -1");
                     time += this.times[i][1] - this.times[i][0];
                 }
             }
+            Log.v("GameTimer:getFormatted", "time = " + time);
         }
         return String.format(this.format, TimeUnit.MILLISECONDS.toMinutes(time),
                 TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
