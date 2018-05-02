@@ -3,6 +3,7 @@ package com.klutzybubbles.assignment1.logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,8 +29,8 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     private final GameItem[] items;
 
     private final int width, height;
-    private int count = 0;
-    private final int[] blocks;
+    private int count = 0, start;
+    private int[] blocks;
 
     private boolean gameState = false;
     private boolean paused = false;
@@ -39,8 +40,9 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     private final GameTimer timer;
 
-    public GameItemHandler(GameView parent, Context context, int width, int height) {
+    public GameItemHandler(GameView parent, Context context, int width, int height, int start) {
         super();
+        Log.d("GIH:CONSTRUCT", "call");
         if (width > GameItemHandler.MAX_WIDTH || height > GameItemHandler.MAX_HEIGHT || context == null)
             throw new IllegalArgumentException("Grid size can not be bigger than the MAX");
         if (width < GameItemHandler.MIN_WIDTH || height < GameItemHandler.MIN_HEIGHT || parent == null)
@@ -49,6 +51,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         this.height = height;
         this.gridContext = context;
         this.parent = parent;
+        this.start = start;
         int temp = this.width * this.height;
         this.items = new GameItem[temp];
         int[] normal = new int[temp];
@@ -59,10 +62,12 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
             normal[i] = temp;
             temp = temp == 2 ? 1 : 2;
         }
+        this.blocks = normal;
+        this.placeStarters();
         int index;
         Random r = new Random();
-        for (int i = normal.length - 1; i > 0; i--) {
-            index = r.nextInt(i + 1);
+        for (int i = normal.length - 1; i > count; i--) {
+            index = r.nextInt((i - count) + 1) + count;
             temp = normal[index];
             normal[index] = normal[i];
             normal[i] = temp;
@@ -71,8 +76,35 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         this.timer = new GameTimer();
     }
 
+    private void placeStarters() {
+        Log.d("GIH:placeStarters", "call");
+        if (this.start == 0)
+            return;
+        int temp = this.start;
+        Random r = new Random();
+        for (int i = 0; i < temp; i++) {
+            this.start--;
+            int slot = r.nextInt(this.blocks.length - count);
+            int c = 0;
+            for (int j = 0; j < slot; j++) {
+                boolean cont = false;
+                while (!cont) {
+                    if (!this.items[c].isClicked()) {
+                        if (j == slot - 1)
+                            this.items[c].setState(this.blocks[i]);
+                        cont = true;
+                    }
+                    c++;
+                }
+            }
+            this.count++;
+
+        }
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("GIH:onItemClick", "call");
         if (!this.gameState)
             return;
         GameItem g = null;
@@ -92,85 +124,82 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 int state = this.blocks[count];
                 g.setState(state);
                 count++;
-                System.out.println("POSITION: " + position);
+                this.parent.setNext(this.getNext());
                 // top
                 if (position >= this.width * 2) {
-                    System.out.println("top");
-                    System.out.println(this.items[position - this.width].getState());
-                    System.out.println(this.items[position - (this.width * 2)].getState());
                     if (this.items[position - this.width].getState() == state && this.items[position - (this.width * 2)].getState() == state) {
-                        System.err.println("Top End");
-                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                        this.stop(2);
+                        this.items[position - this.width].highlight();
+                        this.items[position - (this.width * 2)].highlight();
+                        this.items[position].highlight();
+                        return;
                     }
                 }
 
                 // bottom
                 if (position <= (this.width * this.height) - (this.width * 2)) {
-                    System.out.println("bottom");
-                    System.out.println(this.items[position + this.width].getState());
-                    System.out.println(this.items[position + (this.width * 2)].getState());
                     if (this.items[position + this.width].getState() == state && this.items[position + (this.width * 2)].getState() == state) {
-                        System.err.println("Bottom End");
-                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                        this.stop(2);
+                        this.items[position + this.width].highlight();
+                        this.items[position + (this.width * 2)].highlight();
+                        this.items[position].highlight();
+                        return;
                     }
                 }
 
                 // left
                 if (position % this.width >= 2) {
-                    System.out.println("left");
-                    System.out.println(this.items[position - 1].getState());
-                    System.out.println(this.items[position - 2].getState());
                     if (this.items[position - 1].getState() == state && this.items[position - 2].getState() == state) {
-                        System.err.println("Left End");
-                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                        this.stop(2);
+                        this.items[position - 2].highlight();
+                        this.items[position - 1].highlight();
+                        this.items[position].highlight();
+                        return;
                     }
                 }
 
                 // right
                 if (position % this.width <= this.width - 3) {
-                    System.out.println("right");
-                    System.out.println("");
-                    System.out.println("");
                     if (this.items[position + 1].getState() == state && this.items[position + 2].getState() == state) {
-                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                        this.stop(2);
+                        this.items[position + 1].highlight();
+                        this.items[position + 2].highlight();
+                        this.items[position].highlight();
+                        return;
                     }
                 }
 
                 // middle vert
                 if (position >= this.width && position <= (this.width * this.height) - this.width) {
-                    System.out.println("middle vert");
-                    System.out.println("");
-                    System.out.println("");
                     if (this.items[position + this.width].getState() == state && this.items[position - this.width].getState() == state) {
-                        //Toast.makeText(parent.getContext(), "End", Toast.LENGTH_SHORT);
+                        this.stop(2);
+                        this.items[position + this.width].highlight();
+                        this.items[position - this.width].highlight();
+                        this.items[position].highlight();
+                        return;
                     }
                 }
 
                 // middle hori
                 if (position % this.width >= 1 && position % this.width <= this.width - 2) {
-                    System.out.println("middle hori");
-                    System.out.println("");
-                    System.out.println("");
                     if (this.items[position + 1].getState() == state && this.items[position - 1].getState() == state) {
-                        //Toast.makeText(this.gridContext, "End", Toast.LENGTH_SHORT);
+                        this.stop(2);
+                        this.items[position + 1].highlight();
+                        this.items[position - 1].highlight();
+                        this.items[position].highlight();
+                        return;
                     }
                 }
-                //TextView v = ((ConstraintLayout) this.parent.getParent()).findViewById(R.id.textView2);
-                //TextView v = this.parent.findViewById(R.id.textView2);
-                //v.setText(this.blocks[count]);
-                //Toast.makeText(null, this.blocks[count], Toast.LENGTH_SHORT);
-                this.parent.setNext(this.getNext());
-                System.err.println("Next: " + this.getNext());
                 if (this.getNext() == 0)
                     this.stop(1);
             } catch (ArrayIndexOutOfBoundsException e) {
-                e.printStackTrace();
                 System.err.println("Ouch");
             }
         }
     }
 
     public void refreshSettings(GridView parent) {
+        Log.d("GIH:refreshSettings", "call");
         SharedPreferences s = this.gridContext.getSharedPreferences(this.gridContext.getString(R.string.shared_preferences), Context.MODE_PRIVATE);
         GameItem.COLORS[0] = s.getInt("blank", GameItem.COLORS[0]);
         GameItem.COLORS[1] = s.getInt("color_a", GameItem.COLORS[1]);
@@ -182,27 +211,31 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     @Override
     public int getCount() {
+        Log.v("GIH:getCount", "call");
         return this.items.length;
     }
 
     @Override
     public Object getItem(int position) {
+        Log.d("GIH:getItem", "call");
         return this.items[position];
     }
 
     @Override
     public long getItemId(int position) {
+        Log.d("GIH:getItemId", "call");
         return this.items[position] == null ? null : this.items[position].getId();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        System.out.println(this.items[position].toString());
+        Log.v("GIH:getView", "call");
         this.items[position].setRelativeTo((GridView) parent);
         return this.items[position];
     }
 
     public void start() {
+        Log.d("GIH:start", "call");
         this.gameState = true;
         this.paused = false;
         this.parent.setNext(this.blocks[count]);
@@ -211,6 +244,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     }
 
     public void pause() {
+        Log.d("GIH:pause", "call");
         if (this.gameState && !this.paused) {
             this.paused = true;
             this.timer.pause();
@@ -218,6 +252,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     }
 
     public void stop(int cause) {
+        Log.d("GIH:stop", "call");
         this.gameState = false;
         this.paused = false;
         this.timer.stop();
@@ -228,18 +263,25 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
             case 2:
                 this.parent.onFail();
                 break;
+            case -1:
+                break;
             default:
                 this.parent.onEnd();
         }
     }
 
     public void updateTime(TextView t) {
+        Log.v("GIH:updateTime", "call");
         t.setText(this.timer.getFormatted());
     }
 
     public int getNext() {
-        if (this.blocks.length <= this.count)
+        Log.d("GIH:getNext", "call");
+        if (this.blocks.length <= this.count) {
+            Log.i("GIH:getNext", "RETURN: 0 (Default)");
             return 0;
+        }
+        Log.i("GIH:getNext", "RETURN: " + this.blocks[count]);
         return this.blocks[count];
     }
 

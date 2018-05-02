@@ -20,13 +20,16 @@ public class GameTimer {
     }
 
     public GameTimer(String format) {
+        Log.d("GameTimer:CONSTRUCT", "call");
         if (format == null || format.equals(""))
-            format = "%02d:%02d";
+            format = "%02d:%02d.%03d";
+        Log.i("GameTimer:int format", format);
         this.format = format;
         this.state = false;
     }
 
     public void start() {
+        Log.d("GameTimer:start", "call");
         if (state)
             return;
         if (times == null || stopped) {
@@ -54,6 +57,7 @@ public class GameTimer {
     }
 
     public void stop() {
+        Log.d("GameTimer:stop", "call");
         if (!this.state || this.stopped)
             return;
         this.state = false;
@@ -68,6 +72,7 @@ public class GameTimer {
     }
 
     public void pause() {
+        Log.d("GameTimer:pause", "call");
         if (!this.state || this.stopped)
             return;
         this.state = false;
@@ -90,6 +95,7 @@ public class GameTimer {
     }
 
     public void expand(int size) {
+        Log.d("GameTimer:expand", "call");
         if (size < this.times.length * 2)
             size = this.times.length * 2 + 1;
         long[][] temp = new long[size][2];
@@ -122,7 +128,8 @@ public class GameTimer {
             Log.v("GameTimer:getFormatted", "time = " + time);
         }
         return String.format(this.format, TimeUnit.MILLISECONDS.toMinutes(time),
-                TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)));
+                TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)),
+                time % 1000);
 
         /*
         long hours = time / TimeUnit.HOURS.toMillis(1);

@@ -4,9 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ public class GameView extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("GameView:onCreateOpti..", "call");
         MenuInflater i = getMenuInflater();
         i.inflate(R.menu.game_menu, menu);
         return true;
@@ -45,6 +47,7 @@ public class GameView extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("GameView:onCreate", "call");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
 
@@ -86,22 +89,46 @@ public class GameView extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        Log.d("GameView:onPause", "call");
         super.onPause();
+        this.a.pause();
+        this.paused = true;
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("GameView:onResume", "call");
+        super.onResume();
+        this.a.start();
+        this.paused = false;
+    }
+
+    @Override
+    protected  void onDestroy() {
+        Log.d("GameView:onDestroy", "call");
+        super.onDestroy();
+        this.a.stop(0);
+        this.paused = true;
     }
 
     public void setText(String text) {
+        Log.d("GameView:setText", "call");
         this.text.setText(text);
     }
 
     public void setNext(int state) {
+        Log.d("GameView:setNext", "call");
         this.next.setStateOverride(state);
+        Log.i("GameView:GameItem-next", next.toString());
     }
 
     public void toastMessage(String text) {
+        Log.d("GameView:toastMessage", "call");
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     private void loadSettings() {
+        Log.d("GameView:loadSettings", "call");
         SharedPreferences s = this.getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE);
         this.width = s.getInt("width", GameItemHandler.MIN_WIDTH);
         this.height = s.getInt("height", GameItemHandler.MIN_HEIGHT);
@@ -109,51 +136,64 @@ public class GameView extends AppCompatActivity {
     }
 
     public void initialStart() {
-        this.a = new GameItemHandler(this, this.grid.getContext(), 5, 5);
+        Log.d("GameView:initialStart", "call");
+        this.a = new GameItemHandler(this, this.grid.getContext(), 5, 5, 3);
         this.grid.setAdapter(a);
         a.refreshSettings(this.grid);
         this.grid.setOnItemClickListener(a);
     }
 
     public void onNewGameClick(View view) {
-        this.grid.removeAllViews();
-        this.a = new GameItemHandler(this, this.grid.getContext(), 5, 5);
+        Log.d("GameView:onNewGameClick", "call");
+        ((ViewGroup) findViewById(R.id.next_item)).removeAllViews();
+        ((ViewGroup) findViewById(R.id.next_item)).addView(this.next);
+        this.a.stop(-1);
+        this.a = new GameItemHandler(this, this.grid.getContext(), 5, 5, 3);
         this.grid.setAdapter(a);
         a.refreshSettings(this.grid);
         this.grid.setOnItemClickListener(a);
         this.newGame.setEnabled(false);
         this.a.start();
+        this.paused = false;
         (new Thread(new UpdateTime(this))).start();
     }
 
     public void onMenuClick(MenuItem item) {
+        Log.d("GameView:onMenuClick", "call");
         this.a.stop(0);
         Intent i = new Intent(getApplicationContext(), MainMenu.class);
         startActivity(i);
     }
 
     public void onRestartClick(MenuItem item) {
+        Log.d("GameView:onRestartClick", "call");
         this.a.stop(0);
     }
 
     public void onFail() {
+        Log.d("GameView:onFail", "call");
         this.paused = true;
-        this.text.setText("You Failed");
+        this.toastMessage("You Failed");
         this.newGame.setEnabled(true);
+        this.next.setStateOverride(0);
         this.next = new GameItem(this);
     }
 
     public void onSuccess() {
+        Log.d("GameView:onSuccess", "call");
         this.paused = true;
-        this.text.setText("You Win");
+        this.toastMessage("You Win");
         this.newGame.setEnabled(true);
+        this.next.setStateOverride(0);
         this.next = new GameItem(this);
     }
 
     public void onEnd() {
+        Log.d("GameView:onEnd", "call");
         this.paused = true;
-        this.text.setText("Game Stopped");
+        this.toastMessage("Game Stopped");
         this.newGame.setEnabled(true);
+        this.next.setStateOverride(0);
         this.next = new GameItem(this);
     }
 

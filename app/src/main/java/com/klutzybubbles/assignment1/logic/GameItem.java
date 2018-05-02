@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -63,6 +67,23 @@ public class GameItem extends View {
         int width = parent.getColumnWidth();
         super.setLayoutParams(new GridView.LayoutParams(width, width));
         super.setPadding(0, 0, 0, 0);
+    }
+
+    public void highlight() {
+        final AnimationDrawable ad = new AnimationDrawable();
+        Handler h = new Handler();
+
+        ad.addFrame(new ColorDrawable(GameItem.COLORS[this.getState()]), 400);
+        ad.addFrame(new ColorDrawable(GameItem.COLORS[3]), 400);
+        ad.setOneShot(false);
+
+        this.setBackground(ad);
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ad.start();
+            }
+        }, 100);
     }
 
     @Override
