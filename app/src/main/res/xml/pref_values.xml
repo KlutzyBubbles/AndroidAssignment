@@ -1,0 +1,21 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="3"
+        android:entries="@array/list_size_names"
+        android:entryValues="@array/list_size"
+        android:key="size"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_size"/>
+
+    <ListPreference
+        android:defaultValue="Violet"
+        android:entries="@array/list_difficulty_names"
+        android:entryValues="@array/list_difficulty"
+        android:key="difficulty"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_difficulty"/>
+
+</PreferenceScreen>

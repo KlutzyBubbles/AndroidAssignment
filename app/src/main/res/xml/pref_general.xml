@@ -1,56 +1,48 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <ListPreference
-        android:defaultValue="-1"
+        android:defaultValue="Violet"
         android:entries="@array/list_color_names"
         android:entryValues="@array/list_colors"
         android:key="blank"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_title_color_none"
-        android:fragment="com.klutzybubbles.assignment1.activities.GameSettings$GeneralPreferenceFragment"/>
+        android:title="@string/pref_title_color_none"/>
 
     <ListPreference
-        android:defaultValue="-1"
+        android:defaultValue="Violet"
         android:entries="@array/list_color_names"
         android:entryValues="@array/list_colors"
         android:key="color_a"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_title_color_a"
-        android:fragment="com.klutzybubbles.assignment1.activities.GameSettings$GeneralPreferenceFragment"/>
+        android:title="@string/pref_title_color_a"/>
 
     <ListPreference
-        android:defaultValue="-1"
+        android:defaultValue="Violet"
         android:entries="@array/list_color_names"
         android:entryValues="@array/list_colors"
         android:key="color_b"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_title_color_b"
-        android:fragment="com.klutzybubbles.assignment1.activities.GameSettings$GeneralPreferenceFragment"/>
+        android:title="@string/pref_title_color_b"/>
 
     <ListPreference
-        android:defaultValue="-1"
+        android:defaultValue="Violet"
         android:entries="@array/list_color_names"
         android:entryValues="@array/list_colors"
         android:key="highlight"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_title_color_highlight"
-        android:fragment="com.klutzybubbles.assignment1.activities.GameSettings$GeneralPreferenceFragment"/>
+        android:title="@string/pref_title_color_highlight"/>
 
     <ListPreference
-        android:defaultValue="-1"
+        android:defaultValue="Violet"
         android:entries="@array/list_color_names"
         android:entryValues="@array/list_colors"
         android:key="border"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/pref_title_color_border"
-        android:fragment="com.klutzybubbles.assignment1.activities.GameSettings$GeneralPreferenceFragment"/>
+        android:title="@string/pref_title_color_border"/>
 
 </PreferenceScreen>

@@ -2,6 +2,8 @@ package com.klutzybubbles.assignment1.logic;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
@@ -196,13 +198,17 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         }
     }
 
-    public void refreshSettings(GridView parent) {
+    public static void refreshSettings(GridView parent) {
+        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
+        GameItem.COLORS[0] = Color.parseColor(s.getString("blank", "#696969"));
+        GameItem.COLORS[1] = Color.parseColor(s.getString("color_a", "#0000FF"));
+        GameItem.COLORS[2] = Color.parseColor(s.getString("color_b", "#FF0000"));
+        GameItem.COLORS[3] = Color.parseColor(s.getString("border", "#000000"));
+        GameItem.COLORS[4] = Color.parseColor(s.getString("highlight", "#FFFFFF"));
+    }
+
+    public void refreshBlocks(GridView parent) {
         Log.d("GIH:refreshSettings", "call");
-        SharedPreferences s = this.gridContext.getSharedPreferences(this.gridContext.getString(R.string.shared_preferences), Context.MODE_PRIVATE);
-        GameItem.COLORS[0] = s.getInt("blank", GameItem.COLORS[0]);
-        GameItem.COLORS[1] = s.getInt("color_a", GameItem.COLORS[1]);
-        GameItem.COLORS[2] = s.getInt("color_b", GameItem.COLORS[2]);
-        GameItem.COLORS[3] = s.getInt("color_border", GameItem.COLORS[3]);
         for (int i = 0; i < this.items.length; i++)
             this.items[i].setRelativeTo(parent);
     }

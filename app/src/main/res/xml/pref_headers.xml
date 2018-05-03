@@ -6,4 +6,8 @@
         android:fragment="com.klutzybubbles.assignment1.activities.GameSettings$GeneralPreferenceFragment"
         android:title="@string/pref_header_colors" />
 
+    <header
+        android:fragment="com.klutzybubbles.assignment1.activities.GameSettings$ValuePreferenceFragment"
+        android:title="@string/pref_header_values" />
+
 </preference-headers>

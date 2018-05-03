@@ -1,11 +1,11 @@
 package com.klutzybubbles.assignment1.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -40,7 +40,7 @@ public class GameView extends AppCompatActivity {
     private GameItem next;
 
     private DatabaseHelper db;
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 1;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,10 +55,10 @@ public class GameView extends AppCompatActivity {
         Log.d("GameView:onCreate", "call");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
-
         this.db = new DatabaseHelper(this, GameView.DB_VERSION);
         this.loadSettings();
         this.grid = findViewById(R.id.main_grid);
+        GameItemHandler.refreshSettings(this.grid);
         this.text = findViewById(R.id.text_timer);
         this.newGame = findViewById(R.id.button_new_game);
         this.next = new GameItem(this);
@@ -66,7 +66,6 @@ public class GameView extends AppCompatActivity {
         System.out.println(this.getRequestedOrientation());
         System.out.println(this.getResources().getConfiguration().orientation);
         this.grid.setNumColumns(this.size);
-
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -166,6 +165,7 @@ public class GameView extends AppCompatActivity {
         if (this.paused)
             this.a.start();
         this.paused = false;
+        GameItemHandler.refreshSettings(this.grid);
         this.db = new DatabaseHelper(this, GameView.DB_VERSION);
     }
 
@@ -196,16 +196,20 @@ public class GameView extends AppCompatActivity {
 
     private void loadSettings() {
         Log.d("GameView:loadSettings", "call");
-        SharedPreferences s = this.getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE);
-        this.size = s.getInt("size", GameItemHandler.MAX_SIZE);
-        this.difficulty = s.getInt("difficulty", 1);
+        SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
+        try {
+            this.difficulty = Integer.parseInt(s.getString("size", GameItemHandler.MIN_SIZE + ""));
+            this.size = Integer.parseInt(s.getString("difficulty", "1"));
+        } catch (NumberFormatException e) {
+            Log.w("GameView:loadSettings", "Size or Difficulty isn't a number");
+        }
     }
 
     public void initialStart() {
         Log.d("GameView:initialStart", "call");
         this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
-        this.grid.setAdapter(a);
         a.refreshSettings(this.grid);
+        this.grid.setAdapter(a);
         this.grid.setOnItemClickListener(a);
     }
 
@@ -215,8 +219,8 @@ public class GameView extends AppCompatActivity {
         ((ViewGroup) findViewById(R.id.next_item)).addView(this.next);
         this.a.stop(-1);
         this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
-        this.grid.setAdapter(a);
         a.refreshSettings(this.grid);
+        this.grid.setAdapter(a);
         this.grid.setOnItemClickListener(a);
         this.newGame.setEnabled(false);
         this.a.start();
@@ -237,8 +241,8 @@ public class GameView extends AppCompatActivity {
         this.noTimer = true;
         this.a.stop(0);
         this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
-        this.grid.setAdapter(a);
         a.refreshSettings(this.grid);
+        this.grid.setAdapter(a);
         this.grid.setOnItemClickListener(a);
         (new Thread(new UpdateTime(this))).start();
     }
