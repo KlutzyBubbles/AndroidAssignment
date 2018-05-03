@@ -24,7 +24,7 @@ import com.klutzybubbles.assignment1.activities.R;
 
 public class GameItem extends View {
 
-    public static final int[] COLORS = {Color.GRAY, Color.RED, Color.BLUE, Color.WHITE};
+    public static final int[] COLORS = {Color.GRAY, Color.RED, Color.BLUE, Color.WHITE, Color.GRAY};
 
     private GradientDrawable background = new GradientDrawable();
     private int state = 0;

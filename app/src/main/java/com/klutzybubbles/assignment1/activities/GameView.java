@@ -3,17 +3,18 @@ package com.klutzybubbles.assignment1.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -21,10 +22,11 @@ import android.widget.Toast;
 
 import com.klutzybubbles.assignment1.logic.GameItem;
 import com.klutzybubbles.assignment1.logic.GameItemHandler;
+import com.klutzybubbles.assignment1.utils.DatabaseHelper;
 
 public class GameView extends AppCompatActivity {
 
-    private int width, height, difficulty;
+    private int size, difficulty;
 
     private GridView grid;
     private TextView text;
@@ -33,9 +35,12 @@ public class GameView extends AppCompatActivity {
 
     private Button newGame;
 
-    private boolean paused = false;
+    private boolean paused = false, noTimer = true;
 
     private GameItem next;
+
+    private DatabaseHelper db;
+    private static final int DB_VERSION = 2;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -51,6 +56,8 @@ public class GameView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
 
+        this.db = new DatabaseHelper(this, GameView.DB_VERSION);
+        this.loadSettings();
         this.grid = findViewById(R.id.main_grid);
         this.text = findViewById(R.id.text_timer);
         this.newGame = findViewById(R.id.button_new_game);
@@ -58,7 +65,53 @@ public class GameView extends AppCompatActivity {
         ((ViewGroup) findViewById(R.id.next_item)).addView(this.next);
         System.out.println(this.getRequestedOrientation());
         System.out.println(this.getResources().getConfiguration().orientation);
-        this.initialStart();
+        this.grid.setNumColumns(this.size);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
+        /*
+        Rect rectangle = new Rect();
+        Window window = getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
+        int statusBarHeight = rectangle.top;
+        int contentViewTop =
+                window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
+        int titleBarHeight = contentViewTop - statusBarHeight;
+
+        int aHeight = getSupportActionBar().getHeight();
+        */
+
+        int[] textSizeAttr = new int[] { android.R.attr.actionBarSize, R.attr.actionBarSize };
+        TypedArray a = obtainStyledAttributes(new TypedValue().data, textSizeAttr);
+        float aHeight = a.getDimension(0, -1);
+
+        height -= aHeight;
+
+        ViewGroup.LayoutParams g = this.grid.getLayoutParams();
+
+        if (width > height) {
+            Log.i("GameView:onCreate", "W W");
+            Log.i("GameView:onCreate", "1: " + height);
+            Log.i("GameView:onCreate", "2: " + this.size);
+            Log.i("GameView:onCreate", "E: " + height / this.size);
+            g.height = height;
+            g.width = (height / this.size) * this.size;
+            grid.setColumnWidth(height / this.size);
+        } else {
+            Log.i("GameView:onCreate", "W H");
+            Log.i("GameView:onCreate", "1: " + width);
+            Log.i("GameView:onCreate", "2: " + this.size);
+            Log.i("GameView:onCreate", "E: " + width / this.size);
+            g.height = width;
+            g.width = (width / this.size) * this.size;
+            grid.setColumnWidth(width / this.size);
+        }
+
+        /**
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             System.out.println("HIHIHHIHI");
             //this.grid.setColumnWidth(this.grid.getLayoutParams().height / 4);
@@ -68,23 +121,33 @@ public class GameView extends AppCompatActivity {
             //DisplayMetrics d = this.getResources().getDisplayMetrics();
             System.out.println(this.grid.getLayoutParams().height);
             System.out.println(this.grid.getHeight());
-            this.grid.setColumnWidth(this.grid.getLayoutParams().height / 5);
             this.grid.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    System.out.println(grid.getLayoutParams().height);
-                    System.out.println(grid.getHeight());
-                    ConstraintLayout.LayoutParams l = (ConstraintLayout.LayoutParams) grid.getLayoutParams();
-                    ConstraintLayout c = findViewById(R.id.game_constraint);
-                    System.out.println(c.getHeight());
-                    int height = c.getHeight() - grid.getPaddingTop() - grid.getPaddingBottom() - l.topMargin - l.bottomMargin;
-                    l.width = height;
-                    l.height = height;
-                    grid.setLayoutParams(l);
-                    grid.setColumnWidth(height / 5);
+                    if (width > height)
+                        grid.setColumnWidth(grid.getLayoutParams().height / width);
+                    else
+                        grid.setColumnWidth(grid.getLayoutParams().height / height);
+                    grid.setLayoutParams(new ConstraintLayout.LayoutParams(grid.getColumnWidth() * width, grid.getColumnWidth() * height));
                 }
             });
         }
+         *
+        if (this.width > this.height)
+            this.grid.setColumnWidth(this.grid.getLayoutParams().height / this.width);
+        else
+            this.grid.setColumnWidth(this.grid.getLayoutParams().height / this.height);
+        ConstraintLayout.LayoutParams l = new ConstraintLayout.LayoutParams(this.grid.getColumnWidth() * this.width, this.grid.getColumnWidth() * this.height);
+        ViewGroup.LayoutParams g = this.grid.getLayoutParams();
+
+        ConstraintLayout c = findViewById(R.id.game_constraint);
+        */
+        Log.i("GameView:onCreate", "Width: " + width);
+        Log.i("GameView:onCreate", "Height: " + height);
+        Log.i("GameView:onCreate", "Col Width: " + this.grid.getColumnWidth());
+
+        this.grid.setLayoutParams(g);
+        this.initialStart();
     }
 
     @Override
@@ -93,14 +156,17 @@ public class GameView extends AppCompatActivity {
         super.onPause();
         this.a.pause();
         this.paused = true;
+        this.db.close();
     }
 
     @Override
     protected void onResume() {
         Log.d("GameView:onResume", "call");
         super.onResume();
-        this.a.start();
+        if (this.paused)
+            this.a.start();
         this.paused = false;
+        this.db = new DatabaseHelper(this, GameView.DB_VERSION);
     }
 
     @Override
@@ -109,6 +175,7 @@ public class GameView extends AppCompatActivity {
         super.onDestroy();
         this.a.stop(0);
         this.paused = true;
+        this.db.close();
     }
 
     public void setText(String text) {
@@ -130,14 +197,13 @@ public class GameView extends AppCompatActivity {
     private void loadSettings() {
         Log.d("GameView:loadSettings", "call");
         SharedPreferences s = this.getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE);
-        this.width = s.getInt("width", GameItemHandler.MIN_WIDTH);
-        this.height = s.getInt("height", GameItemHandler.MIN_HEIGHT);
+        this.size = s.getInt("size", GameItemHandler.MAX_SIZE);
         this.difficulty = s.getInt("difficulty", 1);
     }
 
     public void initialStart() {
         Log.d("GameView:initialStart", "call");
-        this.a = new GameItemHandler(this, this.grid.getContext(), 5, 5, 3);
+        this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
         this.grid.setAdapter(a);
         a.refreshSettings(this.grid);
         this.grid.setOnItemClickListener(a);
@@ -148,13 +214,14 @@ public class GameView extends AppCompatActivity {
         ((ViewGroup) findViewById(R.id.next_item)).removeAllViews();
         ((ViewGroup) findViewById(R.id.next_item)).addView(this.next);
         this.a.stop(-1);
-        this.a = new GameItemHandler(this, this.grid.getContext(), 5, 5, 3);
+        this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
         this.grid.setAdapter(a);
         a.refreshSettings(this.grid);
         this.grid.setOnItemClickListener(a);
         this.newGame.setEnabled(false);
         this.a.start();
         this.paused = false;
+        this.noTimer = false;
         (new Thread(new UpdateTime(this))).start();
     }
 
@@ -167,11 +234,18 @@ public class GameView extends AppCompatActivity {
 
     public void onRestartClick(MenuItem item) {
         Log.d("GameView:onRestartClick", "call");
+        this.noTimer = true;
         this.a.stop(0);
+        this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
+        this.grid.setAdapter(a);
+        a.refreshSettings(this.grid);
+        this.grid.setOnItemClickListener(a);
+        (new Thread(new UpdateTime(this))).start();
     }
 
     public void onFail() {
         Log.d("GameView:onFail", "call");
+        this.noTimer = true;
         this.paused = true;
         this.toastMessage("You Failed");
         this.newGame.setEnabled(true);
@@ -181,20 +255,25 @@ public class GameView extends AppCompatActivity {
 
     public void onSuccess() {
         Log.d("GameView:onSuccess", "call");
+        this.noTimer = true;
         this.paused = true;
         this.toastMessage("You Win");
         this.newGame.setEnabled(true);
         this.next.setStateOverride(0);
         this.next = new GameItem(this);
+        this.db.insert(this.a.getTime(), this.size, this.difficulty);
+
     }
 
     public void onEnd() {
         Log.d("GameView:onEnd", "call");
+        this.noTimer = true;
         this.paused = true;
         this.toastMessage("Game Stopped");
         this.newGame.setEnabled(true);
         this.next.setStateOverride(0);
         this.next = new GameItem(this);
+        this.text.setText(getString(R.string.timer_text));
     }
 
     private class UpdateTime implements Runnable {
@@ -209,17 +288,40 @@ public class GameView extends AppCompatActivity {
 
         @Override
         public void run() {
-            while (!paused) {
+            if (noTimer) {
+                try {
+                    Thread.sleep(100L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        instance.a.updateTime(instance.text);
+                        instance.text.setText(getString(R.string.timer_text));
                     }
                 });
-                try {
-                    Thread.sleep(10L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            } else {
+                while (!paused) {
+                    if (noTimer)
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                instance.text.setText(getString(R.string.timer_text));
+                            }
+                        });
+                    else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                instance.a.updateTime(instance.text);
+                            }
+                        });
+                        try {
+                            Thread.sleep(10L);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }

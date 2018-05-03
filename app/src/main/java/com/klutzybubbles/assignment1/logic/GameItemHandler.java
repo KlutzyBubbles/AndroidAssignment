@@ -23,12 +23,12 @@ import java.util.Random;
 
 public class GameItemHandler extends BaseAdapter implements GridView.OnItemClickListener {
 
-    public static final int MAX_WIDTH = 5, MAX_HEIGHT = 5;
-    public static final int MIN_HEIGHT = 3, MIN_WIDTH = 3;
+    public static final int MAX_SIZE = 5;
+    public static final int MIN_SIZE = 3;
 
     private final GameItem[] items;
 
-    private final int width, height;
+    private final int size;
     private int count = 0, start;
     private int[] blocks;
 
@@ -40,19 +40,18 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     private final GameTimer timer;
 
-    public GameItemHandler(GameView parent, Context context, int width, int height, int start) {
+    public GameItemHandler(GameView parent, Context context, int size, int start) {
         super();
         Log.d("GIH:CONSTRUCT", "call");
-        if (width > GameItemHandler.MAX_WIDTH || height > GameItemHandler.MAX_HEIGHT || context == null)
+        if (size > GameItemHandler.MAX_SIZE || context == null)
             throw new IllegalArgumentException("Grid size can not be bigger than the MAX");
-        if (width < GameItemHandler.MIN_WIDTH || height < GameItemHandler.MIN_HEIGHT || parent == null)
+        if (size < GameItemHandler.MIN_SIZE || parent == null)
             throw new IllegalArgumentException("Grid size can not be smaller than the MIN");
-        this.width = width;
-        this.height = height;
+        this.size = size;
         this.gridContext = context;
         this.parent = parent;
         this.start = start;
-        int temp = this.width * this.height;
+        int temp = this.size * this.size;
         this.items = new GameItem[temp];
         int[] normal = new int[temp];
         for (int i = 0; i < temp; i++)
@@ -63,11 +62,10 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
             temp = temp == 2 ? 1 : 2;
         }
         this.blocks = normal;
-        this.placeStarters();
         int index;
         Random r = new Random();
-        for (int i = normal.length - 1; i > count; i--) {
-            index = r.nextInt((i - count) + 1) + count;
+        for (int i = normal.length - 1; i > this.start; i--) {
+            index = r.nextInt((i - this.start) + 1) + this.start;
             temp = normal[index];
             normal[index] = normal[i];
             normal[i] = temp;
@@ -126,29 +124,29 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 count++;
                 this.parent.setNext(this.getNext());
                 // top
-                if (position >= this.width * 2) {
-                    if (this.items[position - this.width].getState() == state && this.items[position - (this.width * 2)].getState() == state) {
+                if (position >= this.size * 2) {
+                    if (this.items[position - this.size].getState() == state && this.items[position - (this.size * 2)].getState() == state) {
                         this.stop(2);
-                        this.items[position - this.width].highlight();
-                        this.items[position - (this.width * 2)].highlight();
+                        this.items[position - this.size].highlight();
+                        this.items[position - (this.size * 2)].highlight();
                         this.items[position].highlight();
                         return;
                     }
                 }
 
                 // bottom
-                if (position <= (this.width * this.height) - (this.width * 2)) {
-                    if (this.items[position + this.width].getState() == state && this.items[position + (this.width * 2)].getState() == state) {
+                if (position <= (this.size * this.size) - (this.size * 2)) {
+                    if (this.items[position + this.size].getState() == state && this.items[position + (this.size * 2)].getState() == state) {
                         this.stop(2);
-                        this.items[position + this.width].highlight();
-                        this.items[position + (this.width * 2)].highlight();
+                        this.items[position + this.size].highlight();
+                        this.items[position + (this.size * 2)].highlight();
                         this.items[position].highlight();
                         return;
                     }
                 }
 
                 // left
-                if (position % this.width >= 2) {
+                if (position % this.size >= 2) {
                     if (this.items[position - 1].getState() == state && this.items[position - 2].getState() == state) {
                         this.stop(2);
                         this.items[position - 2].highlight();
@@ -159,7 +157,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 }
 
                 // right
-                if (position % this.width <= this.width - 3) {
+                if (position % this.size <= this.size - 3) {
                     if (this.items[position + 1].getState() == state && this.items[position + 2].getState() == state) {
                         this.stop(2);
                         this.items[position + 1].highlight();
@@ -170,18 +168,18 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 }
 
                 // middle vert
-                if (position >= this.width && position <= (this.width * this.height) - this.width) {
-                    if (this.items[position + this.width].getState() == state && this.items[position - this.width].getState() == state) {
+                if (position >= this.size && position <= (this.size * this.size) - this.size) {
+                    if (this.items[position + this.size].getState() == state && this.items[position - this.size].getState() == state) {
                         this.stop(2);
-                        this.items[position + this.width].highlight();
-                        this.items[position - this.width].highlight();
+                        this.items[position + this.size].highlight();
+                        this.items[position - this.size].highlight();
                         this.items[position].highlight();
                         return;
                     }
                 }
 
                 // middle hori
-                if (position % this.width >= 1 && position % this.width <= this.width - 2) {
+                if (position % this.size >= 1 && position % this.size <= this.size - 2) {
                     if (this.items[position + 1].getState() == state && this.items[position - 1].getState() == state) {
                         this.stop(2);
                         this.items[position + 1].highlight();
@@ -236,6 +234,8 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     public void start() {
         Log.d("GIH:start", "call");
+        if (!this.gameState)
+            this.placeStarters();
         this.gameState = true;
         this.paused = false;
         this.parent.setNext(this.blocks[count]);
@@ -273,6 +273,12 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     public void updateTime(TextView t) {
         Log.v("GIH:updateTime", "call");
         t.setText(this.timer.getFormatted());
+    }
+
+    public long getTime() {
+        if (this.timer == null)
+            return 0L;
+        return this.timer.getRaw();
     }
 
     public int getNext() {

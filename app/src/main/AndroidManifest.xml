@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.klutzybubbles.assignment1.activities">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,14 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.klutzybubbles.assignment1.activities.MainMenu">
+        <activity android:name=".MainMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.klutzybubbles.assignment1.activities.GameView"></activity>
+        <activity android:name=".GameView" />
+        <activity
+            android:name=".GameSettings"
+            android:label="@string/title_activity_game_settings"></activity>
     </application>
 
 </manifest>

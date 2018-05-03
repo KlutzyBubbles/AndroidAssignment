@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/main_grid" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/text_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -63,7 +63,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/text_next"
         app:layout_constraintTop_toBottomOf="@+id/main_grid">
 
     </android.support.constraint.ConstraintLayout>
