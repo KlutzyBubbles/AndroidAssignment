@@ -2,158 +2,125 @@ package com.klutzybubbles.assignment1.logic;
 
 import android.util.Log;
 
-import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by KlutzyBubbles on 22/03/2018.
+ * <h1>GameTimer.class</h1>
+ * Class used to manage the timer and it's operations
+ *
+ * @author Lee Tzilantonis
+ * @version 1.0.0
+ * @since 5/5/2018
  */
-
 public class GameTimer {
 
-    private long[][] times;
+    private long startedFrom;
+
+    private long current = 0L;
+
+    /**
+     * The format of the String output, defaults to %02d:%02d.%03d
+     */
     private String format;
-    private boolean state;
+
+    /**
+     * The current state of the GameTimer, paused or running
+     */
+    private boolean state = false;
+
+    /**
+     * The current end state of the GameTimer, stopped or running
+     */
     private boolean stopped = true;
 
+    /**
+     * Instantiates the GameTimer with the default format (%02d:%02d.%03d)
+     */
     GameTimer() {
         this(null);
     }
 
+    /**
+     * Instantiates the GameTimer with a custom format
+     *
+     * @param format - The format of the output
+     */
     private GameTimer(String format) {
         Log.d("GameTimer:CONSTRUCT", "call");
         if (format == null || format.equals(""))
             format = "%02d:%02d.%03d";
-        Log.i("GameTimer:int format", format);
+        Log.i("GameTimer:CONSTRUCT", "format: " + format);
         this.format = format;
-        this.state = false;
     }
 
-    public void start() {
+    /**
+     * Starts the GameTimer, erasing previous times if the timer was stopped, or resuming if the
+     * GameTimer was previously paused
+     */
+    protected void start() {
         Log.d("GameTimer:start", "call");
         if (state)
             return;
-        if (times == null || stopped) {
-            this.stopped = false;
-            this.state = true;
-            this.times = new long[][]{{System.currentTimeMillis(), -1L}, {-1L, -1L}};
-        } else {
-            this.stopped = false;
-            this.state = true;
-            boolean reconstruct = false;
-            for (int i = 0; i < this.times.length; i++) {
-                if (this.times[i][0] == -1L) {
-                    reconstruct = i + 1 == this.times.length;
-                    this.times[i][0] = System.currentTimeMillis();
-                } else
-                    reconstruct = true;
-            }
-            if (reconstruct) {
-                this.expand();
-            }
-        }
+        if (stopped)
+            this.current = 0;
+        this.startedFrom = System.currentTimeMillis();
+        this.stopped = false;
+        this.state = true;
     }
 
-    public void stop() {
+    /**
+     * Stops the GameTimer, this causes the start method to erase the current time for a fresh time
+     */
+    protected void stop() {
         Log.d("GameTimer:stop", "call");
+        if (!this.state && !this.stopped) {
+            this.stopped = true;
+            return;
+        }
         if (!this.state || this.stopped)
             return;
         this.state = false;
         this.stopped = true;
-        for (int i = 0; i < this.times.length; i++) {
-            if (this.times[i][1] == -1L) {
-                if (this.times[i][0] == -1L)
-                    return;
-                this.times[i][1] = System.currentTimeMillis();
-            }
-        }
+        this.current += System.currentTimeMillis() - this.startedFrom;
+        this.startedFrom = 0;
     }
 
-    public void pause() {
+    /**
+     * Pauses the GameTimer, saving any times so that the start method can resume where it paused
+     */
+    protected void pause() {
         Log.d("GameTimer:pause", "call");
         if (!this.state || this.stopped)
             return;
         this.state = false;
         this.stopped = false;
-        boolean reconstruct = false;
-        for (int i = 0; i < this.times.length; i++) {
-            if (this.times[i][1] == -1L) {
-                if (this.times[i][0] == -1L)
-                    return;
-                reconstruct = i + 1 == this.times.length;
-                this.times[i][1] = System.currentTimeMillis();
-            } else
-                reconstruct = false;
-        }
-        if (reconstruct)
-            this.expand();
+        this.current += System.currentTimeMillis() - this.startedFrom;
+        this.startedFrom = 0;
     }
 
-    private void expand() {
-        Log.d("GameTimer:expand", "call");
-        if (this.times == null)
-            this.times = new long[1][2];
-        else {
-            int size = 1;
-            if (size < this.times.length * 2)
-                size = this.times.length * 2 + 1;
-            long[][] temp = new long[size][2];
-            for (int i = 0; i < temp.length; i++) {
-                if (i < this.times.length) {
-                    temp[i][0] = this.times[i][0];
-                    temp[i][1] = this.times[i][1];
-                } else {
-                    temp[i][0] = temp[i][1] = -1;
-                }
-            }
-            this.times = temp;
-        }
-    }
-
-    public String getFormatted() {
+    /**
+     * Gets the formatted String representation of the timers current time, regardless of it's state
+     *
+     * @return - Formatted time String
+     */
+    protected String getFormatted() {
         Log.v("GameTimer:getFormatted", "call");
-        long time = 0L;
-        if (this.times != null) {
-            for (int i = 0; i < this.times.length; i++) {
-                Log.v("GameTimer:getFormatted", "Loop in times No. " + i);
-                if (this.times[i][0] != -1L) {
-                    Log.v("GameTimer:getFormatted", "this.times[i][0] != -1L");
-                    if (this.times[i][1] == -1L) {
-                        Log.v("GameTimer:getFormatted", "this.times[i][1] == -1");
-                        time += System.currentTimeMillis() - this.times[i][0];
-                    } else {
-                        Log.v("GameTimer:getFormatted", "this.times[i][1] != -1");
-                        time += this.times[i][1] - this.times[i][0];
-                    }
-                }
-                Log.v("GameTimer:getFormatted", "time = " + time);
-            }
-        }
+        long time = this.getRaw();
         return String.format(this.format, TimeUnit.MILLISECONDS.toMinutes(time),
                 TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)),
                 time % 1000);
     }
 
-    public long getRaw() {
+    /**
+     * Gets the raw time (milliseconds) recorded with the GameTimer Object
+     *
+     * @return - Raw time long
+     */
+    protected long getRaw() {
         Log.v("GameTimer:getRaw", "call");
-        long time = 0L;
-        if (this.times != null) {
-            for (int i = 0; i < this.times.length; i++) {
-                Log.v("GameTimer:getRaw", "Loop in times No. " + i);
-                if (this.times[i][0] != -1L) {
-                    Log.v("GameTimer:getRaw", "this.times[i][0] != -1L");
-                    if (this.times[i][1] == -1L) {
-                        Log.v("GameTimer:getRaw", "this.times[i][1] == -1");
-                        time += System.currentTimeMillis() - this.times[i][0];
-                    } else {
-                        Log.v("GameTimer:getRaw", "this.times[i][1] != -1");
-                        time += this.times[i][1] - this.times[i][0];
-                    }
-                }
-                Log.v("GameTimer:getRaw", "time = " + time);
-            }
-        }
-        return time;
+        if (!this.state || this.stopped)
+            return this.current;
+        return this.current + (System.currentTimeMillis() - this.startedFrom);
     }
 
 }

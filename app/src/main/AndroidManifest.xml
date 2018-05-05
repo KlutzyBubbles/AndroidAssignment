@@ -21,7 +21,8 @@
         <activity android:name=".GameView" />
         <activity
             android:name=".GameSettings"
-            android:label="@string/title_activity_game_settings"></activity>
+            android:label="@string/title_activity_game_settings" />
+        <activity android:name=".ScoreboardView"></activity>
     </application>
 
 </manifest>

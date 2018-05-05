@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.klutzybubbles.assignment1.activities.GameView;
 
-import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -51,6 +50,8 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         this.start = start;
         this.parent = parent;
         int temp = this.size * this.size;
+        Log.d("GIH:CONSTRUCT", "size - " + this.size);
+        Log.d("GIH:CONSTRUCT", "count - " + temp);
         this.items = new GameItem[temp];
         int[] normal = new int[temp];
         for (int i = 0; i < temp; i++)
@@ -75,49 +76,64 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     }
 
     private void placeStarters() {
-        Log.d("GIH:placeStarters", "call");
+        Log.v("GIH:placeStarters", "call");
         if (this.start == 0)
             return;
         int temp = this.start;
         Random r = new Random();
         for (int i = 0; i < temp; i++) {
             this.start--;
-            int slot = r.nextInt(this.blocks.length - count);
+            Log.v("GIH:placeStarters", "length - " + this.blocks.length);
+            Log.v("GIH:placeStarters", "count - " + this.count);
+            Log.v("GIH:placeStarters", "start - " + temp);
+            int slot = r.nextInt(this.blocks.length - this.count) + 1;
+            Log.v("GIH:placeStarters", "slot - " + slot);
             int c = 0;
-            for (int j = 0; j < slot; j++) {
+            jj:for (int j = 0; j < slot; j++) {
+                Log.v("GIH:placeStarters", "j - " + j);
                 boolean cont = false;
                 while (!cont) {
+                    Log.v("GIH:placeStarters", "c - " + c);
                     if (this.items[c].canClick()) {
-                        if (j == slot - 1)
-                            this.items[c].setState(this.blocks[i]);
+                        Log.v("GIH:placeStarters", "Can click");
+                        Log.v("GIH:placeStarters", "j == slot - 1 - " + (j == slot -1));
+                        if (j == slot - 1) {
+                            this.onItemClick(null, this.items[c], c, 1L);
+                            //this.items[c].setState(this.blocks[i]);
+                            break jj;
+                        }
                         cont = true;
                     }
                     c++;
                 }
             }
-            this.count++;
 
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d("GIH:onItemClick", "call");
+        Log.v("GIH:onItemClick", "call");
         if (!this.gameState)
             return;
+        Log.e("GIH:onItemClick", "after call");
         GameItem g = null;
         if (position > this.items.length) {
+            Log.e("GIH:onItemClick", "position greater than");
             for (GameItem t : this.items) {
                 if (t == null)
                     continue;
                 if (t.getId() == view.getId()) {
+                    Log.e("GIH:onItemClick", "ID's match");
                     g = t;
                     break;
                 }
             }
         } else
             g = this.items[position];
+        Log.e("GIH:onItemClick", "position" + position);
         if (g != null && g.canClick()) {
+            Log.e("GIH:onItemClick", "Not null and can click");
             try {
                 int state = this.blocks[count];
                 g.setState(state);
@@ -125,6 +141,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 this.next.setStateOverride(this.getNext());
                 // top
                 if (position >= this.size * 2) {
+                    Log.e("GIH:onItemClick", "top");
                     if (this.items[position - this.size].getState() == state && this.items[position - (this.size * 2)].getState() == state) {
                         this.stop(2);
                         this.items[position - this.size].highlight();
@@ -135,7 +152,8 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 }
 
                 // bottom
-                if (position <= (this.size * this.size) - (this.size * 2)) {
+                if (position < (this.size * this.size) - (this.size * 2)) {
+                    Log.e("GIH:onItemClick", "bottom");
                     if (this.items[position + this.size].getState() == state && this.items[position + (this.size * 2)].getState() == state) {
                         this.stop(2);
                         this.items[position + this.size].highlight();
@@ -147,6 +165,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
                 // left
                 if (position % this.size >= 2) {
+                    Log.e("GIH:onItemClick", "left");
                     if (this.items[position - 1].getState() == state && this.items[position - 2].getState() == state) {
                         this.stop(2);
                         this.items[position - 2].highlight();
@@ -158,6 +177,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
                 // right
                 if (position % this.size <= this.size - 3) {
+                    Log.e("GIH:onItemClick", "right");
                     if (this.items[position + 1].getState() == state && this.items[position + 2].getState() == state) {
                         this.stop(2);
                         this.items[position + 1].highlight();
@@ -168,7 +188,8 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 }
 
                 // middle vertical
-                if (position >= this.size && position <= (this.size * this.size) - this.size) {
+                if (position >= this.size && position < (this.size * this.size) - this.size) {
+                    Log.e("GIH:onItemClick", "middle vertical");
                     if (this.items[position + this.size].getState() == state && this.items[position - this.size].getState() == state) {
                         this.stop(2);
                         this.items[position + this.size].highlight();
@@ -180,6 +201,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
                 // middle horizontal
                 if (position % this.size >= 1 && position % this.size <= this.size - 2) {
+                    Log.e("GIH:onItemClick", "middle horizontal");
                     if (this.items[position + 1].getState() == state && this.items[position - 1].getState() == state) {
                         this.stop(2);
                         this.items[position + 1].highlight();
@@ -188,11 +210,13 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                         return;
                     }
                 }
-                if (this.getNext() == 0)
-                    this.stop(1);
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.err.println("Ouch");
+                Log.e("GIH:onItemClick", e.getMessage());
+                e.printStackTrace();
             }
+            if (this.getNext() == 0)
+                this.stop(1);
         }
     }
 
@@ -237,13 +261,13 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     public void start() {
         Log.d("GIH:start", "call");
-        if (!this.gameState)
-            this.placeStarters();
         this.gameState = true;
         this.paused = false;
         this.next.setStateOverride(this.blocks[count]);
-        System.err.println("Next: " + this.blocks[count]);
         this.timer.start();
+        if (!this.gameState || (this.start != 0 && this.count == 0))
+            this.placeStarters();
+        System.err.println("Next: " + this.blocks[count]);
     }
 
     public void pause() {

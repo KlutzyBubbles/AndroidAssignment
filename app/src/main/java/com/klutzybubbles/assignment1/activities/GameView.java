@@ -37,7 +37,6 @@ public class GameView extends AppCompatActivity {
     private boolean paused = false, noTimer = true;
 
     private DatabaseHelper db;
-    private static final int DB_VERSION = 1;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,7 +51,7 @@ public class GameView extends AppCompatActivity {
         Log.d("GameView:onCreate", "call");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
-        this.db = new DatabaseHelper(this, GameView.DB_VERSION);
+        this.db = new DatabaseHelper(this, this.getResources().getInteger(R.integer.database_version));
         this.loadSettings();
         this.grid = findViewById(R.id.main_grid);
         GameItemHandler.refreshSettings(this.grid);
@@ -134,7 +133,8 @@ public class GameView extends AppCompatActivity {
             this.a.start();
         this.paused = false;
         this.a.refreshBlocks(this.grid);
-        this.db = new DatabaseHelper(this, GameView.DB_VERSION);
+        this.db = new DatabaseHelper(this, this.getResources().getInteger(R.integer.database_version));
+        (new Thread(new UpdateTime(this))).start();
     }
 
     @Override
@@ -160,11 +160,13 @@ public class GameView extends AppCompatActivity {
         Log.d("GameView:loadSettings", "call");
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
         try {
-            this.difficulty = Integer.parseInt(s.getString("size", ((GameItemHandler.MIN_SIZE + GameItemHandler.MAX_SIZE) / 2) + ""));
-            this.size = Integer.parseInt(s.getString("difficulty", "1"));
+            this.difficulty = Integer.parseInt(s.getString("difficulty", (GameItemHandler.MAX_SIZE - GameItemHandler.MIN_SIZE) + ""));
+            this.size = Integer.parseInt(s.getString("size", "1"));
         } catch (NumberFormatException e) {
             Log.w("GameView:loadSettings", "Size or Difficulty isn't a number");
         }
+        if (this.difficulty >= this.size * this.size)
+            this.difficulty = (this.size * this.size - 1);
     }
 
     public void initialStart() {

@@ -70,7 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @SuppressWarnings("unused")
-    public List<long[]> getAllFrom(int size, int difficulty) {
+    public List<RecordItem> getAllFrom(int size, int difficulty) {
         Log.v("DBHelper:getAllFrom", "call");
         Log.d("DBHelper:getAllFrom", "var size = " + size);
         Log.d("DBHelper:getAllFrom", "var difficulty = " + difficulty);
@@ -79,18 +79,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         b.append(TABLE_SCORES).append(" WHERE ");
         b.append(COLUMN_SIZE).append('=').append(size).append(" AND ");
         b.append(COLUMN_DIFFICULTY).append('=').append(difficulty);
+        b.append(" ORDER BY ").append(COLUMN_TIME);
         Log.i("DBHelper:getAllFrom", "DB RAW: " + b.toString());
         Cursor c = db.rawQuery(b.toString(), null);
-        List<long[]> rows = new ArrayList<>();
+        List<RecordItem> rows = new ArrayList<>();
         if (c.moveToFirst()) {
             Log.d("DBHelper:getAllFrom", "Moved to first");
             while (!c.isAfterLast()) {
                 Log.d("DBHelper:getAllFrom", "Current Position: " + c.getPosition());
-                long[] temp = new long[2];
-                temp[0] = c.getLong(c.getColumnIndex(COLUMN_TIME));
-                temp[1] = c.getLong(c.getColumnIndex(COLUMN_SET_ON));
-                Log.i("DBHelper:getAllFrom", "Adding: " + Arrays.toString(temp));
-                rows.add(temp);
+                rows.add(new RecordItem(c.getLong(c.getColumnIndex(COLUMN_TIME)), c.getLong(c.getColumnIndex(COLUMN_SET_ON))));
                 c.moveToNext();
             }
         }

@@ -32,33 +32,25 @@ public class GameSettings extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private static Preference.OnPreferenceChangeListener preferenceChange = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
             Log.i("GameSettings:onPrefChg", "stringValue = " + stringValue);
             try {
-                Log.i("GameSettings:onPrefChg", "stringValue = " + (int) value);
+                Log.i("GameSettings:onPrefChg", "int Value = " + (int) value);
             } catch (ClassCastException e) {
-                Log.e("Nothing", "Nothing");
+                Log.e("GameSettings:onPrefChg", "Unable to cast preference to an Integer");
             }
             if (preference instanceof ListPreference) {
-                // For list preferences, look up the correct display value in
-                // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
-
-                // Set the summary to reflect the new value.
                 preference.setSummary(
                         index >= 0
                                 ? listPreference.getEntries()[index]
                                 : null);
-
-            } else {
-                // For all other preferences, set the summary to the value's
-                // simple string representation.
+            } else
                 preference.setSummary(stringValue);
-            }
             return true;
         }
     };
@@ -70,56 +62,34 @@ public class GameSettings extends AppCompatPreferenceActivity {
      * immediately updated upon calling this method. The exact display format is
      * dependent on the type of preference.
      *
-     * @see #sBindPreferenceSummaryToValueListener
+     * @see #preferenceChange
      */
     private static void bindPreferenceSummaryToValue(Preference preference) {
-        // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
-
-        //PreferenceManager.getDefaultSharedPreferences(preference.getContext()).edit().clear().commit();
-
-        // Trigger the listener immediately with the preference's
-        // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+        preference.setOnPreferenceChangeListener(preferenceChange);
+        preferenceChange.onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), "#696969"));
+                        .getString(preference.getKey(), "3"));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupActionBar();
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
-    private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // Show the Up button in the action bar.
+        if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        this.getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new GeneralPreferenceFragment()).commit();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
-    }
 
     /**
      * This method stops fragment injection in malicious applications.
      * Make sure to deny any unknown fragments here.
-     */
+     *
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
-                || GeneralPreferenceFragment.class.getName().equals(fragmentName)
-                || ValuePreferenceFragment.class.getName().equals(fragmentName);
+                || GeneralPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -134,57 +104,20 @@ public class GameSettings extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-
             bindPreferenceSummaryToValue(findPreference("blank"));
             bindPreferenceSummaryToValue(findPreference("color_a"));
             bindPreferenceSummaryToValue(findPreference("color_b"));
             bindPreferenceSummaryToValue(findPreference("highlight"));
             bindPreferenceSummaryToValue(findPreference("border"));
-
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), GameSettings.class));
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * This fragment shows general preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class ValuePreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_values);
-            setHasOptionsMenu(true);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-
             bindPreferenceSummaryToValue(findPreference("size"));
             bindPreferenceSummaryToValue(findPreference("difficulty"));
-
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), GameSettings.class));
+                startActivity(new Intent(getActivity(), MainMenu.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);

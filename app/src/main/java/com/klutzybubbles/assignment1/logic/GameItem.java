@@ -6,6 +6,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridView;
 
@@ -14,7 +15,7 @@ import android.widget.GridView;
  * Class used to store the state and GradientDrawable background of the item / block
  *
  * @author Lee Tzilantonis
- * @version 1.0.0
+ * @version 1.0.1
  * @since 5/5/2018
  */
 public class GameItem extends View {
@@ -46,6 +47,7 @@ public class GameItem extends View {
      */
     public GameItem(Context context) {
         super(context);
+        Log.v("GameItem:CONSTRUCT", "call");
         super.setBackground(this.background);
         this.update();
     }
@@ -56,8 +58,10 @@ public class GameItem extends View {
      * @param state - The new state of the GameItem, must be between 0 and 2
      */
     public void setState(int state) {
+        Log.v("GameItem:setState", "call");
         if (this.state > 0)
             return;
+        Log.d("GameItem:setState", "State can change");
         this.setStateOverride(state);
     }
 
@@ -67,8 +71,11 @@ public class GameItem extends View {
      * @param state - The new state of the GameItem, must be between 0 and 2
      */
     public void setStateOverride(int state) {
+        Log.v("GameItem:setStateO", "call");
+        Log.d("GameItem:setStateO", "State parsed - " + state);
         if (state < 0 || state > 2)
             return;
+        Log.d("GameItem:setStateO", "State within boundaries");
         this.state = state;
         this.update();
     }
@@ -79,6 +86,8 @@ public class GameItem extends View {
      * @return - The current state of the GameItem, should only ever be between 0 and 2
      */
     public int getState() {
+        Log.v("GameItem:getState", "call");
+        Log.d("GameItem:getState", "State - " + this.state);
         return this.state;
     }
 
@@ -89,6 +98,8 @@ public class GameItem extends View {
      * @return - Whether or not the GameItem can be clicked
      */
     public boolean canClick() {
+        Log.v("GameItem:canClick", "call");
+        Log.d("GameItem:canClick", "Result - " + (this.state <= 0));
         return this.state <= 0;
     }
 
@@ -96,8 +107,11 @@ public class GameItem extends View {
      * Updates the GameItem to reflect it's current state using the static Color's
      */
     public void update() {
+        Log.v("GameItem:update", "call");
+        Log.d("GameItem:update", "Background color - " + GameItem.COLORS[this.state]);
         this.background.setColor(GameItem.COLORS[this.state]);
-        this.background.setStroke(1, Color.DKGRAY);
+        Log.d("GameItem:update", "Border color - " + GameItem.COLORS[3]);
+        this.background.setStroke(1, GameItem.COLORS[3]);
     }
 
     /**
@@ -106,7 +120,9 @@ public class GameItem extends View {
      * @param parent - The GridView to get the column width from
      */
     public void setRelativeTo(GridView parent) {
+        Log.v("GameItem:setRelativeTo", "call");
         int width = parent.getColumnWidth();
+        Log.d("GameItem:setRelativeTo", "Column width - " + width);
         super.setLayoutParams(new GridView.LayoutParams(width, width));
         super.setPadding(0, 0, 0, 0);
     }
@@ -117,6 +133,7 @@ public class GameItem extends View {
      * NOTE: The highlight function cannot be un-done without disposing of the GameItem
      */
     public void highlight() {
+        Log.v("GameItem:highlight", "call");
         final AnimationDrawable ad = new AnimationDrawable();
         ad.addFrame(new ColorDrawable(GameItem.COLORS[this.getState()]), 400);
         ad.addFrame(new ColorDrawable(GameItem.COLORS[3]), 400);
@@ -137,6 +154,7 @@ public class GameItem extends View {
      */
     @Override
     public String toString() {
+        Log.v("GameItem:toString", "call");
         return "[State: " + this.state + "]";
     }
 

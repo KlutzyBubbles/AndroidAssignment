@@ -4,13 +4,11 @@
 
     <item
         android:id="@+id/item_stop"
-        android:icon="?attr/homeAsUpIndicator"
         android:title="@string/menu_home"
         android:onClick="onMenuClick"
         app:showAsAction="never" />
     <item
         android:id="@+id/item_restart"
-        android:icon="@android:drawable/ic_menu_rotate"
         android:title="@string/menu_restart"
         android:onClick="onRestartClick"
         app:showAsAction="never" />

@@ -13,6 +13,8 @@
     <string name="help_doc">https://github.com/KlutzyBubbles/help-documents/raw/master/Help%20Document.pdf</string>
     <string name="title_activity_game_settings">Game Settings</string>
 
+    <integer name="database_version">1</integer>
+
     <!-- Strings related to Settings -->
 
     <string name="pref_header_colors">Colors</string>
