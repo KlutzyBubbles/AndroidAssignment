@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  * Created by KlutzyBubbles on 22/03/2018.
  */
 
-public class GameTimer implements Serializable {
+public class GameTimer {
 
     private long[][] times;
     private String format;

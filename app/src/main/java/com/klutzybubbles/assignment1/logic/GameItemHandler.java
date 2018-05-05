@@ -21,7 +21,7 @@ import java.util.Random;
  * Created by  on 18/03/2018.
  */
 
-public class GameItemHandler extends BaseAdapter implements GridView.OnItemClickListener, Serializable {
+public class GameItemHandler extends BaseAdapter implements GridView.OnItemClickListener {
 
     public static final int MAX_SIZE = 6;
     public static final int MIN_SIZE = 1;
