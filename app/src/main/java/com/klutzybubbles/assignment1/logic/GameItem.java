@@ -1,28 +1,21 @@
 package com.klutzybubbles.assignment1.logic;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Handler;
-import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.GridView;
-import android.widget.TextView;
 
-import com.klutzybubbles.assignment1.activities.GameView;
-import com.klutzybubbles.assignment1.activities.R;
+import java.io.Serializable;
 
 /**
  * Created by KlutzyBubbles on 8/03/2018.
  */
 
-public class GameItem extends View {
+public class GameItem extends View implements Serializable {
 
     public static final int[] COLORS = {Color.GRAY, Color.RED, Color.BLUE, Color.WHITE, Color.GRAY};
 
@@ -54,8 +47,8 @@ public class GameItem extends View {
         return this.state;
     }
 
-    public boolean isClicked() {
-        return this.state > 0;
+    public boolean canClick() {
+        return this.state <= 0;
     }
 
     public void update() {

@@ -2,24 +2,25 @@ package com.klutzybubbles.assignment1.logic;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by KlutzyBubbles on 22/03/2018.
  */
 
-public class GameTimer {
+public class GameTimer implements Serializable {
 
     private long[][] times;
     private String format;
     private boolean state;
     private boolean stopped = true;
 
-    public GameTimer() {
+    GameTimer() {
         this(null);
     }
 
-    public GameTimer(String format) {
+    private GameTimer(String format) {
         Log.d("GameTimer:CONSTRUCT", "call");
         if (format == null || format.equals(""))
             format = "%02d:%02d.%03d";
@@ -42,16 +43,13 @@ public class GameTimer {
             boolean reconstruct = false;
             for (int i = 0; i < this.times.length; i++) {
                 if (this.times[i][0] == -1L) {
-                    if (i + 1 == this.times.length)
-                        reconstruct = true;
-                    else
-                        reconstruct = false;
+                    reconstruct = i + 1 == this.times.length;
                     this.times[i][0] = System.currentTimeMillis();
                 } else
                     reconstruct = true;
             }
             if (reconstruct) {
-                this.expand(1);
+                this.expand();
             }
         }
     }
@@ -82,23 +80,21 @@ public class GameTimer {
             if (this.times[i][1] == -1L) {
                 if (this.times[i][0] == -1L)
                     return;
-                if (i + 1 == this.times.length)
-                    reconstruct = true;
-                else
-                    reconstruct = false;
+                reconstruct = i + 1 == this.times.length;
                 this.times[i][1] = System.currentTimeMillis();
             } else
                 reconstruct = false;
         }
         if (reconstruct)
-            this.expand(1);
+            this.expand();
     }
 
-    public void expand(int size) {
+    private void expand() {
         Log.d("GameTimer:expand", "call");
         if (this.times == null)
-            this.times = new long[size][2];
+            this.times = new long[1][2];
         else {
+            int size = 1;
             if (size < this.times.length * 2)
                 size = this.times.length * 2 + 1;
             long[][] temp = new long[size][2];

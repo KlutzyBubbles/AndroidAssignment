@@ -29,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.v("DBHelper:onCreate", "call");
-        StringBuffer b = new StringBuffer("CREATE TABLE IF NOT EXISTS ");
+        StringBuilder b = new StringBuilder("CREATE TABLE IF NOT EXISTS ");
         b.append(DatabaseHelper.TABLE_SCORES).append('(').append(COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ");
         b.append(COLUMN_TIME).append(" INTEGER NOT NULL, ");
         b.append(COLUMN_SET_ON).append(" INTEGER NOT NULL, ");
@@ -59,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void insert(long time, int size, int difficulty) {
         Log.v("DBHelper:insert", "call");
         SQLiteDatabase db = this.getWritableDatabase();
-        StringBuffer b = new StringBuffer("INSERT INTO ");
+        StringBuilder b = new StringBuilder("INSERT INTO ");
         b.append(DatabaseHelper.TABLE_SCORES).append(" (").append(COLUMN_TIME).append(',');
         b.append(COLUMN_SIZE).append(',');
         b.append(COLUMN_DIFFICULTY).append(',').append(COLUMN_SET_ON).append(") VALUES (");
@@ -69,12 +69,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(b.toString());
     }
 
+    @SuppressWarnings("unused")
     public List<long[]> getAllFrom(int size, int difficulty) {
         Log.v("DBHelper:getAllFrom", "call");
         Log.d("DBHelper:getAllFrom", "var size = " + size);
         Log.d("DBHelper:getAllFrom", "var difficulty = " + difficulty);
         SQLiteDatabase db = this.getReadableDatabase();
-        StringBuffer b = new StringBuffer("SELECT * FROM ");
+        StringBuilder b = new StringBuilder("SELECT * FROM ");
         b.append(TABLE_SCORES).append(" WHERE ");
         b.append(COLUMN_SIZE).append('=').append(size).append(" AND ");
         b.append(COLUMN_DIFFICULTY).append('=').append(difficulty);
@@ -93,6 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 c.moveToNext();
             }
         }
+        c.close();
         return rows;
     }
 

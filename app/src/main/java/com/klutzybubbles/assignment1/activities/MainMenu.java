@@ -1,17 +1,11 @@
 package com.klutzybubbles.assignment1.activities;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridView;
-
-import com.klutzybubbles.assignment1.logic.GameItemHandler;
 
 public class MainMenu extends AppCompatActivity {
 
@@ -50,8 +44,6 @@ public class MainMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_doc)));
                 startActivity(browserIntent);
-                //Intent i = new Intent(getApplicationContext(), HelpScreen.class);
-                //startActivity(i);
             }
         });
     }
