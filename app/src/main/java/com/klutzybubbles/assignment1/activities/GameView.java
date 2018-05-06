@@ -71,19 +71,6 @@ public class GameView extends AppCompatActivity {
         display.getSize(size);
         int width = size.x;
         int height = size.y;
-
-        /*
-        Rect rectangle = new Rect();
-        Window window = getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
-        int statusBarHeight = rectangle.top;
-        int contentViewTop =
-                window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
-        int titleBarHeight = contentViewTop - statusBarHeight;
-
-        int aHeight = getSupportActionBar().getHeight();
-        */
-
         int[] textSizeAttr = new int[] { android.R.attr.actionBarSize, R.attr.actionBarSize };
         TypedArray a = obtainStyledAttributes(new TypedValue().data, textSizeAttr);
         float aHeight = a.getDimension(0, -1);
