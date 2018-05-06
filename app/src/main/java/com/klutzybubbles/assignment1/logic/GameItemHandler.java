@@ -13,6 +13,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.klutzybubbles.assignment1.activities.GameView;
+import com.klutzybubbles.assignment1.activities.R;
 
 import java.util.Random;
 
@@ -22,8 +23,8 @@ import java.util.Random;
 
 public class GameItemHandler extends BaseAdapter implements GridView.OnItemClickListener {
 
-    public static final int MAX_SIZE = 6;
-    public static final int MIN_SIZE = 1;
+    private static final int MAX_SIZE = 6;
+    private static final int MIN_SIZE = 1;
 
     private final GameItem[] items;
     private final GameItem next;
@@ -99,7 +100,6 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                         Log.v("GIH:placeStarters", "j == slot - 1 - " + (j == slot -1));
                         if (j == slot - 1) {
                             this.onItemClick(null, this.items[c], c, 1L);
-                            //this.items[c].setState(this.blocks[i]);
                             break jj;
                         }
                         cont = true;
@@ -116,24 +116,24 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         Log.v("GIH:onItemClick", "call");
         if (!this.gameState)
             return;
-        Log.e("GIH:onItemClick", "after call");
+        Log.v("GIH:onItemClick", "after call");
         GameItem g = null;
         if (position > this.items.length) {
-            Log.e("GIH:onItemClick", "position greater than");
+            Log.v("GIH:onItemClick", "position greater than");
             for (GameItem t : this.items) {
                 if (t == null)
                     continue;
                 if (t.getId() == view.getId()) {
-                    Log.e("GIH:onItemClick", "ID's match");
+                    Log.v("GIH:onItemClick", "ID's match");
                     g = t;
                     break;
                 }
             }
         } else
             g = this.items[position];
-        Log.e("GIH:onItemClick", "position" + position);
+        Log.v("GIH:onItemClick", "position" + position);
         if (g != null && g.canClick()) {
-            Log.e("GIH:onItemClick", "Not null and can click");
+            Log.v("GIH:onItemClick", "Not null and can click");
             try {
                 int state = this.blocks[count];
                 g.setState(state);
@@ -141,7 +141,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
                 this.next.setStateOverride(this.getNext());
                 // top
                 if (position >= this.size * 2) {
-                    Log.e("GIH:onItemClick", "top");
+                    Log.v("GIH:onItemClick", "top");
                     if (this.items[position - this.size].getState() == state && this.items[position - (this.size * 2)].getState() == state) {
                         this.stop(2);
                         this.items[position - this.size].highlight();
@@ -153,7 +153,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
                 // bottom
                 if (position < (this.size * this.size) - (this.size * 2)) {
-                    Log.e("GIH:onItemClick", "bottom");
+                    Log.v("GIH:onItemClick", "bottom");
                     if (this.items[position + this.size].getState() == state && this.items[position + (this.size * 2)].getState() == state) {
                         this.stop(2);
                         this.items[position + this.size].highlight();
@@ -165,7 +165,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
                 // left
                 if (position % this.size >= 2) {
-                    Log.e("GIH:onItemClick", "left");
+                    Log.v("GIH:onItemClick", "left");
                     if (this.items[position - 1].getState() == state && this.items[position - 2].getState() == state) {
                         this.stop(2);
                         this.items[position - 2].highlight();
@@ -177,7 +177,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
                 // right
                 if (position % this.size <= this.size - 3) {
-                    Log.e("GIH:onItemClick", "right");
+                    Log.v("GIH:onItemClick", "right");
                     if (this.items[position + 1].getState() == state && this.items[position + 2].getState() == state) {
                         this.stop(2);
                         this.items[position + 1].highlight();
@@ -189,7 +189,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
                 // middle vertical
                 if (position >= this.size && position < (this.size * this.size) - this.size) {
-                    Log.e("GIH:onItemClick", "middle vertical");
+                    Log.v("GIH:onItemClick", "middle vertical");
                     if (this.items[position + this.size].getState() == state && this.items[position - this.size].getState() == state) {
                         this.stop(2);
                         this.items[position + this.size].highlight();
@@ -201,7 +201,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
                 // middle horizontal
                 if (position % this.size >= 1 && position % this.size <= this.size - 2) {
-                    Log.e("GIH:onItemClick", "middle horizontal");
+                    Log.v("GIH:onItemClick", "middle horizontal");
                     if (this.items[position + 1].getState() == state && this.items[position - 1].getState() == state) {
                         this.stop(2);
                         this.items[position + 1].highlight();
@@ -222,11 +222,11 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     public static void refreshSettings(GridView parent) {
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
-        GameItem.COLORS[0] = Color.parseColor(s.getString("blank", "#696969"));
-        GameItem.COLORS[1] = Color.parseColor(s.getString("color_a", "#0000FF"));
-        GameItem.COLORS[2] = Color.parseColor(s.getString("color_b", "#FF0000"));
-        GameItem.COLORS[3] = Color.parseColor(s.getString("border", "#000000"));
-        GameItem.COLORS[4] = Color.parseColor(s.getString("highlight", "#FFFFFF"));
+        GameItem.COLORS[0] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_blank), "#696969"));
+        GameItem.COLORS[1] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_color_a), "#0000FF"));
+        GameItem.COLORS[2] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_color_b), "#FF0000"));
+        GameItem.COLORS[3] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_border), "#000000"));
+        GameItem.COLORS[4] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_highlight), "#FFFFFF"));
     }
 
     public void refreshBlocks(GridView parent) {

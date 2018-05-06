@@ -14,17 +14,20 @@
         android:theme="@style/AppTheme"
         android:fullBackupContent="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainMenu">
+        <activity android:name=".MainMenu"
+            android:label="@string/title_activity_main_menu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".GameView" />
+        <activity android:name=".GameView"
+            android:label="@string/title_activity_game_view"/>
+        <activity android:name=".ScoreboardView"
+            android:label="@string/title_activity_scoreboard_view"/>
         <activity
             android:name=".GameSettings"
-            android:label="@string/title_activity_game_settings" />
-        <activity android:name=".ScoreboardView"/>
+            android:label="@string/title_activity_game_settings"/>
     </application>
 
 </manifest>

@@ -35,7 +35,7 @@ public class ScoreboardView extends AppCompatActivity {
 
     private DatabaseHelper db;
 
-    private RecordListAdapter a = new RecordListAdapter(new ArrayList<RecordItem>());
+    private RecordListAdapter a = new RecordListAdapter(new ArrayList<>());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +43,10 @@ public class ScoreboardView extends AppCompatActivity {
         setContentView(R.layout.activity_scoreboard_view);
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-
+            actionBar.setTitle(R.string.title_activity_scoreboard_view);
+        }
         this.sizeValues = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.list_size)));
         this.difficultyValues = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.list_difficulty)));
 

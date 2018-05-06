@@ -94,27 +94,26 @@ public class GameView extends AppCompatActivity {
         ViewGroup.LayoutParams g = this.grid.getLayoutParams();
 
         if (width > height) {
-            Log.i("GameView:onCreate", "W W");
-            Log.i("GameView:onCreate", "1: " + height);
-            Log.i("GameView:onCreate", "2: " + this.size);
-            Log.i("GameView:onCreate", "E: " + height / this.size);
+            Log.v("GameView:onCreate", "W W");
+            Log.v("GameView:onCreate", "1: " + height);
+            Log.v("GameView:onCreate", "2: " + this.size);
+            Log.v("GameView:onCreate", "E: " + height / this.size);
             g.height = height;
             g.width = (height / this.size) * this.size;
             grid.setColumnWidth(height / this.size);
         } else {
-            Log.i("GameView:onCreate", "W H");
-            Log.i("GameView:onCreate", "1: " + width);
-            Log.i("GameView:onCreate", "2: " + this.size);
-            Log.i("GameView:onCreate", "E: " + width / this.size);
+            Log.v("GameView:onCreate", "W H");
+            Log.v("GameView:onCreate", "1: " + width);
+            Log.v("GameView:onCreate", "2: " + this.size);
+            Log.v("GameView:onCreate", "E: " + width / this.size);
             //noinspection SuspiciousNameCombination
             g.height = width;
             g.width = (width / this.size) * this.size;
             grid.setColumnWidth(width / this.size);
         }
 
-        Log.i("GameView:onCreate", "Width: " + width);
-        Log.i("GameView:onCreate", "Height: " + height);
-        Log.i("GameView:onCreate", "Col Width: " + this.grid.getColumnWidth());
+        Log.v("GameView:onCreate", "Width: " + width);
+        Log.v("GameView:onCreate", "Height: " + height);
 
         this.grid.setLayoutParams(g);
         this.initialStart();
@@ -180,8 +179,8 @@ public class GameView extends AppCompatActivity {
         Log.d("GameView:loadSettings", "call");
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
         try {
-            this.difficulty = Integer.parseInt(s.getString("difficulty", (GameItemHandler.MAX_SIZE - GameItemHandler.MIN_SIZE) + ""));
-            this.size = Integer.parseInt(s.getString("size", "1"));
+            this.difficulty = Integer.parseInt(s.getString(getString(R.string.pref_key_difficulty), getString(R.string.pref_default_general)));
+            this.size = Integer.parseInt(s.getString(getString(R.string.pref_key_size), getString(R.string.pref_default_general)));
         } catch (NumberFormatException e) {
             Log.w("GameView:loadSettings", "Size or Difficulty isn't a number");
         }
@@ -228,7 +227,7 @@ public class GameView extends AppCompatActivity {
         Log.d("GameView:onFail", "call");
         this.noTimer = true;
         this.paused = true;
-        this.toastMessage("You Failed");
+        this.toastMessage(getString(R.string.text_lose));
         this.newGame.setEnabled(true);
     }
 
@@ -236,7 +235,7 @@ public class GameView extends AppCompatActivity {
         Log.d("GameView:onSuccess", "call");
         this.noTimer = true;
         this.paused = true;
-        this.toastMessage("You Win");
+        this.toastMessage(getString(R.string.text_win));
         this.newGame.setEnabled(true);
         this.db.insert(this.a.getTime(), this.size, this.difficulty);
 
@@ -246,7 +245,6 @@ public class GameView extends AppCompatActivity {
         Log.d("GameView:onEnd", "call");
         this.noTimer = true;
         this.paused = true;
-        this.toastMessage("Game Stopped");
         this.newGame.setEnabled(true);
         this.text.setText(getString(R.string.timer_text));
     }
