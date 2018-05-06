@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="ic_launcher_background">#E67022</color>
+
     <color name="colorPrimary">#d43f0d</color>
     <color name="colorPrimaryDark">#842500</color>
     <color name="colorAccent">#4079ff</color>
@@ -10,7 +12,7 @@
     <color name="Snow">#FFFAFA</color>
     <color name="FloralWhite">#FFFAF0</color>
     <color name="LemonChiffon">#FFFACD</color>
-    <color name="Cornsilk">#FFF8DC</color>
+    <color name="CornSilk">#FFF8DC</color>
     <color name="Seashell">#FFF5EE</color>
     <color name="LavenderBlush">#FFF0F5</color>
     <color name="PapayaWhip">#FFEFD5</color>
@@ -152,7 +154,7 @@
         <item name="Snow">@color/Snow</item>
         <item name="FloralWhite">@color/FloralWhite</item>
         <item name="LemonChiffon">@color/LemonChiffon</item>
-        <item name="Cornsilk">@color/Cornsilk</item>
+        <item name="CornSilk">@color/CornSilk</item>
         <item name="Seashell">@color/Seashell</item>
         <item name="LavenderBlush">@color/LavenderBlush</item>
         <item name="PapayaWhip">@color/PapayaWhip</item>

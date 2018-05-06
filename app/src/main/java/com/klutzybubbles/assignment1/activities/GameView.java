@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -51,6 +52,11 @@ public class GameView extends AppCompatActivity {
         Log.d("GameView:onCreate", "call");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_view);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.title_activity_game_view);
+        }
         this.db = new DatabaseHelper(this, this.getResources().getInteger(R.integer.database_version));
         this.loadSettings();
         this.grid = findViewById(R.id.main_grid);
@@ -146,6 +152,20 @@ public class GameView extends AppCompatActivity {
         this.db.close();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("GameView:onOIS", "call");
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            this.a.stop(0);
+            this.paused = true;
+            this.db.close();
+            startActivity(new Intent(this.getBaseContext(), MainMenu.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void setText(String text) {
         Log.d("GameView:setText", "call");
         this.text.setText(text);
@@ -191,13 +211,6 @@ public class GameView extends AppCompatActivity {
         this.paused = false;
         this.noTimer = false;
         (new Thread(new UpdateTime(this))).start();
-    }
-
-    public void onMenuClick(MenuItem item) {
-        Log.d("GameView:onMenuClick", "call");
-        this.a.stop(0);
-        Intent i = new Intent(getApplicationContext(), MainMenu.class);
-        startActivity(i);
     }
 
     public void onRestartClick(MenuItem item) {
@@ -256,28 +269,13 @@ public class GameView extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        instance.text.setText(getString(R.string.timer_text));
-                    }
-                });
+                runOnUiThread(() -> instance.text.setText(getString(R.string.timer_text)));
             } else {
                 while (!paused) {
                     if (noTimer)
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                instance.text.setText(getString(R.string.timer_text));
-                            }
-                        });
+                        runOnUiThread(() -> instance.text.setText(getString(R.string.timer_text)));
                     else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                instance.a.updateTime(instance.text);
-                            }
-                        });
+                        runOnUiThread(() -> instance.a.updateTime(instance.text));
                         try {
                             Thread.sleep(10L);
                         } catch (InterruptedException e) {

@@ -10,7 +10,7 @@ public class RecordItem {
     private long time;
     private long setOn;
 
-    public RecordItem(long time, long setOn) {
+    RecordItem(long time, long setOn) {
         this.time = time;
         this.setOn = setOn;
     }

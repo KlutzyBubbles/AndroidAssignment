@@ -3,13 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/item_stop"
-        android:title="@string/menu_home"
-        android:onClick="onMenuClick"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/item_restart"
-        android:title="@string/menu_restart"
+        android:icon="@drawable/ic_refresh_white_100dp"
         android:onClick="onRestartClick"
-        app:showAsAction="never" />
+        android:title="@string/menu_restart"
+        app:showAsAction="never|ifRoom" />
 </menu>

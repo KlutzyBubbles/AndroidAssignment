@@ -13,8 +13,6 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import java.util.List;
-
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -32,27 +30,24 @@ public class GameSettings extends AppCompatPreferenceActivity {
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener preferenceChange = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
-            Log.i("GameSettings:onPrefChg", "stringValue = " + stringValue);
-            try {
-                Log.i("GameSettings:onPrefChg", "int Value = " + (int) value);
-            } catch (ClassCastException e) {
-                Log.e("GameSettings:onPrefChg", "Unable to cast preference to an Integer");
-            }
-            if (preference instanceof ListPreference) {
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
-            } else
-                preference.setSummary(stringValue);
-            return true;
+    private static Preference.OnPreferenceChangeListener preferenceChange = (preference, value) -> {
+        String stringValue = value.toString();
+        Log.i("GameSettings:onPrefChg", "stringValue = " + stringValue);
+        try {
+            Log.i("GameSettings:onPrefChg", "int Value = " + (int) value);
+        } catch (ClassCastException e) {
+            Log.e("GameSettings:onPrefChg", "Unable to cast preference to an Integer");
         }
+        if (preference instanceof ListPreference) {
+            ListPreference listPreference = (ListPreference) preference;
+            int index = listPreference.findIndexOfValue(stringValue);
+            preference.setSummary(
+                    index >= 0
+                            ? listPreference.getEntries()[index]
+                            : null);
+        } else
+            preference.setSummary(stringValue);
+        return true;
     };
 
     /**
@@ -76,8 +71,10 @@ public class GameSettings extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.title_activity_game_settings);
+        }
         this.getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new GeneralPreferenceFragment()).commit();
     }

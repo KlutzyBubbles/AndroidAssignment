@@ -12,6 +12,7 @@
     <string name="menu_high_scores">High Scores</string>
     <string name="help_doc">https://github.com/KlutzyBubbles/help-documents/raw/master/Help%20Document.pdf</string>
     <string name="title_activity_game_settings">Game Settings</string>
+    <string name="title_activity_game_view">Time to play</string>
 
     <integer name="database_version">1</integer>
 
@@ -28,6 +29,14 @@
 
     <string name="pref_title_size">Grid Size</string>
     <string name="pref_title_difficulty">Difficulty</string>
+    <string name="pref_title_colors">Colors</string>
+    <string name="pref_title_game_settings">Game Settings</string>
+    <string name="pref_default_general">3</string>
+    <string name="pref_default_blank">#696969</string>
+    <string name="pref_default_color_a">#FF0000</string>
+    <string name="pref_default_color_b">#0000FF</string>
+    <string name="pref_default_highlight">#FFFFFF</string>
+    <string name="pref_default_border">#000000</string>
 
     <string-array name="list_color_names">
         <item>White</item>

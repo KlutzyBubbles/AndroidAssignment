@@ -1,9 +1,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Colors">
+        android:title="@string/pref_title_colors">
         <ListPreference
-            android:defaultValue="Violet"
+            android:defaultValue="@string/pref_default_blank"
             android:entries="@array/list_color_names"
             android:entryValues="@array/list_colors"
             android:key="blank"
@@ -12,7 +12,7 @@
             android:title="@string/pref_title_color_none"/>
 
         <ListPreference
-            android:defaultValue="Violet"
+            android:defaultValue="@string/pref_default_color_a"
             android:entries="@array/list_color_names"
             android:entryValues="@array/list_colors"
             android:key="color_a"
@@ -21,7 +21,7 @@
             android:title="@string/pref_title_color_a"/>
 
         <ListPreference
-            android:defaultValue="Violet"
+            android:defaultValue="@string/pref_default_color_b"
             android:entries="@array/list_color_names"
             android:entryValues="@array/list_colors"
             android:key="color_b"
@@ -30,7 +30,7 @@
             android:title="@string/pref_title_color_b"/>
 
         <ListPreference
-            android:defaultValue="Violet"
+            android:defaultValue="@string/pref_default_highlight"
             android:entries="@array/list_color_names"
             android:entryValues="@array/list_colors"
             android:key="highlight"
@@ -39,7 +39,7 @@
             android:title="@string/pref_title_color_highlight"/>
 
         <ListPreference
-            android:defaultValue="Violet"
+            android:defaultValue="@string/pref_default_border"
             android:entries="@array/list_color_names"
             android:entryValues="@array/list_colors"
             android:key="border"
@@ -49,9 +49,9 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="Game Settings">
+        android:title="@string/pref_title_game_settings">
         <ListPreference
-            android:defaultValue="3"
+            android:defaultValue="@string/pref_default_general"
             android:entries="@array/list_size_names"
             android:entryValues="@array/list_size"
             android:key="size"
@@ -60,7 +60,7 @@
             android:title="@string/pref_title_size"/>
 
         <ListPreference
-            android:defaultValue="Violet"
+            android:defaultValue="@string/pref_default_general"
             android:entries="@array/list_difficulty_names"
             android:entryValues="@array/list_difficulty"
             android:key="difficulty"
