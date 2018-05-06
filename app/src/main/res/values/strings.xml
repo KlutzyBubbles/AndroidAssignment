@@ -22,6 +22,9 @@
     <string name="title_activity_scoreboard_view">High Scores</string>
     <string name="title_activity_main_menu">Main Menu</string>
 
+    <string name="format_default_timer">%02d:%02d.%03d</string>
+    <string name="format_default_date_time">dd/MM/yyyy HH:mm</string>
+
     <integer name="database_version">1</integer>
 
     <!-- Strings related to Settings -->

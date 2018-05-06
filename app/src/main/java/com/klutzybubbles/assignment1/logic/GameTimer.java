@@ -5,17 +5,23 @@ import android.util.Log;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <h1>GameTimer.class</h1>
+ * <h1>GameTimer.java</h1>
  * Class used to manage the timer and it's operations
  *
  * @author Lee Tzilantonis
  * @version 1.0.0
- * @since 5/5/2018
+ * @since 6/5/2018
  */
 public class GameTimer {
 
+    /**
+     * The timestamp in which the current state of the timer has started from
+     */
     private long startedFrom;
 
+    /**
+     * The amount of milliseconds currently recorded
+     */
     private long current = 0L;
 
     /**
@@ -74,14 +80,22 @@ public class GameTimer {
     protected void stop() {
         Log.d("GameTimer:stop", "call");
         if (!this.state && !this.stopped) {
+            Log.d("GameTimer:stop", "Already paused, not stopped");
             this.stopped = true;
             return;
         }
-        if (!this.state || this.stopped)
+        if (!this.state || this.stopped) {
+            Log.d("GameTimer:stop", "Already paused / stopped");
             return;
+        }
         this.state = false;
         this.stopped = true;
-        this.current += System.currentTimeMillis() - this.startedFrom;
+        long now = System.currentTimeMillis();
+        Log.v("GameTimer:pause", "Current Time - " + now);
+        Log.v("GameTimer:pause", "Started from - " + this.startedFrom);
+        Log.v("GameTimer:pause", "Current Total - " + this.current);
+        this.current += now - this.startedFrom;
+        Log.v("GameTimer:pause", "Current Total After - " + this.current);
         this.startedFrom = 0;
     }
 
@@ -90,11 +104,18 @@ public class GameTimer {
      */
     protected void pause() {
         Log.d("GameTimer:pause", "call");
-        if (!this.state || this.stopped)
+        if (!this.state || this.stopped) {
+            Log.d("GameTimer:pause", "Already paused / stopped");
             return;
+        }
         this.state = false;
         this.stopped = false;
-        this.current += System.currentTimeMillis() - this.startedFrom;
+        long now = System.currentTimeMillis();
+        Log.v("GameTimer:pause", "Current Time - " + now);
+        Log.v("GameTimer:pause", "Started from - " + this.startedFrom);
+        Log.v("GameTimer:pause", "Current Total - " + this.current);
+        this.current += now - this.startedFrom;
+        Log.v("GameTimer:pause", "Current Total After - " + this.current);
         this.startedFrom = 0;
     }
 
@@ -106,6 +127,7 @@ public class GameTimer {
     protected String getFormatted() {
         Log.v("GameTimer:getFormatted", "call");
         long time = this.getRaw();
+        Log.v("GameTimer:getFormatted", "Time - " + time);
         return String.format(this.format, TimeUnit.MILLISECONDS.toMinutes(time),
                 TimeUnit.MILLISECONDS.toSeconds(time) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)),
                 time % 1000);
@@ -118,9 +140,13 @@ public class GameTimer {
      */
     protected long getRaw() {
         Log.v("GameTimer:getRaw", "call");
-        if (!this.state || this.stopped)
+        if (!this.state || this.stopped) {
+            Log.v("GameTimer:getRaw", "Static time returned - " + this.current);
             return this.current;
-        return this.current + (System.currentTimeMillis() - this.startedFrom);
+        }
+        long r = this.current + (System.currentTimeMillis() - this.startedFrom);
+        Log.v("GameTimer:getRaw", "Moving time returned - " + r);
+        return r;
     }
 
 }
