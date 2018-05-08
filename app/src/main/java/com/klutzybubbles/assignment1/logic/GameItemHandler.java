@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.klutzybubbles.assignment1.activities.GameView;
 import com.klutzybubbles.assignment1.activities.R;
+import com.klutzybubbles.assignment1.interfaces.OnGameFinished;
 
 import java.util.Random;
 
@@ -23,33 +24,31 @@ import java.util.Random;
 
 public class GameItemHandler extends BaseAdapter implements GridView.OnItemClickListener {
 
-    private static final int MAX_SIZE = 6;
-    private static final int MIN_SIZE = 1;
-
     private final GameItem[] items;
     private final GameItem next;
 
-    private final int size;
+    private final int size, difficulty;
     private int count = 0, start;
     private int[] blocks;
 
     private boolean gameState = false;
     private boolean paused = false;
 
-    private final GameView parent;
-
     private final GameTimer timer;
 
-    public GameItemHandler(GameView parent, Context context, int size, int start) {
+    private OnGameFinished listener = null;
+
+    public GameItemHandler(Context context, int size, int difficulty) {
         super();
         Log.d("GIH:CONSTRUCT", "call");
-        if (size > GameItemHandler.MAX_SIZE || context == null)
-            throw new IllegalArgumentException("Grid size can not be bigger than the MAX");
-        if (size < GameItemHandler.MIN_SIZE || parent == null)
-            throw new IllegalArgumentException("Grid size can not be smaller than the MIN");
+        if (context == null)
+            throw new IllegalArgumentException("Context parsed cannot be null");
+        if (size > GameView.MAX_SIZE)
+            throw new IllegalArgumentException(context.getString(R.string.error_grid_max));
+        if (size < GameView.MIN_SIZE)
+            throw new IllegalArgumentException(context.getString(R.string.error_grid_min));
         this.size = size;
-        this.start = start;
-        this.parent = parent;
+        this.start = this.difficulty = difficulty;
         int temp = this.size * this.size;
         Log.d("GIH:CONSTRUCT", "size - " + this.size);
         Log.d("GIH:CONSTRUCT", "count - " + temp);
@@ -284,17 +283,19 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         this.paused = false;
         this.timer.stop();
         this.next.setStateOverride(0);
-        switch (cause) {
-            case 1:
-                this.parent.onSuccess();
-                break;
-            case 2:
-                this.parent.onFail();
-                break;
-            case -1:
-                break;
-            default:
-                this.parent.onEnd();
+        if (this.listener != null) {
+            switch (cause) {
+                case 1:
+                    this.listener.onSuccess(this.timer.getRaw(), this.size, this.difficulty);
+                    break;
+                case 2:
+                    this.listener.onFail(this.timer.getRaw(), this.size, this.difficulty);
+                    break;
+                case -1:
+                    break;
+                default:
+                    this.listener.onEnd(this.timer.getRaw(), this.size, this.difficulty);
+            }
         }
     }
 
@@ -321,6 +322,10 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     public GameItem getNextItem() {
         return this.next;
+    }
+
+    public void setOnGameFinishedListener(OnGameFinished listener) {
+        this.listener = listener == null ? this.listener : listener;
     }
 
 }

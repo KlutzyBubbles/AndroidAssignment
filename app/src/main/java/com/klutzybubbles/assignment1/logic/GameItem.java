@@ -3,7 +3,6 @@ package com.klutzybubbles.assignment1.logic;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.util.Log;
@@ -86,7 +85,7 @@ public class GameItem extends View {
      * @return - The current state of the GameItem, should only ever be between 0 and 2
      */
     public int getState() {
-        Log.v("GameItem:getState", "call");
+        Log.v("GameItem:getState  ", "call");
         Log.d("GameItem:getState", "State - " + this.state);
         return this.state;
     }
@@ -135,16 +134,14 @@ public class GameItem extends View {
     public void highlight() {
         Log.v("GameItem:highlight", "call");
         final AnimationDrawable ad = new AnimationDrawable();
-        ad.addFrame(new ColorDrawable(GameItem.COLORS[this.getState()]), 400);
-        ad.addFrame(new ColorDrawable(GameItem.COLORS[3]), 400);
+        ad.addFrame(this.background, 400);
+        GradientDrawable highlight = new GradientDrawable();
+        highlight.setColor(GameItem.COLORS[4]);
+        highlight.setStroke(1, GameItem.COLORS[3]);
+        ad.addFrame(highlight, 400);
         ad.setOneShot(false);
         this.setBackground(ad);
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ad.start();
-            }
-        }, 100);
+        (new Handler()).postDelayed(ad::start, 100);
     }
 
     /**

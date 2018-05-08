@@ -10,24 +10,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by KlutzyBubbles on 3/05/2018.
+ * <h1>DatabaseHelper.java</h1>
+ * Class used to encapsulate all direct database interactions
+ *
+ * @author Lee Tzilantonis
+ * @version 1.0.0
+ * @since 7/5/2018
+ * @see SQLiteOpenHelper
  */
-
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    /**
+     * The name of the database to access
+     */
     private static final String NAME = "high_scores";
 
+    /**
+     * The name of the table(s) to access
+     */
     private static final String TABLE_SCORES = "scores";
+
+    /**
+     * The name of the column's stored within the table(s)
+     */
     private static final String COLUMN_ID = "id", COLUMN_TIME = "time", COLUMN_SET_ON = "set_on",
             COLUMN_SIZE = "size", COLUMN_DIFFICULTY = "difficulty";
 
+    /**
+     * Instantiates teh DatabaseHelper using the context and version for SQLiteOpenHelper
+     *
+     * @param context - The context for the helper to be created on
+     * @param version - The version to create the helper with
+     */
     public DatabaseHelper(Context context, int version) {
         super(context, DatabaseHelper.NAME, null, version);
     }
 
+    /**
+     * Listener for when the database is being created
+     *
+     * @param db - The SQLiteDatabase Object created
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.v("DBHelper:onCreate", "call");
+        Log.d("DBHelper:onCreate", "call");
         StringBuilder b = new StringBuilder("CREATE TABLE IF NOT EXISTS ");
         b.append(DatabaseHelper.TABLE_SCORES).append('(').append(COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ");
         b.append(COLUMN_TIME).append(" INTEGER NOT NULL, ");
@@ -38,25 +64,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(b.toString());
     }
 
+    /**
+     * Listener for when the database is being upgraded
+     *
+     * @param db - The SQLiteDatabase Object upgraded
+     * @param oldVersion - The previous database version
+     * @param newVersion - The requested database version
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.v("DBHelper:onUpgrade", "call");
+        Log.d("DBHelper:onUpgrade", "call");
         db.execSQL("DROP TABLE " + TABLE_SCORES);
         this.onCreate(db);
     }
 
+    /**
+     * Listener for when the database is being downgrades
+     *
+     * @param db - The SQLiteDatabase Object downgraded
+     * @param oldVersion - The previous database version
+     * @param newVersion - The requested database version
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.v("DBHelper:onDowngrade", "call");
-        if (oldVersion > newVersion) {
-            Log.v("DBHelper:onDowngrade", "New version is lower");
-            db.execSQL("DROP TABLE " + TABLE_SCORES);
-        }
+        Log.d("DBHelper:onDowngrade", "call");
+        db.execSQL("DROP TABLE " + TABLE_SCORES);
         this.onCreate(db);
     }
 
+    /**
+     * Inserts a record into the database with the setOn set to the current timestamp
+     *
+     * @param time - The time in milliseconds of the record
+     * @param size - The size of the records grid
+     * @param difficulty - The difficulty of the records game
+     */
     public void insert(long time, int size, int difficulty) {
-        Log.v("DBHelper:insert", "call");
+        Log.d("DBHelper:insert", "call");
         SQLiteDatabase db = this.getWritableDatabase();
         StringBuilder b = new StringBuilder("INSERT INTO ");
         b.append(DatabaseHelper.TABLE_SCORES).append(" (").append(COLUMN_TIME).append(',');
@@ -68,11 +112,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(b.toString());
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * Gets all records matching the criteria
+     *
+     * @param size - The size criteria
+     * @param difficulty - The difficulty criteria
+     * @return - List of RecordItem's with all records matching the criteria
+     */
     public List<RecordItem> getAllFrom(int size, int difficulty) {
-        Log.v("DBHelper:getAllFrom", "call");
-        Log.d("DBHelper:getAllFrom", "var size = " + size);
-        Log.d("DBHelper:getAllFrom", "var difficulty = " + difficulty);
+        Log.d("DBHelper:getAllFrom", "call");
+        Log.v("DBHelper:getAllFrom", "Size - " + size);
+        Log.v("DBHelper:getAllFrom", "Difficulty - " + difficulty);
         SQLiteDatabase db = this.getReadableDatabase();
         StringBuilder b = new StringBuilder("SELECT * FROM ");
         b.append(TABLE_SCORES).append(" WHERE ");
@@ -85,8 +135,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             Log.d("DBHelper:getAllFrom", "Moved to first");
             while (!c.isAfterLast()) {
-                Log.d("DBHelper:getAllFrom", "Current Position: " + c.getPosition());
-                rows.add(new RecordItem(c.getLong(c.getColumnIndex(COLUMN_TIME)), c.getLong(c.getColumnIndex(COLUMN_SET_ON))));
+                Log.v("DBHelper:getAllFrom", "Current Position: " + c.getPosition());
+                rows.add(new RecordItem(c.getLong(c.getColumnIndex(COLUMN_TIME)),
+                        c.getLong(c.getColumnIndex(COLUMN_SET_ON))));
                 c.moveToNext();
             }
         }

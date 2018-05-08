@@ -17,6 +17,9 @@
     <string name="help_doc">https://github.com/KlutzyBubbles/help-documents/raw/master/Help%20Document.pdf</string>
     <string name="shared_preferences">com.klutzybubbles.assignment1.preferences</string>
 
+    <string name="error_grid_min">Grid size can not be smaller than the MIN</string>
+    <string name="error_grid_max">Grid size can not be bigger than the MAX</string>
+
     <string name="title_activity_game_settings">Game Settings</string>
     <string name="title_activity_game_view">Time to play</string>
     <string name="title_activity_scoreboard_view">High Scores</string>

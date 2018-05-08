@@ -21,10 +21,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.klutzybubbles.assignment1.interfaces.OnGameFinished;
 import com.klutzybubbles.assignment1.logic.GameItemHandler;
 import com.klutzybubbles.assignment1.utils.DatabaseHelper;
 
-public class GameView extends AppCompatActivity {
+public class GameView extends AppCompatActivity implements OnGameFinished {
+
+    public static int MAX_SIZE = 6, MIN_SIZE = 1;
 
     private int size, difficulty;
 
@@ -63,8 +66,6 @@ public class GameView extends AppCompatActivity {
         GameItemHandler.refreshSettings(this.grid);
         this.text = findViewById(R.id.text_timer);
         this.newGame = findViewById(R.id.button_new_game);
-        System.out.println(this.getRequestedOrientation());
-        System.out.println(this.getResources().getConfiguration().orientation);
         this.grid.setNumColumns(this.size);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -103,7 +104,7 @@ public class GameView extends AppCompatActivity {
         Log.v("GameView:onCreate", "Height: " + height);
 
         this.grid.setLayoutParams(g);
-        this.initialStart();
+        this.createGridContainer();
         ((ViewGroup) findViewById(R.id.next_item)).addView(this.a.getNextItem());
     }
 
@@ -175,21 +176,10 @@ public class GameView extends AppCompatActivity {
             this.difficulty = (this.size * this.size - 1);
     }
 
-    public void initialStart() {
-        Log.d("GameView:initialStart", "call");
-        this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
-        GameItemHandler.refreshSettings(this.grid);
-        this.grid.setAdapter(a);
-        this.grid.setOnItemClickListener(a);
-    }
-
     public void onNewGameClick(View view) {
         Log.d("GameView:onNewGameClick", "call");
         this.a.stop(-1);
-        this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
-        GameItemHandler.refreshSettings(this.grid);
-        this.grid.setAdapter(a);
-        this.grid.setOnItemClickListener(a);
+        this.createGridContainer();
         ((ViewGroup) findViewById(R.id.next_item)).removeAllViews();
         ((ViewGroup) findViewById(R.id.next_item)).addView(this.a.getNextItem());
         this.newGame.setEnabled(false);
@@ -201,16 +191,31 @@ public class GameView extends AppCompatActivity {
 
     public void onRestartClick(MenuItem item) {
         Log.d("GameView:onRestartClick", "call");
-        this.noTimer = true;
         this.a.stop(0);
-        this.a = new GameItemHandler(this, this.grid.getContext(), this.size, this.difficulty);
-        GameItemHandler.refreshSettings(this.grid);
-        this.grid.setAdapter(a);
-        this.grid.setOnItemClickListener(a);
         (new Thread(new UpdateTime(this))).start();
     }
 
-    public void onFail() {
+    private void createGridContainer() {
+        Log.d("GameView:createGC", "call");
+        this.a = new GameItemHandler(this.grid.getContext(), this.size, this.difficulty);
+        GameItemHandler.refreshSettings(this.grid);
+        this.grid.setAdapter(a);
+        this.grid.setOnItemClickListener(a);
+        this.a.setOnGameFinishedListener(this);
+    }
+
+    @Override
+    public void onSuccess(long time, int size, int difficulty) {
+        Log.d("GameView:onSuccess", "call");
+        this.noTimer = true;
+        this.paused = true;
+        this.toastMessage(getString(R.string.text_win));
+        this.newGame.setEnabled(true);
+        this.db.insert(this.a.getTime(), this.size, this.difficulty);
+    }
+
+    @Override
+    public void onFail(long time, int size, int difficulty) {
         Log.d("GameView:onFail", "call");
         this.noTimer = true;
         this.paused = true;
@@ -218,17 +223,8 @@ public class GameView extends AppCompatActivity {
         this.newGame.setEnabled(true);
     }
 
-    public void onSuccess() {
-        Log.d("GameView:onSuccess", "call");
-        this.noTimer = true;
-        this.paused = true;
-        this.toastMessage(getString(R.string.text_win));
-        this.newGame.setEnabled(true);
-        this.db.insert(this.a.getTime(), this.size, this.difficulty);
-
-    }
-
-    public void onEnd() {
+    @Override
+    public void onEnd(long time, int size, int difficulty) {
         Log.d("GameView:onEnd", "call");
         this.noTimer = true;
         this.paused = true;
