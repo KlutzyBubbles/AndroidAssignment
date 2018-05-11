@@ -344,7 +344,6 @@
     </string-array>
 
     <string-array name="list_difficulty_names">
-        <item>New Born Brain</item>
         <item>Toddler Grade</item>
         <item>Easy</item>
         <item>Off-Putting</item>
@@ -354,7 +353,6 @@
     </string-array>
 
     <string-array name="list_difficulty">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -364,8 +362,6 @@
     </string-array>
 
     <string-array name="list_size_names">
-        <item>1 Click win</item>
-        <item>Impossible to lose</item>
         <item>Easy</item>
         <item>Thoughtful</item>
         <item>Annoying</item>
@@ -373,8 +369,6 @@
     </string-array>
 
     <string-array name="list_size">
-        <item>1</item>
-        <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
