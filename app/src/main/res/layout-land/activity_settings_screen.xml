@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/SplashTheme"
+    tools:context=".SplashScreen">
+
+    <!--
+    <fragment
+        android:name="com.klutzybubbles.assignment1.activities.GameSettings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/settings_fragment" />
+-->
+    <Button
+        android:id="@+id/button_home"
+        style="@android:style/Widget.Material.Button.Borderless"
+        android:layout_width="100dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/ic_dragable_right"
+        android:drawableEnd="@drawable/ic_home"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingBottom="5dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button_blank"
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/DarkViolet"
+        android:text="@string/pref_title_color_none"
+        app:layout_constraintEnd_toStartOf="@+id/button_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_color_a"
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/DarkViolet"
+        android:text="@string/pref_title_color_a"
+        app:layout_constraintEnd_toStartOf="@+id/button_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_blank" />
+
+    <Button
+        android:id="@+id/button_color_b"
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/DarkViolet"
+        android:text="@string/pref_title_color_b"
+        app:layout_constraintEnd_toStartOf="@+id/button_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_color_a" />
+
+    <Button
+        android:id="@+id/button_highlight"
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/DarkViolet"
+        android:text="@string/pref_title_color_highlight"
+        app:layout_constraintEnd_toStartOf="@+id/button_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_color_b" />
+
+    <Button
+        android:id="@+id/button_border"
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/DarkViolet"
+        android:text="@string/pref_title_color_border"
+        app:layout_constraintEnd_toStartOf="@+id/button_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_highlight" />
+
+    <Spinner
+        android:id="@+id/spinner_size"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/list_size"
+        android:spinnerMode="dialog"
+        android:prompt="@string/pref_title_size"
+        app:layout_constraintEnd_toStartOf="@+id/button_home"
+        app:layout_constraintStart_toEndOf="@+id/button_blank"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

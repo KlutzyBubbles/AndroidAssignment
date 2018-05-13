@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/item_restart"
-        android:icon="@drawable/ic_refresh_white_100dp"
+        android:icon="@drawable/ic_play_button"
         android:onClick="onRestartClick"
         android:title="@string/menu_restart"
         app:showAsAction="never|ifRoom" />

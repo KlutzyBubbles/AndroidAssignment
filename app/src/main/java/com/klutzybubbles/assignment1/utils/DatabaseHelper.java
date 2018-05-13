@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * The name of the column's stored within the table(s)
      */
     private static final String COLUMN_ID = "id", COLUMN_TIME = "time", COLUMN_SET_ON = "set_on",
-            COLUMN_SIZE = "size", COLUMN_DIFFICULTY = "difficulty";
+            COLUMN_SIZE = "size";
 
     /**
      * Instantiates teh DatabaseHelper using the context and version for SQLiteOpenHelper
@@ -58,8 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         b.append(DatabaseHelper.TABLE_SCORES).append('(').append(COLUMN_ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ");
         b.append(COLUMN_TIME).append(" INTEGER NOT NULL, ");
         b.append(COLUMN_SET_ON).append(" INTEGER NOT NULL, ");
-        b.append(COLUMN_SIZE).append(" INTEGER NOT NULL, ");
-        b.append(COLUMN_DIFFICULTY).append(" INTEGER NOT NULL)");
+        b.append(COLUMN_SIZE).append(" INTEGER NOT NULL)");
         Log.i("DBHelper:onCreate", "DB EXEC: " + b.toString());
         db.execSQL(b.toString());
     }
@@ -97,17 +96,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @param time - The time in milliseconds of the record
      * @param size - The size of the records grid
-     * @param difficulty - The difficulty of the records game
      */
-    public void insert(long time, int size, int difficulty) {
+    public void insert(long time, int size) {
         Log.d("DBHelper:insert", "call");
         SQLiteDatabase db = this.getWritableDatabase();
         StringBuilder b = new StringBuilder("INSERT INTO ");
         b.append(DatabaseHelper.TABLE_SCORES).append(" (").append(COLUMN_TIME).append(',');
         b.append(COLUMN_SIZE).append(',');
-        b.append(COLUMN_DIFFICULTY).append(',').append(COLUMN_SET_ON).append(") VALUES (");
+        b.append(COLUMN_SET_ON).append(") VALUES (");
         b.append(time).append(',').append(size).append(',');
-        b.append(difficulty).append(',').append(System.currentTimeMillis()).append(')');
+        b.append(System.currentTimeMillis()).append(')');
         Log.i("DBHelper:insert", "DB EXEC: " + b.toString());
         db.execSQL(b.toString());
     }
@@ -116,18 +114,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Gets all records matching the criteria
      *
      * @param size - The size criteria
-     * @param difficulty - The difficulty criteria
      * @return - List of RecordItem's with all records matching the criteria
      */
-    public List<RecordItem> getAllFrom(int size, int difficulty) {
+    public List<RecordItem> getAllFrom(int size) {
         Log.d("DBHelper:getAllFrom", "call");
         Log.v("DBHelper:getAllFrom", "Size - " + size);
-        Log.v("DBHelper:getAllFrom", "Difficulty - " + difficulty);
         SQLiteDatabase db = this.getReadableDatabase();
         StringBuilder b = new StringBuilder("SELECT * FROM ");
         b.append(TABLE_SCORES).append(" WHERE ");
-        b.append(COLUMN_SIZE).append('=').append(size).append(" AND ");
-        b.append(COLUMN_DIFFICULTY).append('=').append(difficulty);
+        b.append(COLUMN_SIZE).append('=').append(size);
         b.append(" ORDER BY ").append(COLUMN_TIME);
         Log.i("DBHelper:getAllFrom", "DB RAW: " + b.toString());
         Cursor c = db.rawQuery(b.toString(), null);

@@ -1,33 +1,35 @@
 package com.klutzybubbles.assignment1.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
 import com.klutzybubbles.assignment1.utils.DatabaseHelper;
 import com.klutzybubbles.assignment1.utils.RecordItem;
 import com.klutzybubbles.assignment1.utils.RecordListAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class ScoreboardView extends AppCompatActivity {
+public class ScoreboardView extends android.support.v4.app.Fragment {
 
-    private List<String> sizeValues, difficultyValues;
-
-    private int selectedSize = 3, selectedDifficulty = 4;
+    private int selectedSize = 3;
 
     private ProgressBar bar;
 
@@ -37,43 +39,53 @@ public class ScoreboardView extends AppCompatActivity {
 
     private RecordListAdapter a = new RecordListAdapter(new ArrayList<>());
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scoreboard_view);
+    private View view;
 
+    @Override
+    public View onCreateView(LayoutInflater i, ViewGroup g, Bundle b) {
+        if (this.view == null)
+            this.view = i.inflate(R.layout.activity_scoreboard_view, g, false);
+        return this.view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        /*
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(R.string.title_activity_scoreboard_view);
-        }
-        this.sizeValues = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.list_size)));
-        this.difficultyValues = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.list_difficulty)));
+        }*/
 
-        this.db = new DatabaseHelper(this, this.getResources().getInteger(R.integer.database_version));
-        this.bar = this.findViewById(R.id.loading);
-        this.list = this.findViewById(R.id.recycle_list);
+        if (this.view == null || this.getActivity() == null)
+            return;
+
+        this.db = new DatabaseHelper(this.view.getContext(), this.getResources().getInteger(R.integer.database_version));
+        this.bar = this.view.findViewById(R.id.loading);
+        this.list = this.view.findViewById(R.id.recycle_list);
 
         this.list.setAdapter(a);
         this.list.setItemAnimator(new DefaultItemAnimator());
-        this.list.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-        this.list.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        this.list.setLayoutManager(new LinearLayoutManager(this.view.getContext()));
+        this.list.addItemDecoration(new DividerItemDecoration(this.view.getContext(), LinearLayoutManager.VERTICAL));
 
-        Spinner size = this.findViewById(R.id.spinner_size);
-        Spinner difficulty = this.findViewById(R.id.spinner_difficulty);
+        Spinner size = this.view.findViewById(R.id.spinner_size);
 
-        size.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.list_size_names)))));
-        difficulty.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.list_difficulty_names)))));
+        String[] sizeNames = this.view.getResources().getStringArray(R.array.list_size);
+        SelectionAdapter a = new SelectionAdapter(this.getActivity(), R.layout.spinner_item, R.id.text_item, sizeNames);
+//size.setBackgroundColor(Color.BLACK);
+        //ArrayAdapter<String> a = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, sizeNames);
+        //a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        size.setAdapter(a);
 
-        size.setSelection(2);
-        difficulty.setSelection(4);
+        //size.setSelection(2);
 
         size.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedSize = Integer.parseInt(sizeValues.get(position));
+                selectedSize = Integer.parseInt(size.getSelectedItem().toString());
                 refresh();
             }
 
@@ -83,27 +95,25 @@ public class ScoreboardView extends AppCompatActivity {
             }
         });
 
-        difficulty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedDifficulty = Integer.parseInt(difficultyValues.get(position));
-                refresh();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                refresh();
-            }
-        });
+        OnNavigationClickListener l;
+        try {
+            l = (OnNavigationClickListener) this.getActivity();
+        } catch (ClassCastException e) {
+            return;
+        }
+        Button b = view.findViewById(R.id.button_home);
+        b.setOnClickListener(v -> l.onClick(SplashScreen.MAIN_MENU));
 
         this.refresh();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (this.getView() == null)
+            return false;
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            startActivity(new Intent(this, MainMenu.class));
+            startActivity(new Intent(this.getView().getContext(), MainMenu.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -112,9 +122,39 @@ public class ScoreboardView extends AppCompatActivity {
     public void refresh() {
         this.bar.setVisibility(View.VISIBLE);
         this.list.setVisibility(View.INVISIBLE);
-        this.a.setRecords(db.getAllFrom(this.selectedSize, this.selectedDifficulty));
-        this.list.setVisibility(View.VISIBLE);
-        this.bar.setVisibility(View.INVISIBLE);
+        final ScoreboardView inst = this;
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<RecordItem> items = db.getAllFrom(selectedSize);
+                inst.getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        a.setRecords(items);
+                        list.setVisibility(View.VISIBLE);
+                        bar.setVisibility(View.INVISIBLE);
+                    }
+                });
+            }
+        })).start();
+    }
+
+    private class SelectionAdapter extends ArrayAdapter<String> {
+
+        private final LayoutInflater inflater;
+
+        public SelectionAdapter(@NonNull Activity context, int resource, int textViewResourceId, @NonNull String[] objects) {
+            super(context, resource, textViewResourceId, objects);
+            this.inflater = context.getLayoutInflater();
+        }
+
+        @Override
+        public View getView(int pos, View view, ViewGroup group) {
+            View r = this.inflater.inflate(R.layout.spinner_item, null, false);
+            TextView item = r.findViewById(R.id.text_item);
+            item.setText(super.getItem(pos));
+            return r;
+        }
     }
 
 }

@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ScoreboardView">
 
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/title_activity_game_settings"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ic_scoreboard_background"
+        android:translationZ="-2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <ProgressBar
         android:id="@+id/loading"
         style="?android:attr/progressBarStyle"
@@ -18,25 +30,18 @@
 
     <Spinner
         android:id="@+id/spinner_size"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/spinner_difficulty"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_size" />
-
-    <Spinner
-        android:id="@+id/spinner_difficulty"
+        style="@style/SpinnerStyle"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:entries="@array/list_size"
+        android:foreground="@drawable/ic_arrow_down"
+        android:foregroundGravity="right|center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner_size"
-        app:layout_constraintTop_toBottomOf="@+id/text_difficulty" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_size" />
 
     <TextView
         android:id="@+id/text_size"
@@ -45,26 +50,66 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/pref_title_size"
+        android:textColor="@color/Gray"
         app:layout_constraintStart_toStartOf="@+id/spinner_size"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/text_difficulty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/pref_title_difficulty"
-        app:layout_constraintStart_toStartOf="@+id/spinner_difficulty"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_difficulty" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_size"
+        android:background="@android:color/transparent"/>
+
+    <Button
+        android:id="@+id/button_home"
+        style="@android:style/Widget.Material.Button.Borderless"
+        android:layout_width="100dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/ic_dragable_left"
+        android:drawableStart="@drawable/ic_home"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingBottom="5dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_all_records"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle_list_all"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/White"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/button_back"
+            style="@android:style/Widget.Material.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="88dp"
+            android:background="@color/RoyalBlue"
+            android:drawableBottom="@drawable/ic_arrow_back"
+            android:foreground="?attr/selectableItemBackground"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/recycle_list_all"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

@@ -16,27 +16,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.klutzybubbles.assignment1.interfaces.OnGameFinished;
+import com.klutzybubbles.assignment1.interfaces.OnGameFinishedListener;
 import com.klutzybubbles.assignment1.logic.GameItemHandler;
 import com.klutzybubbles.assignment1.utils.DatabaseHelper;
 
-public class GameView extends AppCompatActivity implements OnGameFinished {
+public class GameView extends AppCompatActivity implements OnGameFinishedListener {
 
     public static int MAX_SIZE = 6, MIN_SIZE = 1;
 
-    private int size, difficulty;
+    private int size;
 
     private GridView grid;
     private TextView text;
 
     private GameItemHandler a;
 
-    private Button newGame;
+    private ImageButton newGame;
 
     private boolean paused = false, noTimer = true;
 
@@ -147,7 +147,7 @@ public class GameView extends AppCompatActivity implements OnGameFinished {
             this.a.stop(0);
             this.paused = true;
             this.db.close();
-            startActivity(new Intent(this.getBaseContext(), MainMenu.class));
+            startActivity(new Intent(this.getBaseContext(), SplashScreen.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -167,13 +167,10 @@ public class GameView extends AppCompatActivity implements OnGameFinished {
         Log.d("GameView:loadSettings", "call");
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
         try {
-            this.difficulty = Integer.parseInt(s.getString(getString(R.string.pref_key_difficulty), getString(R.string.pref_default_general)));
-            this.size = Integer.parseInt(s.getString(getString(R.string.pref_key_size), getString(R.string.pref_default_general)));
+            this.size = Integer.parseInt(s.getString(getString(R.string.pref_key_size), getString(R.string.pref_default_size)));
         } catch (NumberFormatException e) {
             Log.w("GameView:loadSettings", "Size or Difficulty isn't a number");
         }
-        if (this.difficulty >= this.size * this.size)
-            this.difficulty = (this.size * this.size - 1);
     }
 
     public void onNewGameClick(View view) {
@@ -197,7 +194,7 @@ public class GameView extends AppCompatActivity implements OnGameFinished {
 
     private void createGridContainer() {
         Log.d("GameView:createGC", "call");
-        this.a = new GameItemHandler(this.grid.getContext(), this.size, this.difficulty);
+        this.a = new GameItemHandler(this.grid.getContext(), this.size);
         GameItemHandler.refreshSettings(this.grid);
         this.grid.setAdapter(a);
         this.grid.setOnItemClickListener(a);
@@ -205,17 +202,17 @@ public class GameView extends AppCompatActivity implements OnGameFinished {
     }
 
     @Override
-    public void onSuccess(long time, int size, int difficulty) {
+    public void onSuccess(long time, int size) {
         Log.d("GameView:onSuccess", "call");
         this.noTimer = true;
         this.paused = true;
         this.toastMessage(getString(R.string.text_win));
         this.newGame.setEnabled(true);
-        this.db.insert(this.a.getTime(), this.size, this.difficulty);
+        this.db.insert(this.a.getTime(), this.size);
     }
 
     @Override
-    public void onFail(long time, int size, int difficulty) {
+    public void onFail(long time, int size) {
         Log.d("GameView:onFail", "call");
         this.noTimer = true;
         this.paused = true;
@@ -224,7 +221,7 @@ public class GameView extends AppCompatActivity implements OnGameFinished {
     }
 
     @Override
-    public void onEnd(long time, int size, int difficulty) {
+    public void onEnd(long time, int size) {
         Log.d("GameView:onEnd", "call");
         this.noTimer = true;
         this.paused = true;

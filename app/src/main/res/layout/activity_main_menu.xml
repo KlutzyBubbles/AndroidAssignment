@@ -7,44 +7,67 @@
     android:id="@+id/main_constraint"
     tools:context="com.klutzybubbles.assignment1.activities.MainMenu">
 
-    <Button
-        android:id="@+id/button_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/menu_game"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/game_title"
+        app:layout_constraintBottom_toTopOf="@+id/button_game"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_high_scores"
+    <ImageButton
+        android:id="@+id/button_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/menu_high_scores"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/new_game_button"
+        android:src="@drawable/ic_play_button"
+        android:transitionName="play"
+        app:layout_constraintBottom_toTopOf="@+id/button_help"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_game" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button_high_scores"
+        style="@android:style/Widget.Material.Button.Borderless"
+        android:layout_width="100dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/ic_dragable_right"
+        android:drawableEnd="@drawable/ic_scoreboard"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingBottom="5dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/button_help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/menu_help"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_high_scores" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_settings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/menu_settings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_help" />
+        style="@android:style/Widget.Material.Button.Borderless"
+        android:layout_width="100dp"
+        android:layout_height="88dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/ic_dragable_left"
+        android:drawableStart="@drawable/ic_settings"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingBottom="5dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

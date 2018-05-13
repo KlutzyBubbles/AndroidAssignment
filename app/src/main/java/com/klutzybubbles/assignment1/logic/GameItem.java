@@ -39,6 +39,8 @@ public class GameItem extends View {
      */
     private int state = 0;
 
+    private static int stroke = 10;
+
     /**
      * Instantiates the GameItem with a default state (0)
      *
@@ -110,7 +112,7 @@ public class GameItem extends View {
         Log.d("GameItem:update", "Background color - " + GameItem.COLORS[this.state]);
         this.background.setColor(GameItem.COLORS[this.state]);
         Log.d("GameItem:update", "Border color - " + GameItem.COLORS[3]);
-        this.background.setStroke(1, GameItem.COLORS[3]);
+        this.background.setStroke(GameItem.stroke, GameItem.COLORS[3]);
     }
 
     /**
@@ -142,6 +144,15 @@ public class GameItem extends View {
         ad.setOneShot(false);
         this.setBackground(ad);
         (new Handler()).postDelayed(ad::start, 100);
+    }
+
+    public static void setStroke(int stroke) {
+        if (stroke >= 0)
+            GameItem.stroke = stroke;
+    }
+
+    public static int getStroke() {
+        return GameItem.stroke;
     }
 
     /**

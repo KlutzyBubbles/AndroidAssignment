@@ -15,19 +15,11 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".MainMenu"
-            android:label="@string/title_activity_main_menu"/>
-        <activity
             android:name=".GameView"
             android:label="@string/title_activity_game_view" />
-        <activity
-            android:name=".ScoreboardView"
-            android:label="@string/title_activity_scoreboard_view" />
-        <activity
-            android:name=".GameSettings"
-            android:label="@string/title_activity_game_settings" />
         <activity android:name=".SplashScreen"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

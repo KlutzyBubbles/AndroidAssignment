@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.klutzybubbles.assignment1.activities.GameView;
 import com.klutzybubbles.assignment1.activities.R;
-import com.klutzybubbles.assignment1.interfaces.OnGameFinished;
+import com.klutzybubbles.assignment1.interfaces.OnGameFinishedListener;
 
 import java.util.Random;
 
@@ -24,11 +24,13 @@ import java.util.Random;
 
 public class GameItemHandler extends BaseAdapter implements GridView.OnItemClickListener {
 
+    private static final int START = 4;
+
     private final GameItem[] items;
     private final GameItem next;
 
-    private final int size, difficulty;
-    private int count = 0, start;
+    private final int size;
+    private int count = 0;
     private int[] blocks;
 
     private boolean gameState = false;
@@ -36,9 +38,9 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     private final GameTimer timer;
 
-    private OnGameFinished listener = null;
+    private OnGameFinishedListener listener = null;
 
-    public GameItemHandler(Context context, int size, int difficulty) {
+    public GameItemHandler(Context context, int size) {
         super();
         Log.d("GIH:CONSTRUCT", "call");
         if (context == null)
@@ -48,7 +50,6 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         if (size < GameView.MIN_SIZE)
             throw new IllegalArgumentException(context.getString(R.string.error_grid_min));
         this.size = size;
-        this.start = this.difficulty = difficulty;
         int temp = this.size * this.size;
         Log.d("GIH:CONSTRUCT", "size - " + this.size);
         Log.d("GIH:CONSTRUCT", "count - " + temp);
@@ -65,8 +66,8 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         this.next = new GameItem(context);
         int index;
         Random r = new Random();
-        for (int i = normal.length - 1; i > this.start; i--) {
-            index = r.nextInt((i - this.start) + 1) + this.start;
+        for (int i = normal.length - 1; i > GameItemHandler.START; i--) {
+            index = r.nextInt((i - GameItemHandler.START) + 1) + GameItemHandler.START;
             temp = normal[index];
             normal[index] = normal[i];
             normal[i] = temp;
@@ -77,12 +78,11 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     private void placeStarters() {
         Log.v("GIH:placeStarters", "call");
-        if (this.start == 0)
+        if (this.count > 0)
             return;
-        int temp = this.start;
+        int temp = GameItemHandler.START;
         Random r = new Random();
         for (int i = 0; i < temp; i++) {
-            this.start--;
             Log.v("GIH:placeStarters", "length - " + this.blocks.length);
             Log.v("GIH:placeStarters", "count - " + this.count);
             Log.v("GIH:placeStarters", "start - " + temp);
@@ -264,7 +264,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         this.paused = false;
         this.next.setStateOverride(this.blocks[count]);
         this.timer.start();
-        if (!this.gameState || (this.start != 0 && this.count == 0))
+        if (!this.gameState || this.count == 0)
             this.placeStarters();
         System.err.println("Next: " + this.blocks[count]);
     }
@@ -286,15 +286,15 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         if (this.listener != null) {
             switch (cause) {
                 case 1:
-                    this.listener.onSuccess(this.timer.getRaw(), this.size, this.difficulty);
+                    this.listener.onSuccess(this.timer.getRaw(), this.size);
                     break;
                 case 2:
-                    this.listener.onFail(this.timer.getRaw(), this.size, this.difficulty);
+                    this.listener.onFail(this.timer.getRaw(), this.size);
                     break;
                 case -1:
                     break;
                 default:
-                    this.listener.onEnd(this.timer.getRaw(), this.size, this.difficulty);
+                    this.listener.onEnd(this.timer.getRaw(), this.size);
             }
         }
     }
@@ -324,7 +324,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         return this.next;
     }
 
-    public void setOnGameFinishedListener(OnGameFinished listener) {
+    public void setOnGameFinishedListener(OnGameFinishedListener listener) {
         this.listener = listener == null ? this.listener : listener;
     }
 
