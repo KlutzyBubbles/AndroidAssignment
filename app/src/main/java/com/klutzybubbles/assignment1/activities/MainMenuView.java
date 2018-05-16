@@ -10,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.SimpleShowcaseEventListener;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
 
 public class MainMenuView extends android.support.v4.app.Fragment {
@@ -80,18 +78,13 @@ public class MainMenuView extends android.support.v4.app.Fragment {
                 Intent i = new Intent(view.getContext(), GameView.class);
                 ActivityOptionsCompat o = ActivityOptionsCompat.makeSceneTransitionAnimation(a, game, "play");
                 startActivity(i, o.toBundle());
-                /*
-                Intent i = new Intent(view.getContext(), GameView.class);
-                ActivityOptionsCompat o = ActivityOptionsCompat.makeSceneTransitionAnimation(a, b, "play");
-                startActivity(i, o.toBundle());
-                */
             });
             Button high = view.findViewById(R.id.button_high_scores);
             high.setOnClickListener(v -> l.onClick(SplashScreen.SCOREBOARD));
             Button settings = view.findViewById(R.id.button_settings);
             settings.setOnClickListener(v -> l.onClick(SplashScreen.SETTINGS));
 
-            Button help = view.findViewById(R.id.button_help);
+            ImageButton help = view.findViewById(R.id.button_help);
 
             targets[0] = game;
             targets[1] = settings;
@@ -108,48 +101,20 @@ public class MainMenuView extends android.support.v4.app.Fragment {
             text[3][1] = "Now that you are familiar with the main menu, feel free to play or look out for this icon for help";
 
             help.setOnClickListener(v -> {
-                if (!isRunning) {
-                    isRunning = true;
-                    tutorial();
-                }
+                TapTargetSequence seq = new TapTargetSequence(this.getActivity());
+                for (int i = 0; i < targets.length; i++)
+                    seq.target(TapTarget.forView(targets[i], text[i][0], text[i][1])
+                            .cancelable(true)
+                            .transparentTarget(true)
+                            .textColor(R.color.White)
+                            .outerCircleColor(R.color.RoyalBlue)
+                            .outerCircleAlpha(0.95F)
+                            .targetRadius(70)
+                            .drawShadow(true)
+                            .dimColor(R.color.Black));
+                seq.continueOnCancel(true).considerOuterCircleCanceled(true);
+                seq.start();
             });
         }
     }
-
-    private void tutorial() {
-        if (this.currentTut >= 4) {
-            this.currentTut = 0;
-            this.isRunning = false;
-        } else if (this.isRunning) {
-            ShowcaseView sv = new ShowcaseView.Builder(getActivity())
-                    .withMaterialShowcase()
-                    .setStyle(this.currentTut == 3 ? R.style.MaterialShowcase_LetsGo : R.style.MaterialShowcase_GotIt)
-                    .setTarget(new ViewTarget(this.targets[this.currentTut]))
-                    .hideOnTouchOutside()
-                    .setContentTitle(this.text[this.currentTut][0])
-                    .setContentText(this.text[this.currentTut][1])
-                    .blockAllTouches()
-                    .setShowcaseEventListener(new SimpleShowcaseEventListener() {
-                        @Override
-                        public void onShowcaseViewDidHide(ShowcaseView view) {
-                            currentTut++;
-                            tutorial();
-                        }
-                    })
-                    .build();
-            if (this.currentTut == 2) {
-                RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                lps.setMargins(margin, margin, margin, margin);
-                sv.setButtonPosition(lps);
-            }
-            sv.setStyle(this.currentTut == 3 ? R.style.MaterialShowcase_LetsGo : R.style.MaterialShowcase_GotIt);
-            sv.setAlpha(0);
-            sv.show();
-            targets[this.currentTut].bringToFront();
-        }
-    }
-
 }

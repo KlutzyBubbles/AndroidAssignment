@@ -105,7 +105,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_check_circle_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_help_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -115,13 +115,13 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="height" value="100" />
-                            <entry key="opacityPercent" value="0" />
-                            <entry key="outputName" value="ic_circle_transparent" />
+                            <entry key="color" value="666666" />
+                            <entry key="height" value="60" />
+                            <entry key="opacityPercent" value="75" />
+                            <entry key="outputName" value="ic_help" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\ltzil" />
-                            <entry key="width" value="100" />
+                            <entry key="width" value="60" />
                           </map>
                         </option>
                       </PersistentState>
