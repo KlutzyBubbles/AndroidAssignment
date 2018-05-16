@@ -32,7 +32,7 @@ public class GameTimer {
     /**
      * The current state of the GameTimer, paused or running
      */
-    private boolean state = false;
+    private boolean paused = false;
 
     /**
      * The current end state of the GameTimer, stopped or running
@@ -65,13 +65,13 @@ public class GameTimer {
      */
     protected void start() {
         Log.d("GameTimer:start", "call");
-        if (state)
+        if (paused)
             return;
         if (stopped)
             this.current = 0;
         this.startedFrom = System.currentTimeMillis();
         this.stopped = false;
-        this.state = true;
+        this.paused = true;
     }
 
     /**
@@ -79,16 +79,16 @@ public class GameTimer {
      */
     protected void stop() {
         Log.d("GameTimer:stop", "call");
-        if (!this.state && !this.stopped) {
+        if (!this.paused && !this.stopped) {
             Log.d("GameTimer:stop", "Already paused, not stopped");
             this.stopped = true;
             return;
         }
-        if (!this.state || this.stopped) {
+        if (!this.paused || this.stopped) {
             Log.d("GameTimer:stop", "Already paused / stopped");
             return;
         }
-        this.state = false;
+        this.paused = false;
         this.stopped = true;
         long now = System.currentTimeMillis();
         Log.v("GameTimer:pause", "Current Time - " + now);
@@ -104,11 +104,11 @@ public class GameTimer {
      */
     protected void pause() {
         Log.d("GameTimer:pause", "call");
-        if (!this.state || this.stopped) {
+        if (!this.paused || this.stopped) {
             Log.d("GameTimer:pause", "Already paused / stopped");
             return;
         }
-        this.state = false;
+        this.paused = false;
         this.stopped = false;
         long now = System.currentTimeMillis();
         Log.v("GameTimer:pause", "Current Time - " + now);
@@ -140,13 +140,22 @@ public class GameTimer {
      */
     protected long getRaw() {
         Log.v("GameTimer:getRaw", "call");
-        if (!this.state || this.stopped) {
+        if (!this.paused || this.stopped) {
             Log.v("GameTimer:getRaw", "Static time returned - " + this.current);
             return this.current;
         }
         long r = this.current + (System.currentTimeMillis() - this.startedFrom);
         Log.v("GameTimer:getRaw", "Moving time returned - " + r);
         return r;
+    }
+
+    public void setTime(long timeProgressed) {
+        if (this.stopped)
+            this.stopped = false;
+        this.startedFrom = System.currentTimeMillis();
+        if (this.paused)
+            this.startedFrom = 0;
+        this.current = timeProgressed;
     }
 
 }

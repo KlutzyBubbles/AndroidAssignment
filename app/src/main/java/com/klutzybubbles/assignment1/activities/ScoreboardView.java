@@ -113,7 +113,7 @@ public class ScoreboardView extends android.support.v4.app.Fragment {
             return false;
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            startActivity(new Intent(this.getView().getContext(), MainMenu.class));
+            startActivity(new Intent(this.getView().getContext(), MainMenuView.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

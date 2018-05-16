@@ -104,16 +104,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_highlight" />
 
-    <Spinner
-        android:id="@+id/spinner_size"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintEnd_toStartOf="@+id/button_home"
+    <TextView
+        android:id="@+id/title_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/pref_title_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_border" />
+
+    <RadioGroup
+        android:id="@+id/size_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:checkedButton="@+id/radio_size_3"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/button_border"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_size">
+
+        <RadioButton
+            android:id="@+id/radio_size_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/pref_display_size_3" />
+
+        <RadioButton
+            android:id="@+id/radio_size_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/pref_display_size_4" />
+
+        <RadioButton
+            android:id="@+id/radio_size_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/pref_display_size_5" />
+
+        <RadioButton
+            android:id="@+id/radio_size_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="@string/pref_display_size_6" />
+    </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>

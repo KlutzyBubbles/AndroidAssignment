@@ -47,6 +47,11 @@
     <string name="pref_key_highlight">highlight</string>
     <string name="pref_key_border">border</string>
 
+    <string name="pref_display_size_3">3x3</string>
+    <string name="pref_display_size_4">4x4</string>
+    <string name="pref_display_size_5">5x5</string>
+    <string name="pref_display_size_6">6x6</string>
+
     <string name="pref_default_size">3</string>
     <string name="pref_default_blank">#FFFFFF</string>
     <string name="pref_default_color_a">#0082c8</string>

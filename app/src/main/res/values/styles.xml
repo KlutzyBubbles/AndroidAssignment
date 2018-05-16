@@ -31,6 +31,10 @@
     </style>
 
     <style name="MaterialShowcase" parent="ShowcaseView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:fillAlpha">0</item>
+        <item name="android:alpha">0.5</item>
         <item name="sv_backgroundColor">#e51249d9</item>
         <item name="sv_showcaseColor">#25467A</item>
         <item name="sv_buttonText">Close</item>
@@ -93,6 +97,7 @@
         <item name="android:strokeWidth">1</item>
         <item name="android:strokeColor">@color/Black</item>
         <item name="android:strokeAlpha">0.75</item>
+        <item name="background">@color/spinner_background</item>
         <item name="android:radius">5dp</item>
     </style>
 

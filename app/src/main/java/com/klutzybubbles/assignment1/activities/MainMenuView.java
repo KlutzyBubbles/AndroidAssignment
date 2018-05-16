@@ -17,7 +17,7 @@ import com.github.amlcurran.showcaseview.SimpleShowcaseEventListener;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
 
-public class MainMenu extends android.support.v4.app.Fragment {
+public class MainMenuView extends android.support.v4.app.Fragment {
 
     private View view;
 
@@ -121,7 +121,7 @@ public class MainMenu extends android.support.v4.app.Fragment {
             this.currentTut = 0;
             this.isRunning = false;
         } else if (this.isRunning) {
-            ShowcaseView sv = new ShowcaseView.Builder(this.getActivity())
+            ShowcaseView sv = new ShowcaseView.Builder(getActivity())
                     .withMaterialShowcase()
                     .setStyle(this.currentTut == 3 ? R.style.MaterialShowcase_LetsGo : R.style.MaterialShowcase_GotIt)
                     .setTarget(new ViewTarget(this.targets[this.currentTut]))
@@ -145,6 +145,10 @@ public class MainMenu extends android.support.v4.app.Fragment {
                 lps.setMargins(margin, margin, margin, margin);
                 sv.setButtonPosition(lps);
             }
+            sv.setStyle(this.currentTut == 3 ? R.style.MaterialShowcase_LetsGo : R.style.MaterialShowcase_GotIt);
+            sv.setAlpha(0);
+            sv.show();
+            targets[this.currentTut].bringToFront();
         }
     }
 

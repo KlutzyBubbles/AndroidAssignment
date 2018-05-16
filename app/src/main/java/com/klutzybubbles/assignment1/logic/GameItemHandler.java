@@ -27,16 +27,16 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     private static final int START = 4;
 
     private final GameItem[] items;
-    private final GameItem next;
+    private final GameItem nextItem;
 
     private final int size;
-    private int count = 0;
-    private int[] blocks;
+    private int current = 0;
+    private int[] nextItems;
 
-    private boolean gameState = false;
+    private boolean stopped = false;
     private boolean paused = false;
 
-    private final GameTimer timer;
+    private final GameTimer timer = new GameTimer();
 
     private OnGameFinishedListener listener = null;
 
@@ -62,8 +62,8 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
             normal[i] = temp;
             temp = temp == 2 ? 1 : 2;
         }
-        this.blocks = normal;
-        this.next = new GameItem(context);
+        this.nextItems = normal;
+        this.nextItem = new GameItem(context);
         int index;
         Random r = new Random();
         for (int i = normal.length - 1; i > GameItemHandler.START; i--) {
@@ -72,21 +72,20 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
             normal[index] = normal[i];
             normal[i] = temp;
         }
-        this.blocks = normal;
-        this.timer = new GameTimer();
+        this.nextItems = normal;
     }
 
     private void placeStarters() {
         Log.v("GIH:placeStarters", "call");
-        if (this.count > 0)
+        if (this.current > 0)
             return;
         int temp = GameItemHandler.START;
         Random r = new Random();
         for (int i = 0; i < temp; i++) {
-            Log.v("GIH:placeStarters", "length - " + this.blocks.length);
-            Log.v("GIH:placeStarters", "count - " + this.count);
+            Log.v("GIH:placeStarters", "length - " + this.nextItems.length);
+            Log.v("GIH:placeStarters", "count - " + this.current);
             Log.v("GIH:placeStarters", "start - " + temp);
-            int slot = r.nextInt(this.blocks.length - this.count) + 1;
+            int slot = r.nextInt(this.nextItems.length - this.current) + 1;
             Log.v("GIH:placeStarters", "slot - " + slot);
             int c = 0;
             jj:for (int j = 0; j < slot; j++) {
@@ -113,7 +112,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.v("GIH:onItemClick", "call");
-        if (!this.gameState)
+        if (!this.stopped)
             return;
         Log.v("GIH:onItemClick", "after call");
         GameItem g = null;
@@ -134,10 +133,10 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         if (g != null && g.canClick()) {
             Log.v("GIH:onItemClick", "Not null and can click");
             try {
-                int state = this.blocks[count];
+                int state = this.nextItems[current];
                 g.setState(state);
-                count++;
-                this.next.setStateOverride(this.getNext());
+                current++;
+                this.nextItem.setStateOverride(this.getNext());
                 // top
                 if (position >= this.size * 2) {
                     Log.v("GIH:onItemClick", "top");
@@ -260,18 +259,18 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     public void start() {
         Log.d("GIH:start", "call");
-        this.gameState = true;
+        this.stopped = true;
         this.paused = false;
-        this.next.setStateOverride(this.blocks[count]);
+        this.nextItem.setStateOverride(this.nextItems[current]);
         this.timer.start();
-        if (!this.gameState || this.count == 0)
+        if (!this.stopped || this.current == 0)
             this.placeStarters();
-        System.err.println("Next: " + this.blocks[count]);
+        System.err.println("Next: " + this.nextItems[current]);
     }
 
     public void pause() {
         Log.d("GIH:pause", "call");
-        if (this.gameState && !this.paused) {
+        if (this.stopped && !this.paused) {
             this.paused = true;
             this.timer.pause();
         }
@@ -279,10 +278,10 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     public void stop(int cause) {
         Log.d("GIH:stop", "call");
-        this.gameState = false;
+        this.stopped = false;
         this.paused = false;
         this.timer.stop();
-        this.next.setStateOverride(0);
+        this.nextItem.setStateOverride(0);
         if (this.listener != null) {
             switch (cause) {
                 case 1:
@@ -312,20 +311,117 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     private int getNext() {
         Log.d("GIH:getNext", "call");
-        if (this.blocks.length <= this.count) {
+        if (this.nextItems.length <= this.current) {
             Log.i("GIH:getNext", "RETURN: 0 (Default)");
             return 0;
         }
-        Log.i("GIH:getNext", "RETURN: " + this.blocks[count]);
-        return this.blocks[count];
+        Log.i("GIH:getNext", "RETURN: " + this.nextItems[current]);
+        return this.nextItems[current];
     }
 
     public GameItem getNextItem() {
-        return this.next;
+        return this.nextItem;
     }
 
     public void setOnGameFinishedListener(OnGameFinishedListener listener) {
         this.listener = listener == null ? this.listener : listener;
+    }
+
+    public int[] getItems() {
+        if (this.items == null)
+            return GameItemHandler.genBlankItems(this.size);
+        int[] temp = new int[this.items.length];
+        for (int i = 0; i < this.items.length; i++) {
+            temp[i] = this.items[i].getState();
+        }
+        return temp;
+    }
+
+    public int[] getNextItems() {
+        return this.nextItems;
+    }
+
+    public boolean isStopped() {
+        return this.stopped;
+    }
+
+    public boolean isPaused() {
+        return this.paused;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
+    private void pushState() {
+        if (this.stopped)
+            this.stop(0);
+        else if (this.paused)
+            this.pause();
+        else
+            this.start();
+    }
+
+    public static GameItemHandler fromState(Context c, int size, long time, int[] items, int[] nextItems, boolean paused, boolean stopped) {
+        if (items.length != nextItems.length || c == null || size < GameView.MIN_SIZE || size > GameView.MAX_SIZE)
+            throw new IllegalArgumentException("Cannot create GameItemHandler from state with invalid variables");
+        GameItemHandler g = new GameItemHandler(c, size);
+        g.timer.setTime(time);
+        g.nextItems = nextItems;
+        g.paused = paused;
+        g.stopped = stopped;
+        int total = 0;
+        for (int item : items) {
+            if (item == 1 || item == 2)
+                total++;
+        }
+        g.current = total;
+        int last = -1;
+        int count = 0;
+        for (int item : items) {
+            if (count == total && item == 0)
+                break;
+            last++;
+            if (item == 1 || item == 2)
+                count++;
+        }
+        for (int i = 0; i < items.length; i++) {
+            g.items[i].setStateOverride(items[i]);
+            if (i == last)
+                g.onItemClick(null, g.items[i], i, g.items[i].getId());
+        }
+        g.pushState();
+        return g;
+    }
+
+    public static int[] genBlankItems(int size) {
+        int[] normal = new int[size * size];
+        for (int i = 0; i < normal.length; i++) {
+            normal[i] = 0;
+        }
+        return normal;
+    }
+
+    private static int[] genSequentialItems(int size) {
+        int[] normal = new int[size * size];
+        int temp = 2;
+        for (int i = 0; i < normal.length; i++) {
+            normal[i] = temp;
+            temp = temp == 2 ? 1 : 2;
+        }
+        return normal;
+    }
+
+    public static int[] genRandomItems(int size) {
+        int[] normal = GameItemHandler.genSequentialItems(size);
+        Random r = new Random();
+        for (int i = normal.length - 1; i > GameItemHandler.START; i--) {
+            int index = r.nextInt((i - GameItemHandler.START) + 1) + GameItemHandler.START;
+            int temp = normal[index];
+            normal[index] = normal[i];
+            normal[i] = temp;
+        }
+        return normal;
     }
 
 }

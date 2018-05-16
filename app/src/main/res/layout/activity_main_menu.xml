@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main_constraint"
-    tools:context="com.klutzybubbles.assignment1.activities.MainMenu">
+    tools:context="com.klutzybubbles.assignment1.activities.MainMenuView">
 
     <ImageView
         android:id="@+id/imageView"

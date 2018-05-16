@@ -1,6 +1,8 @@
 package com.klutzybubbles.assignment1.activities;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -9,14 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioGroup;
 
 import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
 
 import java.util.ArrayList;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
+import petrov.kristiyan.colorpicker.ColorUtils;
 
-public class GameSettingsHolder extends android.support.v4.app.Fragment {
+public class GameSettingsView extends android.support.v4.app.Fragment {
 
     private View view;
 
@@ -65,7 +69,7 @@ public class GameSettingsHolder extends android.support.v4.app.Fragment {
         colors.add("#000000");
 
         final SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        s.edit().clear().commit();
+        //s.edit().clear().commit();
 
         /*
         final ColorPicker c = new ColorPicker(this.getActivity());
@@ -183,8 +187,8 @@ public class GameSettingsHolder extends android.support.v4.app.Fragment {
         if (this.view != null) {
             Button b = view.findViewById(R.id.button_home);
             b.setOnClickListener(v -> l.onClick(SplashScreen.MAIN_MENU));
-            b = view.findViewById(R.id.button_blank);
-            b.setOnClickListener(v -> {
+            final Button blank = view.findViewById(R.id.button_blank);
+            blank.setOnClickListener(v -> {
                 final ColorPicker c = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_blank), getString(R.string.pref_default_blank)));
                 c.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_blank), getString(R.string.pref_default_blank))))
@@ -195,14 +199,16 @@ public class GameSettingsHolder extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_blank), colors.get(position)).apply();
+                                blank.setBackgroundTintList(ColorStateList.valueOf(color));
+                                blank.setTextColor(ColorUtils.isWhiteText(blank.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
             });
-            b = view.findViewById(R.id.button_color_a);
-            b.setOnClickListener(v -> {
+            final Button colA = view.findViewById(R.id.button_color_a);
+            colA.setOnClickListener(v -> {
                 final ColorPicker co = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_color_a), getString(R.string.pref_default_color_a)));
                 co.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_color_a), getString(R.string.pref_default_color_a))))
@@ -213,14 +219,16 @@ public class GameSettingsHolder extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_color_a), colors.get(position)).apply();
+                                colA.setBackgroundTintList(ColorStateList.valueOf(color));
+                                colA.setTextColor(ColorUtils.isWhiteText(colA.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
             });
-            b = view.findViewById(R.id.button_color_b);
-            b.setOnClickListener(v -> {
+            final Button colB = view.findViewById(R.id.button_color_b);
+            colB.setOnClickListener(v -> {
                 final ColorPicker col = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_color_b), getString(R.string.pref_default_color_b)));
                 col.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_color_b), getString(R.string.pref_default_color_b))))
@@ -231,14 +239,16 @@ public class GameSettingsHolder extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_color_b), colors.get(position)).apply();
+                                colB.setBackgroundTintList(ColorStateList.valueOf(color));
+                                colB.setTextColor(ColorUtils.isWhiteText(colB.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
             });
-            b = view.findViewById(R.id.button_highlight);
-            b.setOnClickListener(v -> {
+            final Button high = view.findViewById(R.id.button_highlight);
+            high.setOnClickListener(v -> {
                 final ColorPicker colo = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_highlight), getString(R.string.pref_default_highlight)));
                 colo.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_highlight), getString(R.string.pref_default_highlight))))
@@ -249,14 +259,16 @@ public class GameSettingsHolder extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_highlight), colors.get(position)).apply();
+                                high.setBackgroundTintList(ColorStateList.valueOf(color));
+                                high.setTextColor(ColorUtils.isWhiteText(high.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
             });
-            b = view.findViewById(R.id.button_border);
-            b.setOnClickListener(v -> {
+            final Button border = view.findViewById(R.id.button_border);
+            border.setOnClickListener(v -> {
                 final ColorPicker color = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border)));
                 color.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border))))
@@ -265,13 +277,75 @@ public class GameSettingsHolder extends android.support.v4.app.Fragment {
                         .setRoundColorButton(true)
                         .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                             @Override
-                            public void onChooseColor(int position, int colo) {
+                            public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_border), colors.get(position)).apply();
+                                border.setBackgroundTintList(ColorStateList.valueOf(color));
+                                border.setTextColor(ColorUtils.isWhiteText(border.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
+            });
+            blank.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(s.getString(getString(R.string.pref_key_blank), getString(R.string.pref_default_blank)))));
+            colA.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(s.getString(getString(R.string.pref_key_color_b), getString(R.string.pref_default_color_a)))));
+            colB.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(s.getString(getString(R.string.pref_key_color_b), getString(R.string.pref_default_color_b)))));
+            high.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(s.getString(getString(R.string.pref_key_highlight), getString(R.string.pref_default_highlight)))));
+            border.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border)))));
+
+            blank.setTextColor(ColorUtils.isWhiteText(blank.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
+            colA.setTextColor(ColorUtils.isWhiteText(colA.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
+            colB.setTextColor(ColorUtils.isWhiteText(colB.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
+            high.setTextColor(ColorUtils.isWhiteText(high.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
+            border.setTextColor(ColorUtils.isWhiteText(border.getBackgroundTintList().getDefaultColor()) ? Color.WHITE : Color.BLACK);
+
+            RadioGroup g = view.findViewById(R.id.size_group);
+            int size = 3;
+            try {
+                size = Integer.parseInt(s.getString(getString(R.string.pref_key_size), getString(R.string.pref_default_size)));
+            } catch (NumberFormatException e) {
+                Log.w("GSH:onActivityC", "Size isn't a number");
+            }
+            switch (size) {
+                case 3:
+                    g.check(R.id.radio_size_3);
+                    break;
+                case 4:
+                    g.check(R.id.radio_size_4);
+                    break;
+                case 5:
+                    g.check(R.id.radio_size_5);
+                    break;
+                case 6:
+                    g.check(R.id.radio_size_6);
+                    break;
+                default:
+                    g.check(R.id.radio_size_3);
+                    break;
+            }
+
+            g.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @SuppressLint("ApplySharedPref")
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case R.id.radio_size_3:
+                            s.edit().putString(getString(R.string.pref_key_size), "3").commit();
+                            break;
+                        case R.id.radio_size_4:
+                            s.edit().putString(getString(R.string.pref_key_size), "4").commit();
+                            break;
+                        case R.id.radio_size_5:
+                            s.edit().putString(getString(R.string.pref_key_size), "5").commit();
+                            break;
+                        case R.id.radio_size_6:
+                            s.edit().putString(getString(R.string.pref_key_size), "6").commit();
+                            break;
+                        default:
+                            s.edit().putString(getString(R.string.pref_key_size), "3").commit();
+                            break;
+                    }
+                }
             });
         }
     }

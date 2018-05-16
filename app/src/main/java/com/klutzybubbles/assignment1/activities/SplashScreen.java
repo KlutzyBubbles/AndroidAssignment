@@ -26,8 +26,8 @@ public class SplashScreen extends FragmentActivity implements OnNavigationClickL
         setContentView(R.layout.activity_splash_screen);
         this.pager = findViewById(R.id.main_pager);
         List<Fragment> frags = new ArrayList<>();
-        frags.add(SplashScreen.SETTINGS, new GameSettingsHolder());
-        frags.add(SplashScreen.MAIN_MENU, new MainMenu());
+        frags.add(SplashScreen.SETTINGS, new GameSettingsView());
+        frags.add(SplashScreen.MAIN_MENU, new MainMenuView());
         frags.add(SplashScreen.SCOREBOARD, new ScoreboardView());
         this.pager.setAdapter(new SplashPagerManager(this.getSupportFragmentManager(), frags));
         pager.setCurrentItem(SplashScreen.MAIN_MENU);

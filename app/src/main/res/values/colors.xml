@@ -13,5 +13,6 @@
     <color name="DeepSkyBlue">#00BFFF</color>
     <color name="Black">#000000</color>
     <color name="Gray">#808080</color>
+    <color name="spinner_background">#55808080</color>
 
 </resources>

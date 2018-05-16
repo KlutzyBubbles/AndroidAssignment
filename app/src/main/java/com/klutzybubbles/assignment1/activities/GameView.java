@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.klutzybubbles.assignment1.interfaces.OnGameFinishedListener;
 import com.klutzybubbles.assignment1.logic.GameItemHandler;
+import com.klutzybubbles.assignment1.utils.BundledState;
 import com.klutzybubbles.assignment1.utils.DatabaseHelper;
 
 public class GameView extends AppCompatActivity implements OnGameFinishedListener {
@@ -112,8 +113,8 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
     protected void onPause() {
         Log.d("GameView:onPause", "call");
         super.onPause();
-        this.a.pause();
-        this.paused = true;
+        //this.a.pause();
+        //this.paused = true;
         this.db.close();
     }
 
@@ -134,7 +135,7 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
     protected  void onDestroy() {
         Log.d("GameView:onDestroy", "call");
         super.onDestroy();
-        this.a.stop(0);
+        //this.a.stop(0);
         this.paused = true;
         this.db.close();
     }
@@ -151,6 +152,25 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle b) {
+        Log.d("GameView:onSIS", "call");
+        BundledState.handlerToBundle(b, this.a);
+        super.onSaveInstanceState(b);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle b) {
+        Log.d("GameView:onRIS", "call");
+        this.a = BundledState.bundleToHandler(this.grid.getContext(), b);
+        GameItemHandler.refreshSettings(this.grid);
+        this.grid.setAdapter(a);
+        this.grid.setOnItemClickListener(a);
+        this.a.setOnGameFinishedListener(this);
+        (new Thread(new UpdateTime(this))).start();
+        super.onRestoreInstanceState(b);
     }
 
     public void setText(String text) {
