@@ -1,10 +1,11 @@
 package com.klutzybubbles.assignment1.activities;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,18 +20,26 @@ public class MainMenuView extends android.support.v4.app.Fragment {
 
     private View view;
 
-    private int currentTut = 0;
-    private boolean isRunning = false;
     private View[] targets = new View[4];
     private String[][] text = new String[4][2];
 
     @Override
-    public View onCreateView(LayoutInflater i, ViewGroup g, Bundle b) {
+    public View onCreateView(@NonNull LayoutInflater i, ViewGroup g, Bundle b) {
         if (this.view == null)
             this.view = i.inflate(R.layout.activity_main_menu, g, false);
         return this.view;
     }
 
+    /*
+    @Override
+    public void onResume() {
+        View view = this.view.findViewById(R.id.fade_foreground);
+        view.clearAnimation();
+        //view.setAlpha(1.0F);
+        view.animate().alpha(0.0F).setDuration(1000L).setListener(null);
+        super.onResume();
+    }
+*/
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -42,42 +51,73 @@ public class MainMenuView extends android.support.v4.app.Fragment {
         } catch (ClassCastException e) {
             return;
         }
-        /**
-        FragmentActivity activity = this.getActivity();
-        Button b = activity.findViewById(R.id.button_game);
-        b.setOnClickListener(v -> {
-        Intent i = new Intent(activity.getApplicationContext(), GameView.class);
-        startActivity(i);
-        });
-        b = activity.findViewById(R.id.button_high_scores);
-        b.setOnClickListener(v -> l.onClick(SplashScreen.SCOREBOARD));
-        b = activity.findViewById(R.id.button_settings);
-        b.setOnClickListener(v -> l.onClick(SplashScreen.SETTINGS));
-        b.setOnClickListener(v -> {
-        Intent i = new Intent(activity.getApplicationContext(), GameSettings.class);
-        startActivity(i);
-        });
-        b = activity.findViewById(R.id.button_help);
-        b.setOnClickListener(v -> {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.help_doc)));
-        startActivity(browserIntent);
-        });
-         */
         if (this.view != null) {
             final ImageButton game = view.findViewById(R.id.button_game);
             final Activity a = this.getActivity();
-            Fade fadeOut = new Fade(Fade.MODE_OUT);
-            fadeOut.setDuration(1000);
-            Fade fadeIn = new Fade(Fade.MODE_IN);
-            fadeIn.setDuration(1000);
-            this.setEnterTransition(fadeIn);
-            this.setExitTransition(fadeOut);
-            a.getWindow().setEnterTransition(fadeIn);
-            a.getWindow().setExitTransition(fadeOut);
+            //Fade fadeOut = new Fade(Fade.MODE_OUT);
+            //fadeOut.setDuration(1000);
+            //Fade fadeIn = new Fade(Fade.MODE_IN);
+            //fadeIn.setDuration(1000);
+            //this.setEnterTransition(fadeIn);
+            //this.setExitTransition(fadeOut);
+            //a.getWindow().setEnterTransition(fadeIn);
+            //a.getWindow().setExitTransition(fadeOut);
+            final View fade = this.view.findViewById(R.id.fade_foreground);
+            //fade.clearAnimation();
+            //view.setAlpha(1.0F);
+            //fade.animate().alpha(0.0F).setDuration(1000L).setListener(null);
             game.setOnClickListener(v -> {
-                Intent i = new Intent(view.getContext(), GameView.class);
-                ActivityOptionsCompat o = ActivityOptionsCompat.makeSceneTransitionAnimation(a, game, "play");
-                startActivity(i, o.toBundle());
+                fade.animate().alpha(1.0F).setDuration(500L).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        Intent i = new Intent(view.getContext(), GameView.class);
+                        ActivityOptionsCompat o = ActivityOptionsCompat.makeSceneTransitionAnimation(a, game, "play");
+                        animation.cancel();
+                        a.startActivity(i, o.toBundle());
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+                /*
+                AlphaAnimation alpha = new AlphaAnimation(1.0F, 0.0F);
+                alpha.setDuration(1000L);
+                setExitTransition(alpha);
+                alpha.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        Intent i = new Intent(view.getContext(), GameView.class);
+                        ActivityOptionsCompat o = ActivityOptionsCompat.makeSceneTransitionAnimation(a, game, "play");
+                        a.startActivity(i, o.toBundle());
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                view.findViewById(R.id.fade_foreground).startAnimation(alpha);
+                //Intent i = new Intent(view.getContext(), GameView.class);
+                //ActivityOptionsCompat o = ActivityOptionsCompat.makeSceneTransitionAnimation(a, game, "play");
+                //startActivity(i, o.toBundle());
+                */
             });
             Button high = view.findViewById(R.id.button_high_scores);
             high.setOnClickListener(v -> l.onClick(SplashScreen.SCOREBOARD));

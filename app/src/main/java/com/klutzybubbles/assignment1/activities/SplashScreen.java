@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.view.Window;
 
 import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
@@ -18,6 +19,24 @@ public class SplashScreen extends FragmentActivity implements OnNavigationClickL
     public static final int SETTINGS = 0, MAIN_MENU = 1, SCOREBOARD = 2;
 
     private ViewPager pager;
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        View decorView = getWindow().getDecorView();
+        if (hasFocus) {
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        } else {
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

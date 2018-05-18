@@ -29,6 +29,7 @@
     <string name="format_default_date_time">dd/MM/yyyy HH:mm</string>
 
     <integer name="database_version">2</integer>
+    <integer name="activity_fade_duration">1000</integer>
 
     <!-- Strings related to Settings -->
 

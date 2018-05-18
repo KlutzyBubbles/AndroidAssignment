@@ -17,19 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/button_game"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/new_game_button"
-        android:src="@drawable/ic_play_button"
-        android:transitionName="play"
-        app:layout_constraintBottom_toTopOf="@+id/button_help"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/button_high_scores"
         style="@android:style/Widget.Material.Button.Borderless"
@@ -70,6 +57,26 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/fade_foreground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/White"
+        android:alpha="0"/>
+
+    <ImageButton
+        android:id="@+id/button_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/new_game_button"
+        android:src="@drawable/ic_play_button"
+        android:transitionName="play"
+        app:layout_constraintBottom_toTopOf="@+id/button_help"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
