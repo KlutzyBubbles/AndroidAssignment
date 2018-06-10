@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -82,6 +82,7 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
             b.setOnClickListener(v -> l.requestChange(SplashScreen.MAIN_MENU));
             final Button blank = view.findViewById(R.id.button_blank);
             blank.setOnClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 final ColorPicker c = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_blank), getString(R.string.pref_default_blank)));
                 c.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_blank), getString(R.string.pref_default_blank))))
@@ -92,19 +93,20 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_blank), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-                                    ViewCompat.setBackgroundTintList(blank, ColorStateList.valueOf(color));
-                                else
-                                    blank.setBackgroundTintList(ColorStateList.valueOf(color));
+                                blank.setBackgroundTintList(ColorStateList.valueOf(color));
                                 blank.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
+                } else {
+                    Toast.makeText(blank.getContext(), "Cannot use color settings below android M", Toast.LENGTH_SHORT).show();
+                }
             });
             final Button colA = view.findViewById(R.id.button_color_a);
             colA.setOnClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 final ColorPicker co = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_color_a), getString(R.string.pref_default_color_a)));
                 co.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_color_a), getString(R.string.pref_default_color_a))))
@@ -115,19 +117,20 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_color_a), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-                                    ViewCompat.setBackgroundTintList(colA, ColorStateList.valueOf(color));
-                                else
-                                    colA.setBackgroundTintList(ColorStateList.valueOf(color));
+                                colA.setBackgroundTintList(ColorStateList.valueOf(color));
                                 colA.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
+                } else {
+                    Toast.makeText(colA.getContext(), "Cannot use color settings below android M", Toast.LENGTH_SHORT).show();
+                }
             });
             final Button colB = view.findViewById(R.id.button_color_b);
             colB.setOnClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 final ColorPicker col = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_color_b), getString(R.string.pref_default_color_b)));
                 col.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_color_b), getString(R.string.pref_default_color_b))))
@@ -138,19 +141,20 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_color_b), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-                                    ViewCompat.setBackgroundTintList(colB, ColorStateList.valueOf(color));
-                                else
-                                    colB.setBackgroundTintList(ColorStateList.valueOf(color));
+                                colB.setBackgroundTintList(ColorStateList.valueOf(color));
                                 colB.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
+                } else {
+                    Toast.makeText(colB.getContext(), "Cannot use color settings below android M", Toast.LENGTH_SHORT).show();
+                }
             });
             final Button high = view.findViewById(R.id.button_highlight);
             high.setOnClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 final ColorPicker colo = new ColorPicker(this.getActivity());
                 Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_highlight), getString(R.string.pref_default_highlight)));
                 colo.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_highlight), getString(R.string.pref_default_highlight))))
@@ -161,39 +165,41 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_highlight), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-                                    ViewCompat.setBackgroundTintList(high, ColorStateList.valueOf(color));
-                                else
-                                    high.setBackgroundTintList(ColorStateList.valueOf(color));
+                                high.setBackgroundTintList(ColorStateList.valueOf(color));
                                 high.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
                             @Override
                             public void onCancel() {}
                         }).show();
+                } else {
+                    Toast.makeText(high.getContext(), "Cannot use color settings below android M", Toast.LENGTH_SHORT).show();
+                }
             });
             final Button border = view.findViewById(R.id.button_border);
             border.setOnClickListener(v -> {
-                final ColorPicker color = new ColorPicker(this.getActivity());
-                Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border)));
-                color.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border))))
-                        .setColors(R.array.colors)
-                        .setColumns(5)
-                        .setRoundColorButton(true)
-                        .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-                            @Override
-                            public void onChooseColor(int position, int color) {
-                                s.edit().putString(getString(R.string.pref_key_border), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-                                    ViewCompat.setBackgroundTintList(border, ColorStateList.valueOf(color));
-                                else
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    final ColorPicker color = new ColorPicker(this.getActivity());
+                    Log.i("GSH:onActivityC", s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border)));
+                    color.setDefaultColorButton(Color.parseColor(s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border))))
+                            .setColors(R.array.colors)
+                            .setColumns(5)
+                            .setRoundColorButton(true)
+                            .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                                @Override
+                                public void onChooseColor(int position, int color) {
+                                    s.edit().putString(getString(R.string.pref_key_border), String.format("#%06X", (0xFFFFFF & color))).apply();
                                     border.setBackgroundTintList(ColorStateList.valueOf(color));
-                                border.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
-                            }
+                                    border.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
+                                }
 
-                            @Override
-                            public void onCancel() {}
-                        }).show();
+                                @Override
+                                public void onCancel() {
+                                }
+                            }).show();
+                } else {
+                    Toast.makeText(border.getContext(), "Cannot use color settings below android M", Toast.LENGTH_SHORT).show();
+                }
             });
 
             int cBlank = Color.parseColor(s.getString(getString(R.string.pref_key_blank), getString(R.string.pref_default_blank)));
@@ -202,20 +208,11 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
             int cHigh = Color.parseColor(s.getString(getString(R.string.pref_key_highlight), getString(R.string.pref_default_highlight)));
             int cBorder = Color.parseColor(s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border)));
 
-
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                ViewCompat.setBackgroundTintList(blank, ColorStateList.valueOf(cBlank));
-                ViewCompat.setBackgroundTintList(colA, ColorStateList.valueOf(cColA));
-                ViewCompat.setBackgroundTintList(colB, ColorStateList.valueOf(cColB));
-                ViewCompat.setBackgroundTintList(high, ColorStateList.valueOf(cHigh));
-                ViewCompat.setBackgroundTintList(border, ColorStateList.valueOf(cBorder));
-            } else {
-                blank.setBackgroundTintList(ColorStateList.valueOf(cBlank));
-                colA.setBackgroundTintList(ColorStateList.valueOf(cColA));
-                colB.setBackgroundTintList(ColorStateList.valueOf(cColB));
-                high.setBackgroundTintList(ColorStateList.valueOf(cHigh));
-                border.setBackgroundTintList(ColorStateList.valueOf(cBorder));
-            }
+            blank.setBackgroundTintList(ColorStateList.valueOf(cBlank));
+            colA.setBackgroundTintList(ColorStateList.valueOf(cColA));
+            colB.setBackgroundTintList(ColorStateList.valueOf(cColB));
+            high.setBackgroundTintList(ColorStateList.valueOf(cHigh));
+            border.setBackgroundTintList(ColorStateList.valueOf(cBorder));
 
             blank.setTextColor(ColorUtils.isWhiteText(cBlank) ? Color.WHITE : Color.BLACK);
             colA.setTextColor(ColorUtils.isWhiteText(cColA) ? Color.WHITE : Color.BLACK);

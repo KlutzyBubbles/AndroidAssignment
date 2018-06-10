@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/AppTheme"
     tools:context="com.klutzybubbles.assignment1.activities.GameView">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?android:actionBarSize"
+        android:background="?android:colorPrimary"
+        android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
@@ -65,9 +65,9 @@
         android:contentDescription="@string/new_game_button"
         android:onClick="onNewGameClick"
         android:src="@drawable/ic_play_button"
+        android:transitionName="play"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_grid"
-        android:layout_marginRight="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/main_grid"/>
 
     <com.klutzybubbles.assignment1.utils.CustomImageButton
         android:id="@+id/button_stop_game"
@@ -82,8 +82,7 @@
         android:src="@drawable/ic_stop_button"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_grid"
-        android:layout_marginRight="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/main_grid"/>
 
     <TextView
         android:id="@+id/text_next"
@@ -93,8 +92,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/text_next_item"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_grid"
-        android:layout_marginLeft="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/main_grid"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/next_item"
@@ -103,8 +101,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/text_next"
-        app:layout_constraintTop_toBottomOf="@+id/main_grid"
-        android:layout_marginLeft="16dp">
+        app:layout_constraintTop_toBottomOf="@+id/main_grid">
 
     </android.support.constraint.ConstraintLayout>
 
