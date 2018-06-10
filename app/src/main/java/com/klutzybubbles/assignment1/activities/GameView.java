@@ -29,26 +29,74 @@ import com.klutzybubbles.assignment1.utils.BundledState;
 import com.klutzybubbles.assignment1.utils.CustomImageButton;
 import com.klutzybubbles.assignment1.utils.DatabaseHelper;
 
+/**
+ * <h1>GameView.java</h1>
+ * Class used to hold the content required to play the game
+ *
+ * @author Lee Tzilantonis
+ * @version 1.0.0
+ * @since 10/6/2018
+ * @see AppCompatActivity
+ * @see OnGameFinishedListener
+ */
 public class GameView extends AppCompatActivity implements OnGameFinishedListener {
 
+    /**
+     * The maximum size of the grid
+     */
     public static final int MAX_SIZE = 6;
-    public static final int MIN_SIZE = 1;
 
+    /**
+     * The minimum size of the grid
+     */
+    public static final int MIN_SIZE = 3;
+
+    /**
+     * The current set size of the grid
+     */
     private int size;
 
+    /**
+     * The GridView container currently being used
+     */
     private GridView grid;
+
+    /**
+     * The Timer TextView currently being used
+     */
     private TextView text;
 
+    /**
+     * The current GameItemHandler being used
+     */
     private GameItemHandler a;
 
+    /**
+     * The New Game button, contained as a class variable to change visibility on game state changes
+     */
     private ImageButton newGame;
 
+    /**
+     * The Stop Game button, contained as a class variable to change visibility on game state changes
+     */
     private CustomImageButton stopGame;
 
+    /**
+     * paused - Whether or not the current game in play is paused
+     * noTimer - Whether or not there is no timer to be displayed
+     */
     private boolean paused = false, noTimer = true;
 
+    /**
+     * DatabaseHelper used to store scores
+     */
     private DatabaseHelper db;
 
+    /**
+     * Called when the AppCompatActivity is created
+     *
+     * @param savedInstanceState - The Bundle parsed to the Activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("GameView:onCreate", "call");
@@ -171,6 +219,9 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         });
     }
 
+    /**
+     * Called when the Activity state is changed to paused
+     */
     @Override
     protected void onPause() {
         Log.d("GameView:onPause", "call");
@@ -180,6 +231,9 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.db.close();
     }
 
+    /**
+     * Called when a paused Activity is changed to resumed
+     */
     @Override
     protected void onResume() {
         Log.d("GameView:onResume", "call");
@@ -193,6 +247,9 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         (new Thread(new UpdateTime(this))).start();
     }
 
+    /**
+     * Called when the Activity is to be destroyed
+     */
     @Override
     protected  void onDestroy() {
         Log.d("GameView:onDestroy", "call");
@@ -202,6 +259,12 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.db.close();
     }
 
+    /**
+     * Called when a Toolbar item is selected
+     *
+     * @param item - The item that has been selected
+     * @return - Whether or not to continue with the event
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("GameView:onOIS", "call");
@@ -216,6 +279,11 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Called when the Activity's instance state needs to be saved
+     *
+     * @param b - The Bundle of the Activity
+     */
     @Override
     public void onSaveInstanceState(Bundle b) {
         Log.d("GameView:onSIS", "call");
@@ -223,6 +291,11 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         super.onSaveInstanceState(b);
     }
 
+    /**
+     * Called when the Activity's instance state needs to be restored
+     *
+     * @param b - The Bundle state parsed
+     */
     @Override
     public void onRestoreInstanceState(Bundle b) {
         Log.d("GameView:onRIS", "call");
@@ -235,11 +308,19 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         super.onRestoreInstanceState(b);
     }
 
+    /**
+     * Used to display a short toast message over the Activity
+     *
+     * @param text - The text to be shown inside the toast
+     */
     private void toastMessage(String text) {
         Log.d("GameView:toastMessage", "call");
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Loads the size into this.size from the default SharedPreferences
+     */
     private void loadSettings() {
         Log.d("GameView:loadSettings", "call");
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(this);
@@ -250,6 +331,11 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         }
     }
 
+    /**
+     * Called when the new game button registers a click
+     *
+     * @param view - The new game button view that was clicked
+     */
     public void onNewGameClick(View view) {
         Log.d("GameView:onNewGameClick", "call id: " + view.getId());
         this.a.stop(-1);
@@ -264,6 +350,11 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         (new Thread(new UpdateTime(this))).start();
     }
 
+    /**
+     * Called when the stop game button registers a click
+     *
+     * @param view - The stop game button view that was clicked
+     */
     public void onStopGameClick(View view) {
         Log.d("GameView:stopGameClick", "call id: " + view.getId());
         this.a.stop(0);
@@ -271,6 +362,9 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.stopGame.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Creates a new grid container (GameItemHandler) which overrides the previous one
+     */
     private void createGridContainer() {
         Log.d("GameView:createGC", "call");
         this.a = new GameItemHandler(this.grid.getContext(), this.size);
@@ -280,6 +374,9 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.a.setOnGameFinishedListener(this);
     }
 
+    /**
+     * Called when the GameItemHandler registers that the user successfully completed the game
+     */
     @Override
     public void onSuccess() {
         Log.d("GameView:onSuccess", "call");
@@ -290,6 +387,9 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.db.insert(this.a.getTime(), this.size, false);
     }
 
+    /**
+     * Called when the GameItemHandler registers that the user lost the game
+     */
     @Override
     public void onFail() {
         Log.d("GameView:onFail", "call");
@@ -300,6 +400,9 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.db.insert(this.a.getTime(), this.size, true);
     }
 
+    /**
+     * Called when the GameItemHandler registers that the game was stopped (not lost)
+     */
     @Override
     public void onEnd() {
         Log.d("GameView:onEnd", "call");
@@ -309,16 +412,36 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.text.setText(getString(R.string.timer_text));
     }
 
+    /**
+     * <h1>GameSettingsView.UpdateTime</h1>
+     * Class used to update the timer text
+     *
+     * @author Lee Tzilantonis
+     * @version 1.0.0
+     * @since 10/6/2018
+     * @see Runnable
+     */
     private class UpdateTime implements Runnable {
 
+        /**
+         * The instance of the GameView to update the text for
+         */
         private GameView instance;
 
+        /**
+         * Instantiate the UpdateTime Runnable using the parsed instance as a reference
+         *
+         * @param instance - The reference to the GameView container containing the text view
+         */
         private UpdateTime(GameView instance) {
             if (instance == null)
                 throw new IllegalArgumentException("Cannot parse null instance");
             this.instance = instance;
         }
 
+        /**
+         * Called when the GameView requests a timer text update
+         */
         @Override
         public void run() {
             if (noTimer) {

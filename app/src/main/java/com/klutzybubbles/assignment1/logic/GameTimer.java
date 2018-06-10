@@ -130,6 +130,11 @@ class GameTimer {
         return r;
     }
 
+    /**
+     * Sets the time of the timer. Used to restore a timers state
+     *
+     * @param timeProgressed - The time progressed to set the timer to in milliseconds
+     */
     public void setTime(long timeProgressed) {
         if (this.stopped)
             this.stopped = false;

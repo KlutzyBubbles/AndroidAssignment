@@ -24,10 +24,30 @@ import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
 import petrov.kristiyan.colorpicker.ColorPicker;
 import petrov.kristiyan.colorpicker.ColorUtils;
 
+/**
+ * <h1>GameSettingsView.java</h1>
+ * Class used as the Fragment for the Settings Screen
+ *
+ * @author Lee Tzilantonis
+ * @version 1.0.0
+ * @since 10/6/2018
+ * @see android.support.v4.app.Fragment
+ */
 public class GameSettingsView extends android.support.v4.app.Fragment {
 
+    /**
+     * Main view that holds all the Settings Screen content
+     */
     private View view;
 
+    /**
+     * Called when the View within the fragment is to be inflated
+     *
+     * @param i - The LayoutInflater to be used
+     * @param g - The ViewGroup the view should be contained within
+     * @param b - The Bundle object parsed to the View
+     * @return - The created View
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater i, ViewGroup g, Bundle b) {
         if (this.view == null)
@@ -35,6 +55,13 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
         return this.view;
     }
 
+    /**
+     * Called when the containing activity has been created, letting us know is is safe to use
+     * getActivity(). Due to the static nature of the Settings Screen all content is contained
+     * within the onActivityCreated(Bundle) method
+     *
+     * @param savedInstanceState - The Bundle state parsed to the Activity
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -52,7 +79,7 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
 
         if (this.view != null) {
             Button b = view.findViewById(R.id.button_home);
-            b.setOnClickListener(v -> l.onClick(SplashScreen.MAIN_MENU));
+            b.setOnClickListener(v -> l.requestChange(SplashScreen.MAIN_MENU));
             final Button blank = view.findViewById(R.id.button_blank);
             blank.setOnClickListener(v -> {
                 final ColorPicker c = new ColorPicker(this.getActivity());

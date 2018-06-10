@@ -16,10 +16,30 @@ import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
 
+/**
+ * <h1>MainMenuView.java</h1>
+ * Class used as a Fragment that contains all the content for the Main Menu Screen
+ *
+ * @author Lee Tzilantonis
+ * @version 1.0.0
+ * @since 10/6/2018
+ * @see android.support.v4.app.Fragment
+ */
 public class MainMenuView extends android.support.v4.app.Fragment {
 
+    /**
+     * Main view that holds all the content for the Main Menu Screen
+     */
     private View view;
 
+    /**
+     * Called when the View within the fragment is to be inflated
+     *
+     * @param i - The LayoutInflater to be used
+     * @param g - The ViewGroup the view should be contained within
+     * @param b - The Bundle object parsed to the View
+     * @return - The created View
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater i, ViewGroup g, Bundle b) {
         if (this.view == null)
@@ -27,15 +47,24 @@ public class MainMenuView extends android.support.v4.app.Fragment {
         return this.view;
     }
 
+    /**
+     * Called when the containing Activity is resumed
+     */
     @Override
     public void onResume() {
         View view = this.view.findViewById(R.id.fade_foreground);
         view.clearAnimation();
-        //view.setAlpha(1.0F);
         view.animate().alpha(0.0F).setDuration(1000L).setListener(null);
         super.onResume();
     }
 
+    /**
+     * Called when the containing activity has been created, letting us know is is safe to use
+     * getActivity(). Due to the static nature of the Main Menu Screen all content is contained
+     * within the onActivityCreated(Bundle) method
+     *
+     * @param savedInstanceState - The Bundle state parsed to the Activity
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -70,9 +99,9 @@ public class MainMenuView extends android.support.v4.app.Fragment {
                 public void onAnimationRepeat(Animator animation) {}
             }));
             Button high = view.findViewById(R.id.button_high_scores);
-            high.setOnClickListener(v -> l.onClick(SplashScreen.SCOREBOARD));
+            high.setOnClickListener(v -> l.requestChange(SplashScreen.SCOREBOARD));
             Button settings = view.findViewById(R.id.button_settings);
-            settings.setOnClickListener(v -> l.onClick(SplashScreen.SETTINGS));
+            settings.setOnClickListener(v -> l.requestChange(SplashScreen.SETTINGS));
 
             ImageButton help = view.findViewById(R.id.button_help);
             help.setMinimumWidth(24);

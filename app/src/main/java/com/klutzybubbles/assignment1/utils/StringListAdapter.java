@@ -13,12 +13,12 @@ import com.klutzybubbles.assignment1.activities.R;
 import java.util.List;
 
 /**
- * <h1>RecordListAdapter.java</h1>
- * Class used to format the high score records into a RecyclerView
+ * <h1>StringListAdapter.java</h1>
+ * Class used to format the overall stat records into a RecyclerView
  *
  * @author Lee Tzilantonis
  * @version 1.0.0
- * @since 6/5/2018
+ * @since 10/6/2018
  * @see RecyclerView
  */
 public class StringListAdapter extends RecyclerView.Adapter<StringListAdapter.StringViewHolder> {
@@ -93,12 +93,12 @@ public class StringListAdapter extends RecyclerView.Adapter<StringListAdapter.St
     }
 
     /**
-     * <h1>RecordListAdapter.RecordViewHolder.class</h1>
+     * <h1>StringListAdapter.StringViewHolder.class</h1>
      * Class used to hold the layout for the record data to be viewed on
      *
      * @author Lee Tzilantonis
      * @version 1.0.0
-     * @since 6/5/2018
+     * @since 10/6/2018
      */
     class StringViewHolder extends RecyclerView.ViewHolder {
 
@@ -108,7 +108,7 @@ public class StringListAdapter extends RecyclerView.Adapter<StringListAdapter.St
         private final TextView info;
 
         /**
-         * Instantiates the RecordViewHolder using the View as its context and layout
+         * Instantiates the StringViewHolder using the View as its context and layout
          *
          * @param view - The View to extract context and layout from
          */
@@ -119,9 +119,9 @@ public class StringListAdapter extends RecyclerView.Adapter<StringListAdapter.St
         }
 
         /**
-         * Gets the time TextView
+         * Gets the info TextView
          *
-         * @return - The time TextView
+         * @return - The info TextView
          */
         private TextView getInfo() {
             Log.d("RecordVH:getTime", "call");

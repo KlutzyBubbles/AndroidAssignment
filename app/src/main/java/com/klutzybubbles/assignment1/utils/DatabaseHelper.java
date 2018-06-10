@@ -18,8 +18,8 @@ import java.util.concurrent.TimeUnit;
  * Class used to encapsulate all direct database interactions
  *
  * @author Lee Tzilantonis
- * @version 1.0.0
- * @since 7/5/2018
+ * @version 1.0.1
+ * @since 10/6/2018
  * @see SQLiteOpenHelper
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -147,6 +147,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rows;
     }
 
+    /**
+     * Gets a list of overall stats matching the criteria
+     *
+     * @param size - The size criteria
+     * @return - List of overall stats using the records matching the criteria
+     */
     public List<String> getInfo(int size) {
         Log.d("DBHelper:getAllFrom", "call");
         Log.v("DBHelper:getAllFrom", "Size - " + size);

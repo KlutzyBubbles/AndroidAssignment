@@ -18,8 +18,8 @@ import android.widget.GridView;
  * Class used to store the state and GradientDrawable background of the item / block
  *
  * @author Lee Tzilantonis
- * @version 1.0.1
- * @since 5/5/2018
+ * @version 1.0.2
+ * @since 10/6/2018
  */
 public class GameItem extends FrameLayout {
 
@@ -34,7 +34,7 @@ public class GameItem extends FrameLayout {
     private final GradientDrawable background = new GradientDrawable(), innerBackground = new GradientDrawable();
 
     /**
-     * The current state of the GameItem
+     * The current and new state of the GameItem
      * <p></p>
      * There are only 3 states:
      * 0 - Empty or un-clicked
@@ -43,8 +43,14 @@ public class GameItem extends FrameLayout {
      */
     private int currentState = 0, newState = 0;
 
+    /**
+     * The inner view used to animate a state change
+     */
     private final View inner;
 
+    /**
+     * The width of the GameItem strokes
+     */
     private static final int stroke = 10;
 
     /**
@@ -128,12 +134,10 @@ public class GameItem extends FrameLayout {
      */
     private void update() {
         Log.v("GameItem:update", "call");
-        Log.d("GameItem:update", "Background color OLD - " + GameItem.COLORS[this.currentState]);
+        Log.v("GameItem:update", "Background color OLD - " + GameItem.COLORS[this.currentState]);
         Log.d("GameItem:update", "Background color NEW - " + GameItem.COLORS[this.newState]);
-        if (this.currentState == this.newState) {
+        if (this.currentState == this.newState)
             this.background.setColor(GameItem.COLORS[this.newState]);
-            //inner.setAlpha(0.0F);
-        }
         Log.d("GameItem:update", "Border color - " + GameItem.COLORS[3]);
         this.background.setStroke(GameItem.stroke, GameItem.COLORS[3]);
         Animation scale = new ScaleAnimation(0.0F, 1.0F, 0.0F, 1.0F, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -150,24 +154,17 @@ public class GameItem extends FrameLayout {
         this.currentState = newState;
         set.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-                Log.d("GameItem:anim", "Start");
-            }
+            public void onAnimationStart(Animation animation) {}
 
             @Override
             public void onAnimationEnd(Animation animation) {
                 Log.d("GameItem:anim", "End");
                 background.setColor(GameItem.COLORS[currentState]);
-                //inner.setAlpha(0.0F);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-                Log.d("GameItem:anim", "Repeat");
-            }
+            public void onAnimationRepeat(Animation animation) {}
         });
-        //inner.setAnimation(set);
-        //set.start();
         this.inner.startAnimation(set);
     }
 
@@ -198,17 +195,6 @@ public class GameItem extends FrameLayout {
         alpha.setRepeatMode(Animation.REVERSE);
         alpha.setRepeatCount(Animation.INFINITE);
         inner.startAnimation(alpha);
-        /*
-        final AnimationDrawable ad = new AnimationDrawable();
-        ad.addFrame(this.background, 400);
-        GradientDrawable highlight = new GradientDrawable();
-        highlight.setColor(GameItem.COLORS[4]);
-        highlight.setStroke(1, GameItem.COLORS[3]);
-        ad.addFrame(highlight, 400);
-        ad.setOneShot(false);
-        inner.setBackground(ad);
-        (new Handler()).postDelayed(ad::start, 100);
-        */
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.klutzybubbles.assignment1.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,23 +30,65 @@ import com.klutzybubbles.assignment1.utils.StringListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <h1>ScoreboardView.java</h1>
+ * Class used as a Fragment that contains the content for the Scoreboard Screen
+ *
+ * @author Lee Tzilantonis
+ * @version 1.0.0
+ * @since 10/6/2018
+ * @see android.support.v4.app.Fragment
+ */
 public class ScoreboardView extends android.support.v4.app.Fragment {
 
+    /**
+     * The current selected grid size
+     */
     private int selectedSize = 3;
 
+    /**
+     * The progress bar used to overlay database updating
+     */
     private ProgressBar bar;
 
+    /**
+     * The RecyclerView containing overall stats
+     */
     private RecyclerView list;
 
+    /**
+     * The ConstraintLayout that contains the list and button for all records
+     */
     private ConstraintLayout allLayout;
 
+    /**
+     * The DatabaseHelper used to access the data
+     */
     private DatabaseHelper db;
 
+    /**
+     * Record adapter used to display all success records for the selected grid size
+     */
     private final RecordListAdapter a = new RecordListAdapter(new ArrayList<>());
+
+    /**
+     * String adapter used to display all overall stats for the selected grid size
+     */
     private final StringListAdapter s = new StringListAdapter(new ArrayList<>());
 
+    /**
+     * Main view that holds all content for the Scoreboard Screen
+     */
     private View view;
 
+    /**
+     * Called when the View within the fragment is to be inflated
+     *
+     * @param i - The LayoutInflater to be used
+     * @param g - The ViewGroup the view should be contained within
+     * @param b - The Bundle object parsed to the View
+     * @return - The created View
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater i, ViewGroup g, Bundle b) {
         if (this.view == null)
@@ -55,6 +96,12 @@ public class ScoreboardView extends android.support.v4.app.Fragment {
         return this.view;
     }
 
+    /**
+     * Called when the containing activity has been created, letting us know is is safe to use
+     * getActivity()
+     *
+     * @param savedInstanceState - The Bundle state parsed to the Activity
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -81,12 +128,7 @@ public class ScoreboardView extends android.support.v4.app.Fragment {
 
         String[] sizeNames = this.view.getResources().getStringArray(R.array.list_size);
         SelectionAdapter a = new SelectionAdapter(this.getActivity(), sizeNames);
-//size.setBackgroundColor(Color.BLACK);
-        //ArrayAdapter<String> a = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, sizeNames);
-        //a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         size.setAdapter(a);
-
-        //size.setSelection(2);
 
         size.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -108,7 +150,7 @@ public class ScoreboardView extends android.support.v4.app.Fragment {
             return;
         }
         Button b = view.findViewById(R.id.button_home);
-        b.setOnClickListener(v -> l.onClick(SplashScreen.MAIN_MENU));
+        b.setOnClickListener(v -> l.requestChange(SplashScreen.MAIN_MENU));
 
         Button bAll = view.findViewById(R.id.button_all);
         bAll.setOnClickListener(v -> allLayout.setVisibility(View.VISIBLE));
@@ -181,6 +223,9 @@ public class ScoreboardView extends android.support.v4.app.Fragment {
         this.refresh();
     }
 
+    /**
+     * Refreshes the data on screen to show updated data based on the grid size selected
+     */
     private void refresh() {
         this.bar.setVisibility(View.VISIBLE);
         this.list.setVisibility(View.INVISIBLE);
@@ -189,18 +234,32 @@ public class ScoreboardView extends android.support.v4.app.Fragment {
         (new Thread(() -> {
             final List<RecordItem> items = db.getAllFrom(selectedSize);
             final List<String> records = db.getInfo(selectedSize);
-            //noinspection ConstantConditions
-            inst.getActivity().runOnUiThread(() -> {
-                a.setRecords(items);
-                s.setRecords(records);
-                list.setVisibility(View.VISIBLE);
-                bar.setVisibility(View.INVISIBLE);
-            });
+            Activity ac = inst.getActivity();
+            if (ac != null) {
+                inst.getActivity().runOnUiThread(() -> {
+                    a.setRecords(items);
+                    s.setRecords(records);
+                    list.setVisibility(View.VISIBLE);
+                    bar.setVisibility(View.INVISIBLE);
+                });
+            }
         })).start();
     }
 
+    /**
+     * <h1>ScoreboardView.SelectionAdapter</h1>
+     * Class used to inflate the grid selection options
+     *
+     * @author Lee Tzilantonis
+     * @version 1.0.0
+     * @since 10/6/2018
+     * @see ArrayAdapter
+     */
     private class SelectionAdapter extends ArrayAdapter<String> {
 
+        /**
+         * The LayoutInflater to use to inflate the spinner item View's
+         */
         private final LayoutInflater inflater;
 
         SelectionAdapter(@NonNull Activity context, @NonNull String[] objects) {
@@ -208,13 +267,24 @@ public class ScoreboardView extends android.support.v4.app.Fragment {
             this.inflater = context.getLayoutInflater();
         }
 
+        /**
+         * Gets the view that is to be placed in the spinner in the defined position
+         *
+         * @param pos - The position the View will be in
+         * @param view - The recycled View used before (if any)
+         * @param group - The ViewGroup of the spinner items
+         * @return - The created View to be inserted
+         */
         @NonNull
         @Override
         public View getView(int pos, View view, @NonNull ViewGroup group) {
-            @SuppressLint("ViewHolder") View r = this.inflater.inflate(R.layout.spinner_item, group, false);
-            TextView item = r.findViewById(R.id.text_item);
-            item.setText(super.getItem(pos));
-            return r;
+            if (view != null)
+                return view;
+            else {
+                View r = this.inflater.inflate(R.layout.spinner_item, group, false);
+                ((TextView) r.findViewById(R.id.text_item)).setText(super.getItem(pos));
+                return r;
+            }
         }
     }
 
