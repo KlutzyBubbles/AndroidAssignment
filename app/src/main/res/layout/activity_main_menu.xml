@@ -4,22 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_constraint"
     tools:context="com.klutzybubbles.assignment1.activities.MainMenuView">
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/game_title"
         android:src="@drawable/game_title"
-        app:layout_constraintBottom_toTopOf="@+id/button_game"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_high_scores"
-        style="@android:style/Widget.Material.Button.Borderless"
+        style="@android:style/Widget.Button"
         android:layout_width="100dp"
         android:layout_height="88dp"
         android:layout_marginBottom="32dp"
@@ -30,23 +29,24 @@
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableRight="@drawable/ic_scoreboard" />
 
-    <ImageButton
+    <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/button_help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/menu_help"
-        android:src="@drawable/ic_help"
+        app:srcCompat="@drawable/ic_help"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_settings"
-        style="@android:style/Widget.Material.Button.Borderless"
+        style="@android:style/Widget.Button"
         android:layout_width="100dp"
         android:layout_height="88dp"
         android:layout_marginBottom="32dp"
@@ -57,7 +57,8 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:drawableLeft="@drawable/ic_settings" />
 
     <View
         android:id="@+id/fade_foreground"
@@ -74,7 +75,6 @@
         android:background="@android:color/transparent"
         android:contentDescription="@string/new_game_button"
         android:src="@drawable/ic_play_button"
-        android:transitionName="play"
         app:layout_constraintBottom_toTopOf="@+id/button_help"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

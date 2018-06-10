@@ -15,14 +15,13 @@ public class BundledState {
     private static final String STOPPED = "stopped";
     private static final String SIZE = "size";
 
-    public static Bundle handlerToBundle(@NonNull Bundle b, @NonNull GameItemHandler g) {
+    public static void handlerToBundle(@NonNull Bundle b, @NonNull GameItemHandler g) {
         b.putLong(BundledState.TIME, g.getTime());
         b.putIntArray(BundledState.ITEMS, g.getItems());
         b.putIntArray(BundledState.NEXT_ITEMS, g.getNextItems());
         b.putBoolean(BundledState.PAUSED, g.isPaused());
         b.putBoolean(BundledState.STOPPED, g.isStopped());
         b.putInt(BundledState.SIZE, g.getSize());
-        return b;
     }
 
     public static GameItemHandler bundleToHandler(Context c, @NonNull Bundle b) {

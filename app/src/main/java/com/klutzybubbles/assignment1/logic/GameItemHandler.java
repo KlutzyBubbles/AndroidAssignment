@@ -18,10 +18,6 @@ import com.klutzybubbles.assignment1.interfaces.OnGameFinishedListener;
 
 import java.util.Random;
 
-/**
- * Created by  on 18/03/2018.
- */
-
 public class GameItemHandler extends BaseAdapter implements GridView.OnItemClickListener {
 
     private static final int START = 4;
@@ -252,9 +248,17 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.v("GIH:getView", "call");
+        Log.d("GIH:getView", "call to pos: " + position + ", Parent: " + parent.getId());
+        if (convertView != null) {
+            this.items[position] = (GameItem) convertView;
+            return convertView;
+        }
         this.items[position].setRelativeTo((GridView) parent);
         return this.items[position];
+    }
+
+    public View getMiddleView() {
+        return this.items[(this.size * this.size) / 2];
     }
 
     public void start() {
@@ -268,7 +272,7 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         System.err.println("Next: " + this.nextItems[current]);
     }
 
-    public void pause() {
+    private void pause() {
         Log.d("GIH:pause", "call");
         if (this.stopped && !this.paused) {
             this.paused = true;
@@ -285,21 +289,21 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
         if (this.listener != null) {
             switch (cause) {
                 case 1:
-                    this.listener.onSuccess(this.timer.getRaw(), this.size);
+                    this.listener.onSuccess();
                     break;
                 case 2:
-                    this.listener.onFail(this.timer.getRaw(), this.size);
+                    this.listener.onFail();
                     break;
                 case -1:
                     break;
                 default:
-                    this.listener.onEnd(this.timer.getRaw(), this.size);
+                    this.listener.onEnd();
             }
         }
     }
 
     public void updateTime(TextView t) {
-        Log.v("GIH:updateTime", "call");
+        //Log.v("GIH:updateTime", "call");
         t.setText(this.timer.getFormatted());
     }
 

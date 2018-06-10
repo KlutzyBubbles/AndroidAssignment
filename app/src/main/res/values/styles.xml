@@ -1,102 +1,26 @@
 <resources>
-
+<!--
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
-        <!-- enable window content transitions -->
-        <item name="android:windowActivityTransitions">true</item>
-        <item name="android:windowContentTransitions">true</item>
-
-        <!-- specify enter and exit transitions -->
-        <item name="android:windowEnterTransition">@transition/fade_in_trans</item>
-        <item name="android:windowExitTransition">@transition/fade_out_trans</item>
-        <item name="android:windowReturnTransition">@transition/fade_in_trans</item>
-        <item name="android:windowReenterTransition">@transition/fade_in_trans</item>
-        <item name="android:windowAllowEnterTransitionOverlap">true</item>
-        <item name="android:windowAllowReturnTransitionOverlap">true</item>
-
-
-        <item name="android:fragmentEnterTransition">@transition/fade_in_trans</item>
-        <item name="android:fragmentExitTransition">@transition/fade_out_trans</item>
-        <item name="android:fragmentReturnTransition">@transition/fade_in_trans</item>
-        <item name="android:fragmentReenterTransition">@transition/fade_in_trans</item>
-
-        <!-- specify shared element transitions -->
-        <item name="android:windowSharedElementEnterTransition">
-            @transition/bounds_trans</item>
-        <item name="android:windowSharedElementExitTransition">
-            @transition/bounds_trans</item>
     </style>
-<!--
-    <style name="MaterialShowcase" parent="ShowcaseView">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:backgroundTint">@android:color/transparent</item>
-        <item name="android:fillAlpha">0.5</item>
-        <item name="android:alpha">0.5</item>
-        <item name="sv_backgroundColor">#221249d9</item>
-        <item name="sv_showcaseColor">#25467A</item>
-        <item name="sv_buttonText">Close</item>
-        <item name="sv_titleTextAppearance">@style/ShowcaseTitle</item>
-        <item name="sv_detailTextAppearance">@style/ShowcaseText</item>
+    -->
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="MaterialShowcase.GotIt" parent="MaterialShowcase">
-        <item name="sv_buttonText">Got It</item>
-    </style>
-
-    <style name="MaterialShowcase.LetsGo" parent="MaterialShowcase">
-        <item name="sv_buttonText">Let's Go</item>
-    </style>
-
-    <style name="ShowcaseTitle" parent="TextAppearance.ShowcaseView.Title.Light">
-        <item name="android:textColor">#deffffff</item>
-    </style>
-
-    <style name="ShowcaseText" parent="TextAppearance.ShowcaseView.Detail.Light">
-        <item name="android:textColor">#8affffff</item>
-    </style>
--->
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:background">@color/White</item>
-        <!-- enable window content transitions -->
-        <item name="android:windowActivityTransitions">true</item>
-        <item name="android:windowContentTransitions">true</item>
-
-        <!-- specify enter and exit transitions -->
-        <item name="android:windowEnterTransition">@transition/fade_in_trans</item>
-        <item name="android:windowExitTransition">@transition/fade_out_trans</item>
-        <item name="android:windowReturnTransition">@transition/fade_in_trans</item>
-        <item name="android:windowReenterTransition">@transition/fade_in_trans</item>
-        <item name="android:windowAllowEnterTransitionOverlap">true</item>
-        <item name="android:windowAllowReturnTransitionOverlap">true</item>
-
-
-        <item name="android:fragmentEnterTransition">@transition/fade_in_trans</item>
-        <item name="android:fragmentExitTransition">@transition/fade_out_trans</item>
-        <item name="android:fragmentReturnTransition">@transition/fade_in_trans</item>
-        <item name="android:fragmentReenterTransition">@transition/fade_in_trans</item>
-
-        <!-- specify shared element transitions -->
-        <item name="android:windowSharedElementEnterTransition">
-            @transition/bounds_trans</item>
-        <item name="android:windowSharedElementExitTransition">
-            @transition/bounds_trans</item>
-    </style>
-
-    <style name="AppTheme.ActionBarStyle" parent="Widget.AppCompat.ActionBar.Solid">
-        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
-    </style>
-
-    <style name="AppTheme.ActionBar.TitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/White</item>
     </style>
 
     <style name="SpinnerStyle" parent="Widget.AppCompat.Spinner">
-        <item name="android:strokeWidth">1</item>
-        <item name="android:strokeColor">@color/Black</item>
-        <item name="android:strokeAlpha">0.75</item>
         <item name="background">@color/spinner_background</item>
         <item name="android:radius">5dp</item>
     </style>

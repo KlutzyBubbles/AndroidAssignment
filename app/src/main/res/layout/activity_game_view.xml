@@ -7,6 +7,14 @@
     android:theme="@style/AppTheme"
     tools:context="com.klutzybubbles.assignment1.activities.GameView">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
     <GridView
         android:id="@+id/main_grid"
         android:layout_width="match_parent"
@@ -32,7 +40,19 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/my_toolbar" />
+
+    <ImageButton
+        android:id="@+id/button_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/menu_help"
+        app:srcCompat="@drawable/ic_help"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/button_new_game"
@@ -45,9 +65,25 @@
         android:contentDescription="@string/new_game_button"
         android:onClick="onNewGameClick"
         android:src="@drawable/ic_play_button"
-        android:transitionName="play"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_grid" />
+        app:layout_constraintTop_toBottomOf="@+id/main_grid"
+        android:layout_marginRight="16dp" />
+
+    <com.klutzybubbles.assignment1.utils.CustomImageButton
+        android:id="@+id/button_stop_game"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/stop_game_button"
+        android:onClick="onStopGameClick"
+        android:src="@drawable/ic_stop_button"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_grid"
+        android:layout_marginRight="16dp" />
 
     <TextView
         android:id="@+id/text_next"
@@ -57,7 +93,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/text_next_item"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_grid" />
+        app:layout_constraintTop_toBottomOf="@+id/main_grid"
+        android:layout_marginLeft="16dp" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/next_item"
@@ -66,7 +103,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/text_next"
-        app:layout_constraintTop_toBottomOf="@+id/main_grid">
+        app:layout_constraintTop_toBottomOf="@+id/main_grid"
+        android:layout_marginLeft="16dp">
 
     </android.support.constraint.ConstraintLayout>
 

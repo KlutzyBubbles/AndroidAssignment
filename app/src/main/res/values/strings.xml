@@ -8,28 +8,18 @@
 
     <string name="new_game_button">New Game</string>
 
-    <string name="menu_restart">Restart</string>
-    <string name="menu_game">Game Screen</string>
     <string name="menu_help">Help Screen</string>
-    <string name="menu_settings">Settings</string>
-    <string name="menu_high_scores">High Scores</string>
-
-    <string name="help_doc">https://github.com/KlutzyBubbles/help-documents/raw/master/Help%20Document.pdf</string>
-    <string name="shared_preferences">com.klutzybubbles.assignment1.preferences</string>
 
     <string name="error_grid_min">Grid size can not be smaller than the MIN</string>
     <string name="error_grid_max">Grid size can not be bigger than the MAX</string>
 
     <string name="title_activity_game_settings">Game Settings</string>
     <string name="title_activity_game_view">Time to play</string>
-    <string name="title_activity_scoreboard_view">High Scores</string>
-    <string name="title_activity_main_menu">Main Menu</string>
 
     <string name="format_default_timer">%02d:%02d.%03d</string>
     <string name="format_default_date_time">dd/MM/yyyy HH:mm</string>
 
-    <integer name="database_version">2</integer>
-    <integer name="activity_fade_duration">1000</integer>
+    <integer name="database_version">1</integer>
 
     <!-- Strings related to Settings -->
 
@@ -39,7 +29,6 @@
     <string name="pref_title_color_highlight">Highlight</string>
     <string name="pref_title_color_border">Border</string>
     <string name="pref_title_size">Grid Size (#x#)</string>
-    <string name="pref_title_colors">Colors</string>
 
     <string name="pref_key_size">size</string>
     <string name="pref_key_blank">blank</string>
@@ -59,7 +48,9 @@
     <string name="pref_default_color_b">#3cb44b</string>
     <string name="pref_default_highlight">#e6194b</string>
     <string name="pref_default_border">#808080</string>
-    <string name="lets_go_text">Let\'s Go</string>
+    <string name="game_title">Game Title</string>
+    <string name="button_all">All</string>
+    <string name="stop_game_button">Stop Game</string>
 
     <string-array name="list_size">
         <item>3</item>
@@ -68,28 +59,84 @@
         <item>6</item>
     </string-array>
     
-    <string-array name="colors">
-        <item>#e6194b"</item>
-        <item>#3cb44b"</item>
-        <item>#ffe119"</item>
-        <item>#0082c8"</item>
-        <item>#f58231"</item>
-        <item>#911eb4"</item>
-        <item>#46f0f0"</item>
-        <item>#f032e6"</item>
-        <item>#d2f53c"</item>
-        <item>#fabebe"</item>
-        <item>#008080"</item>
-        <item>#e6beff"</item>
-        <item>#aa6e28"</item>
-        <item>#fffac8"</item>
-        <item>#800000"</item>
-        <item>#aaffc3"</item>
-        <item>#808000"</item>
-        <item>#ffd8b1"</item>
-        <item>#000080"</item>
-        <item>#808080"</item>
-        <item>#FFFFFF"</item>
-        <item>#000000"</item>
+    <array name="colors">
+        <item>#e6194b</item>
+        <item>#3cb44b</item>
+        <item>#ffe119</item>
+        <item>#0082c8</item>
+        <item>#f58231</item>
+        <item>#911eb4</item>
+        <item>#46f0f0</item>
+        <item>#f032e6</item>
+        <item>#d2f53c</item>
+        <item>#fabebe</item>
+        <item>#008080</item>
+        <item>#e6beff</item>
+        <item>#aa6e28</item>
+        <item>#fffac8</item>
+        <item>#800000</item>
+        <item>#aaffc3</item>
+        <item>#808000</item>
+        <item>#ffd8b1</item>
+        <item>#000080</item>
+        <item>#808080</item>
+        <item>#FFFFFF</item>
+        <item>#000000</item>
+    </array>
+
+    <string-array name="main_menu_help_titles">
+        <item>Play</item>
+        <item>Settings</item>
+        <item>Scoreboard</item>
+        <item>Help</item>
+    </string-array>
+
+    <string-array name="main_menu_help_text">
+        <item>This is the play button, it will redirect to the game screen</item>
+        <item>Click or swipe to the right to access game settings such as colors or grid size</item>
+        <item>Click or swipe to the left to show your personal high scores</item>
+        <item>Now that you are familiar with the main menu, feel free to play or look out for this icon for help</item>
+    </string-array>
+
+    <string-array name="scoreboard_help_titles">
+        <item>Grid Size</item>
+        <item>All Records</item>
+        <item>Back</item>
+        <item>Home</item>
+    </string-array>
+
+    <string-array name="scoreboard_help_text">
+        <item>Choose the grid size (n*n) to load scoreboard details</item>
+        <item>Click to see all success times for the selected grid size</item>
+        <item>Click to close the record list and return to the normal scoreboard view</item>
+        <item>Click or swipe to the right to go back to the main menu</item>
+    </string-array>
+
+    <string-array name="settings_screen_help_titles">
+        <item>Colors</item>
+        <item>Grid Size</item>
+        <item>Home</item>
+    </string-array>
+
+    <string-array name="settings_screen_help_text">
+        <item>These are settings that change the colors on the board, when clicking one you will be presented with a dialog. Clicking OK will save your changes while clicking cancel will revert them</item>
+        <item>This is the size (n*n) of the grid</item>
+        <item>Click or swipe to the left to go back to the main menu</item>
+    </string-array>
+
+    <string-array name="game_view_help_titles">
+        <item>Play</item>
+        <item>Timer</item>
+        <item>Game Items</item>
+        <item>Next Item</item>
+        <item>Back</item>
+    </string-array>
+
+    <string-array name="game_view_help_text">
+        <item>This is the play button, it will start or stop the game, to quick restart, swipe the play / stop button up</item>
+        <item>This is the timer, each game is timed to keep track of your records</item>
+        <item>These are game items, blank ones are clickable while the clicked ones cannot be changed. The aim of the game is to not have 3 of the same color in a row</item>
+        <item>This item will show you the current color you are placing</item>
+        <item>At anytime you can go back to the main menu using this button</item>
     </string-array>
 </resources>

@@ -6,17 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ScoreboardView">
 
-    <ImageView
-        android:id="@+id/background"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/appCompatImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:contentDescription="@string/title_activity_game_settings"
         android:scaleType="fitEnd"
-        android:src="@drawable/ic_scoreboard_background"
-        android:translationZ="-2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_scoreboard_background" />
 
     <ProgressBar
         android:id="@+id/loading"
@@ -33,13 +32,34 @@
         style="@style/SpinnerStyle"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:entries="@array/list_size"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_all"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_size" />
+        app:layout_constraintTop_toBottomOf="@+id/text_size"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp" />
+
+    <Button
+        android:id="@+id/button_all"
+        style="@android:style/Widget.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/RoyalBlue"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingBottom="5dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:text="@string/button_all"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinner_size"
+        android:layout_marginRight="8dp" />
 
     <TextView
         android:id="@+id/text_size"
@@ -50,7 +70,8 @@
         android:text="@string/pref_title_size"
         android:textColor="@color/Gray"
         app:layout_constraintStart_toStartOf="@+id/spinner_size"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_list"
@@ -65,7 +86,7 @@
 
     <Button
         android:id="@+id/button_home"
-        style="@android:style/Widget.Material.Button.Borderless"
+        style="@android:style/Widget.Button"
         android:layout_width="100dp"
         android:layout_height="88dp"
         android:layout_marginBottom="32dp"
@@ -76,10 +97,24 @@
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:drawableLeft="@drawable/ic_home" />
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/button_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/menu_help"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/ic_help"
+        android:layout_marginRight="16dp" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraint_all_records"
+        android:id="@+id/all_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible">
@@ -90,7 +125,7 @@
             android:layout_height="0dp"
             android:background="@color/White"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/button_hide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -98,15 +133,15 @@
         </android.support.v7.widget.RecyclerView>
 
         <Button
-            android:id="@+id/button_back"
-            style="@android:style/Widget.Material.Button.Borderless"
+            style="@android:style/Widget.Button"
+            android:id="@+id/button_hide"
             android:layout_width="0dp"
             android:layout_height="88dp"
             android:background="@color/RoyalBlue"
             android:drawableBottom="@drawable/ic_arrow_back"
             android:foreground="?attr/selectableItemBackground"
             android:paddingBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/recycle_list_all"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </android.support.constraint.ConstraintLayout>

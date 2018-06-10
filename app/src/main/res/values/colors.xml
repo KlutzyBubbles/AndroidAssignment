@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#E67022</color>
+    <color name="ic_launcher_background">#387EFF</color>
 
     <color name="colorPrimary">#d43f0d</color>
     <color name="colorPrimaryDark">#842500</color>
     <color name="colorAccent">#4079ff</color>
     <color name="White">#FFFFFF</color>
-    <color name="Orchid">#DA70D6</color>
     <color name="DarkViolet">#9400D3</color>
     <color name="RoyalBlue">#4169E1</color>
-    <color name="ForestGreen">#228B22</color>
-    <color name="DeepSkyBlue">#00BFFF</color>
     <color name="Black">#000000</color>
     <color name="Gray">#808080</color>
     <color name="spinner_background">#55808080</color>

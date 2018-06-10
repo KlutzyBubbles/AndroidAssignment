@@ -107,12 +107,13 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         /**
          * The context used to get formats from strings.xml
          */
-        private Context context;
+        private final Context context;
 
         /**
          * The TextView's that are to contain the records data respectively
          */
-        private TextView time, timestamp;
+        private final TextView time;
+        private final TextView timestamp;
 
         /**
          * Instantiates the RecordViewHolder using the View as its context and layout

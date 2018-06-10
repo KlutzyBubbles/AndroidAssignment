@@ -1,7 +1,6 @@
 package com.klutzybubbles.assignment1.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.Log;
 
 import com.klutzybubbles.assignment1.activities.R;
@@ -24,12 +23,12 @@ public class RecordItem {
     /**
      * The timestamp of the records time
      */
-    private long time;
+    private final long time;
 
     /**
      * The timestamp the record was set on
      */
-    private long setOn;
+    private final long setOn;
 
     /**
      * Instantiates the RecordItem
@@ -48,7 +47,7 @@ public class RecordItem {
      *
      * @return - The formatted record time
      */
-    public String getTime(Context context) {
+    String getTime(Context context) {
         Log.d("RecordItem:getTime", "call");
         String format = "%02d:%02d.%03d";
         if (context != null)
@@ -65,7 +64,7 @@ public class RecordItem {
      *
      * @return - The formatted date the record was set on
      */
-    public String getSetOn(Context context) {
+    String getSetOn(Context context) {
         Log.d("RecordItem:getSetOn", "call");
         String format = "dd/MM/yyyy HH:mm";
         if (context != null)

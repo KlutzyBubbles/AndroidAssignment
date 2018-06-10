@@ -7,21 +7,32 @@
     android:theme="@style/SplashTheme"
     tools:context=".SplashScreen">
 
-    <ImageView
-        android:id="@+id/background"
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:contentDescription="@string/title_activity_game_settings"
         android:scaleType="fitEnd"
-        android:src="@drawable/ic_settings_background"
-        android:translationZ="-2dp"
+        app:srcCompat="@drawable/ic_settings_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/button_help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/menu_help"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_help"
+        android:layout_marginRight="16dp" />
+
     <Button
         android:id="@+id/button_home"
-        style="@android:style/Widget.Material.Button.Borderless"
+        style="@android:style/Widget.Button"
         android:layout_width="100dp"
         android:layout_height="88dp"
         android:layout_marginBottom="32dp"
@@ -32,17 +43,17 @@
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableRight="@drawable/ic_home" />
 
     <Button
         android:id="@+id/button_blank"
-        style="@android:style/Widget.Material.Button"
+        style="@android:style/Widget.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/DarkViolet"
         android:text="@string/pref_title_color_none"
         app:layout_constraintEnd_toStartOf="@+id/button_home"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,13 +61,12 @@
 
     <Button
         android:id="@+id/button_color_a"
-        style="@android:style/Widget.Material.Button"
+        style="@android:style/Widget.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/DarkViolet"
         android:text="@string/pref_title_color_a"
         app:layout_constraintEnd_toStartOf="@+id/button_home"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,13 +74,12 @@
 
     <Button
         android:id="@+id/button_color_b"
-        style="@android:style/Widget.Material.Button"
+        style="@android:style/Widget.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/DarkViolet"
         android:text="@string/pref_title_color_b"
         app:layout_constraintEnd_toStartOf="@+id/button_home"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,13 +87,12 @@
 
     <Button
         android:id="@+id/button_highlight"
-        style="@android:style/Widget.Material.Button"
+        style="@android:style/Widget.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/DarkViolet"
         android:text="@string/pref_title_color_highlight"
         app:layout_constraintEnd_toStartOf="@+id/button_home"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,13 +100,12 @@
 
     <Button
         android:id="@+id/button_border"
-        style="@android:style/Widget.Material.Button"
+        style="@android:style/Widget.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@color/DarkViolet"
         android:text="@string/pref_title_color_border"
         app:layout_constraintEnd_toStartOf="@+id/button_home"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,7 +119,8 @@
         android:layout_marginTop="16dp"
         android:text="@string/pref_title_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_border" />
+        app:layout_constraintTop_toBottomOf="@+id/button_border"
+        android:layout_marginLeft="20dp" />
 
     <RadioGroup
         android:id="@+id/size_group"
@@ -125,7 +133,9 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="@+id/button_border"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_size">
+        app:layout_constraintTop_toBottomOf="@+id/title_size"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp">
 
         <RadioButton
             android:id="@+id/radio_size_3"

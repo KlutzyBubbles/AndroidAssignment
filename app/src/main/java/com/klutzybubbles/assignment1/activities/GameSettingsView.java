@@ -3,17 +3,22 @@ package com.klutzybubbles.assignment1.activities;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
@@ -60,7 +65,10 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_blank), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                blank.setBackgroundTintList(ColorStateList.valueOf(color));
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                                    ViewCompat.setBackgroundTintList(blank, ColorStateList.valueOf(color));
+                                else
+                                    blank.setBackgroundTintList(ColorStateList.valueOf(color));
                                 blank.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
@@ -80,7 +88,10 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_color_a), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                colA.setBackgroundTintList(ColorStateList.valueOf(color));
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                                    ViewCompat.setBackgroundTintList(colA, ColorStateList.valueOf(color));
+                                else
+                                    colA.setBackgroundTintList(ColorStateList.valueOf(color));
                                 colA.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
@@ -100,7 +111,10 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_color_b), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                colB.setBackgroundTintList(ColorStateList.valueOf(color));
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                                    ViewCompat.setBackgroundTintList(colB, ColorStateList.valueOf(color));
+                                else
+                                    colB.setBackgroundTintList(ColorStateList.valueOf(color));
                                 colB.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
@@ -120,7 +134,10 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_highlight), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                high.setBackgroundTintList(ColorStateList.valueOf(color));
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                                    ViewCompat.setBackgroundTintList(high, ColorStateList.valueOf(color));
+                                else
+                                    high.setBackgroundTintList(ColorStateList.valueOf(color));
                                 high.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
@@ -140,7 +157,10 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                             @Override
                             public void onChooseColor(int position, int color) {
                                 s.edit().putString(getString(R.string.pref_key_border), String.format("#%06X", (0xFFFFFF & color))).apply();
-                                border.setBackgroundTintList(ColorStateList.valueOf(color));
+                                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                                    ViewCompat.setBackgroundTintList(border, ColorStateList.valueOf(color));
+                                else
+                                    border.setBackgroundTintList(ColorStateList.valueOf(color));
                                 border.setTextColor(ColorUtils.isWhiteText(color) ? Color.WHITE : Color.BLACK);
                             }
 
@@ -155,11 +175,20 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
             int cHigh = Color.parseColor(s.getString(getString(R.string.pref_key_highlight), getString(R.string.pref_default_highlight)));
             int cBorder = Color.parseColor(s.getString(getString(R.string.pref_key_border), getString(R.string.pref_default_border)));
 
-            blank.setBackgroundTintList(ColorStateList.valueOf(cBlank));
-            colA.setBackgroundTintList(ColorStateList.valueOf(cColA));
-            colB.setBackgroundTintList(ColorStateList.valueOf(cColB));
-            high.setBackgroundTintList(ColorStateList.valueOf(cHigh));
-            border.setBackgroundTintList(ColorStateList.valueOf(cBorder));
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                ViewCompat.setBackgroundTintList(blank, ColorStateList.valueOf(cBlank));
+                ViewCompat.setBackgroundTintList(colA, ColorStateList.valueOf(cColA));
+                ViewCompat.setBackgroundTintList(colB, ColorStateList.valueOf(cColB));
+                ViewCompat.setBackgroundTintList(high, ColorStateList.valueOf(cHigh));
+                ViewCompat.setBackgroundTintList(border, ColorStateList.valueOf(cBorder));
+            } else {
+                blank.setBackgroundTintList(ColorStateList.valueOf(cBlank));
+                colA.setBackgroundTintList(ColorStateList.valueOf(cColA));
+                colB.setBackgroundTintList(ColorStateList.valueOf(cColB));
+                high.setBackgroundTintList(ColorStateList.valueOf(cHigh));
+                border.setBackgroundTintList(ColorStateList.valueOf(cBorder));
+            }
 
             blank.setTextColor(ColorUtils.isWhiteText(cBlank) ? Color.WHITE : Color.BLACK);
             colA.setTextColor(ColorUtils.isWhiteText(cColA) ? Color.WHITE : Color.BLACK);
@@ -218,6 +247,46 @@ public class GameSettingsView extends android.support.v4.app.Fragment {
                         s.edit().putString(getString(R.string.pref_key_size), "3").apply();
                         break;
                 }
+            });
+
+            ImageView help = view.findViewById(R.id.button_help);
+
+            View[] targets = new View[3];
+
+            targets[0] = colB;
+            targets[1] = g;
+            targets[2] = b;
+
+            String[] title = this.getResources().getStringArray(R.array.settings_screen_help_titles);
+            String[] text = this.getResources().getStringArray(R.array.settings_screen_help_text);
+
+            help.setOnClickListener(v -> {
+                TapTargetSequence seq = new TapTargetSequence(this.getActivity());
+                for (int i = 0; i < targets.length; i++) {
+                    if (i == 1) {
+                        seq.target(TapTarget.forView(targets[i], title[i], text[i])
+                                .cancelable(true)
+                                .transparentTarget(true)
+                                .textColor(R.color.White)
+                                .outerCircleColor(R.color.RoyalBlue)
+                                .outerCircleAlpha(0.95F)
+                                .targetRadius(5)
+                                .drawShadow(true)
+                                .dimColor(R.color.Black));
+                    } else {
+                        seq.target(TapTarget.forView(targets[i], title[i], text[i])
+                                .cancelable(true)
+                                .transparentTarget(true)
+                                .textColor(R.color.White)
+                                .outerCircleColor(R.color.RoyalBlue)
+                                .outerCircleAlpha(0.95F)
+                                .targetRadius(70)
+                                .drawShadow(true)
+                                .dimColor(R.color.Black));
+                    }
+                }
+                seq.continueOnCancel(true).considerOuterCircleCanceled(true);
+                seq.start();
             });
         }
     }
