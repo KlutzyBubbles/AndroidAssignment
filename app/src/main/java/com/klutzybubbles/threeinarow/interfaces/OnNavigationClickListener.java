@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.interfaces;
+package com.klutzybubbles.threeinarow.interfaces;
 
 /**
  * <h1>OnNavigationClickListener.java</h1>

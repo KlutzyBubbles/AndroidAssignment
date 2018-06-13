@@ -1,10 +1,10 @@
-package com.klutzybubbles.assignment1.utils;
+package com.klutzybubbles.threeinarow.utils;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.klutzybubbles.assignment1.logic.GameItemHandler;
+import com.klutzybubbles.threeinarow.logic.GameItemHandler;
 
 /**
  * <h1>BundledState.java</h1>

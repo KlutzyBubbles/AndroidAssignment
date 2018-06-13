@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Assignment</string>
+    <string name="app_name">3 in a Row</string>
 
     <string name="timer_text">Click new game to start</string>
     <string name="text_next_item">Next Color</string>

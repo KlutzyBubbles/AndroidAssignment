@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.activities;
+package com.klutzybubbles.threeinarow.activities;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 
-import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
+import com.klutzybubbles.threeinarow.interfaces.OnNavigationClickListener;
 
 import java.util.ArrayList;
 import java.util.List;

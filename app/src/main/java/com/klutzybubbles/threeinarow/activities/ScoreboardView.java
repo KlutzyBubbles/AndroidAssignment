@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.activities;
+package com.klutzybubbles.threeinarow.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,11 +21,11 @@ import android.widget.TextView;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
-import com.klutzybubbles.assignment1.utils.DatabaseHelper;
-import com.klutzybubbles.assignment1.utils.RecordItem;
-import com.klutzybubbles.assignment1.utils.RecordListAdapter;
-import com.klutzybubbles.assignment1.utils.StringListAdapter;
+import com.klutzybubbles.threeinarow.interfaces.OnNavigationClickListener;
+import com.klutzybubbles.threeinarow.utils.DatabaseHelper;
+import com.klutzybubbles.threeinarow.utils.RecordItem;
+import com.klutzybubbles.threeinarow.utils.RecordListAdapter;
+import com.klutzybubbles.threeinarow.utils.StringListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

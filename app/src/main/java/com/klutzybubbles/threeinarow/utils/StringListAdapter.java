@@ -1,6 +1,5 @@
-package com.klutzybubbles.assignment1.utils;
+package com.klutzybubbles.threeinarow.utils;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,32 +8,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.klutzybubbles.assignment1.activities.R;
+import com.klutzybubbles.threeinarow.activities.R;
 
 import java.util.List;
 
 /**
- * <h1>RecordListAdapter.java</h1>
- * Class used to format the high score records into a RecyclerView
+ * <h1>StringListAdapter.java</h1>
+ * Class used to format the overall stat records into a RecyclerView
  *
  * @author Lee Tzilantonis
  * @version 1.0.0
- * @since 6/5/2018
+ * @since 10/6/2018
  * @see RecyclerView
  */
-public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
+public class StringListAdapter extends RecyclerView.Adapter<StringListAdapter.StringViewHolder> {
 
     /**
      * All records to be contained within the Adapter
      */
-    private List<RecordItem> records;
+    private List<String> records;
 
     /**
      * Instantiates the RecordListAdapter using the records provided
      *
      * @param records - The records to be formatted
      */
-    public RecordListAdapter(List<RecordItem> records) {
+    public StringListAdapter(List<String> records) {
         Log.d("RecordLA:CONSTRUCT", "call");
         if (records == null)
             throw new IllegalArgumentException("There must be a list to work with");
@@ -46,7 +45,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
      *
      * @param records - The List of updates records
      */
-    public void setRecords(List<RecordItem> records) {
+    public void setRecords(List<String> records) {
         Log.d("RecordLA:setRecords", "call");
         if (records == null)
             return;
@@ -63,10 +62,10 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
      */
     @NonNull
     @Override
-    public RecordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public StringViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.v("RecordLA:onCreateVH", "call");
-        View recordView = LayoutInflater.from(parent.getContext()).inflate(R.layout.record_list_row, parent, false);
-        return new RecordViewHolder(recordView);
+        View recordView = LayoutInflater.from(parent.getContext()).inflate(R.layout.string_list_row, parent, false);
+        return new StringViewHolder(recordView);
     }
 
     /**
@@ -76,11 +75,10 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
      * @param position - The position of the row of data to be inserted
      */
     @Override
-    public void onBindViewHolder(@NonNull RecordViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StringViewHolder holder, int position) {
         Log.v("RecordLA:onBindVH", "call");
-        RecordItem r = this.records.get(position);
-        holder.getTime().setText(r.getTime(holder.getContext()));
-        holder.getTimestamp().setText(r.getSetOn(holder.getContext()));
+        String r = this.records.get(position);
+        holder.getInfo().setText(r);
     }
 
     /**
@@ -95,67 +93,39 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
     }
 
     /**
-     * <h1>RecordListAdapter.RecordViewHolder.class</h1>
+     * <h1>StringListAdapter.StringViewHolder.class</h1>
      * Class used to hold the layout for the record data to be viewed on
      *
      * @author Lee Tzilantonis
      * @version 1.0.0
-     * @since 6/5/2018
+     * @since 10/6/2018
      */
-    class RecordViewHolder extends RecyclerView.ViewHolder {
-
-        /**
-         * The context used to get formats from strings.xml
-         */
-        private final Context context;
+    class StringViewHolder extends RecyclerView.ViewHolder {
 
         /**
          * The TextView's that are to contain the records data respectively
          */
-        private final TextView time;
-        private final TextView timestamp;
+        private final TextView info;
 
         /**
-         * Instantiates the RecordViewHolder using the View as its context and layout
+         * Instantiates the StringViewHolder using the View as its context and layout
          *
          * @param view - The View to extract context and layout from
          */
-        private RecordViewHolder(@NonNull View view) {
+        private StringViewHolder(@NonNull View view) {
             super(view);
             Log.d("RecordVH:CONSTRUCT", "call");
-            this.context = view.getContext();
-            this.time = view.findViewById(R.id.text_time);
-            this.timestamp = view.findViewById(R.id.text_timestamp);
+            this.info = view.findViewById(R.id.text_info);
         }
 
         /**
-         * Gets the RecordViewHolder's context
+         * Gets the info TextView
          *
-         * @return - The RecordViewHolder's context
+         * @return - The info TextView
          */
-        private Context getContext() {
-            Log.d("RecordVH:getContext", "call");
-            return context;
-        }
-
-        /**
-         * Gets the time TextView
-         *
-         * @return - The time TextView
-         */
-        private TextView getTime() {
+        private TextView getInfo() {
             Log.d("RecordVH:getTime", "call");
-            return time;
-        }
-
-        /**
-         * Gets the timestamp TextView
-         *
-         * @return - The timestamp TextView
-         */
-        private TextView getTimestamp() {
-            Log.d("RecordVH:getTimestamp", "call");
-            return timestamp;
+            return info;
         }
 
     }

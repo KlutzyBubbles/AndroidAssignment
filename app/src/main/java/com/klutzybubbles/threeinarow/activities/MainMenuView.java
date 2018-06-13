@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.activities;
+package com.klutzybubbles.threeinarow.activities;
 
 import android.animation.Animator;
 import android.app.Activity;
@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
+import com.klutzybubbles.threeinarow.interfaces.OnNavigationClickListener;
 
 /**
  * <h1>MainMenuView.java</h1>

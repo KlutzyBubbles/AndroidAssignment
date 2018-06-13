@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.logic;
+package com.klutzybubbles.threeinarow.logic;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,9 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.klutzybubbles.assignment1.activities.GameView;
-import com.klutzybubbles.assignment1.activities.R;
-import com.klutzybubbles.assignment1.interfaces.OnGameFinishedListener;
+import com.klutzybubbles.threeinarow.activities.GameView;
+import com.klutzybubbles.threeinarow.activities.R;
+import com.klutzybubbles.threeinarow.interfaces.OnGameFinishedListener;
 
 import java.util.Random;
 
@@ -282,11 +282,11 @@ public class GameItemHandler extends BaseAdapter implements GridView.OnItemClick
      */
     public static void refreshSettings(GridView parent) {
         SharedPreferences s = PreferenceManager.getDefaultSharedPreferences(parent.getContext());
-        GameItem.COLORS[0] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_blank), "#696969"));
-        GameItem.COLORS[1] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_color_a), "#0000FF"));
-        GameItem.COLORS[2] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_color_b), "#FF0000"));
-        GameItem.COLORS[3] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_border), "#000000"));
-        GameItem.COLORS[4] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_highlight), "#FFFFFF"));
+        GameItem.COLORS[0] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_blank), parent.getContext().getString(R.string.pref_default_blank)));
+        GameItem.COLORS[1] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_color_a), parent.getContext().getString(R.string.pref_default_color_a)));
+        GameItem.COLORS[2] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_color_b), parent.getContext().getString(R.string.pref_default_color_b)));
+        GameItem.COLORS[3] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_border), parent.getContext().getString(R.string.pref_default_border)));
+        GameItem.COLORS[4] = Color.parseColor(s.getString(parent.getContext().getString(R.string.pref_key_highlight), parent.getContext().getString(R.string.pref_default_highlight)));
     }
 
     /**

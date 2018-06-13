@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.klutzybubbles.assignment1.activities.GameView">
+    tools:context="com.klutzybubbles.threeinarow.activities.GameView">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -66,7 +66,7 @@
         app:layout_constraintLeft_toRightOf="@id/main_grid"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.klutzybubbles.assignment1.utils.CustomImageButton
+    <com.klutzybubbles.threeinarow.utils.CustomImageButton
         android:id="@+id/button_stop_game"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"

@@ -5,11 +5,11 @@ android {
     }
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.klutzybubbles.assignment1.activities"
+        applicationId "com.klutzybubbles.threeinarow.activities"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

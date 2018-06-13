@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.utils;
+package com.klutzybubbles.threeinarow.utils;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.activities;
+package com.klutzybubbles.threeinarow.activities;
 
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -23,11 +23,11 @@ import android.widget.Toast;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.klutzybubbles.assignment1.interfaces.OnGameFinishedListener;
-import com.klutzybubbles.assignment1.logic.GameItemHandler;
-import com.klutzybubbles.assignment1.utils.BundledState;
-import com.klutzybubbles.assignment1.utils.CustomImageButton;
-import com.klutzybubbles.assignment1.utils.DatabaseHelper;
+import com.klutzybubbles.threeinarow.interfaces.OnGameFinishedListener;
+import com.klutzybubbles.threeinarow.logic.GameItemHandler;
+import com.klutzybubbles.threeinarow.utils.BundledState;
+import com.klutzybubbles.threeinarow.utils.CustomImageButton;
+import com.klutzybubbles.threeinarow.utils.DatabaseHelper;
 
 /**
  * <h1>GameView.java</h1>
@@ -383,7 +383,8 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.noTimer = true;
         this.paused = true;
         this.toastMessage(getString(R.string.text_win));
-        this.newGame.setEnabled(true);
+        this.newGame.setVisibility(View.VISIBLE);
+        this.stopGame.setVisibility(View.INVISIBLE);
         this.db.insert(this.a.getTime(), this.size, false);
     }
 
@@ -396,7 +397,8 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         this.noTimer = true;
         this.paused = true;
         this.toastMessage(getString(R.string.text_lose));
-        this.newGame.setEnabled(true);
+        this.newGame.setVisibility(View.VISIBLE);
+        this.stopGame.setVisibility(View.INVISIBLE);
         this.db.insert(this.a.getTime(), this.size, true);
     }
 
@@ -408,7 +410,8 @@ public class GameView extends AppCompatActivity implements OnGameFinishedListene
         Log.d("GameView:onEnd", "call");
         this.noTimer = true;
         this.paused = true;
-        this.newGame.setEnabled(true);
+        this.newGame.setVisibility(View.VISIBLE);
+        this.stopGame.setVisibility(View.INVISIBLE);
         this.text.setText(getString(R.string.timer_text));
     }
 

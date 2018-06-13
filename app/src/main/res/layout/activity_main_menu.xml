@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.klutzybubbles.assignment1.activities.MainMenuView">
+    tools:context="com.klutzybubbles.threeinarow.activities.MainMenuView">
 
     <ImageView
         android:layout_width="0dp"

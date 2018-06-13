@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.logic;
+package com.klutzybubbles.threeinarow.logic;
 
 import android.content.Context;
 import android.graphics.Color;

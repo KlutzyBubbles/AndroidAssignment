@@ -1,4 +1,4 @@
-package com.klutzybubbles.assignment1.activities;
+package com.klutzybubbles.threeinarow.activities;
 
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.klutzybubbles.assignment1.interfaces.OnNavigationClickListener;
+import com.klutzybubbles.threeinarow.interfaces.OnNavigationClickListener;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 import petrov.kristiyan.colorpicker.ColorUtils;

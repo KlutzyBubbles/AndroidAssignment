@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.klutzybubbles.assignment1.activities">
-
-    <uses-permission android:name="android.permission.INTERNET" />
+    package="com.klutzybubbles.threeinarow.activities">
 
     <application
         android:allowBackup="true"
@@ -14,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:isGame="true">
         <activity
             android:name=".GameView"
             android:theme="@style/AppTheme"

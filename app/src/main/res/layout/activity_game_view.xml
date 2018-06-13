@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.klutzybubbles.assignment1.activities.GameView">
+    tools:context="com.klutzybubbles.threeinarow.activities.GameView">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="163dp"
         android:layout_marginStart="163dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/timer_text"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_grid"/>
 
-    <com.klutzybubbles.assignment1.utils.CustomImageButton
+    <com.klutzybubbles.threeinarow.utils.CustomImageButton
         android:id="@+id/button_stop_game"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
